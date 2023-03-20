@@ -2,7 +2,7 @@
 #include <M5Core2.h>
 #include "header.h"
 #include <LinkedList.h>
-#include <Firebase_ESP_Client.h>
+#include <FirebaseESP32.h>
 #define PROGRESS_MAX 100
 using namespace std;
 
@@ -19,12 +19,17 @@ int y = 0;
 char c[HEIGHT][WIDTH];
 char vec[10];
 
+FirebaseData fbdo;
+
+FirebaseAuth auth;
+FirebaseConfig config;
+
+
 bool split(char *str, char *buff)
 {
   String s;
   LinkedList<int> linkedList;
 
-  linkedList.add(2);
   string input = string(str);
   int first = 0;
   int i = 0;
@@ -40,7 +45,6 @@ bool split(char *str, char *buff)
       last = input.size();
     }
   }
-  hoge();
   return false;
 }
 
@@ -60,11 +64,15 @@ void setup() {
 */
 
 File root;
+/*
 void setup()
 {
   M5.begin();
   pinMode(10, OUTPUT);
-
+  Firebase.begin(&config, &auth);
+  
+  auto wifiStat = WiFi.begin("aterm-b9044b-a", "1ca1af621dff7");
+  Serial.printf("%d",(int)wifiStat);
   SD.begin();
   root = SD.open("/");
   printDirectory(root, 0);
@@ -90,7 +98,7 @@ void setup()
   }
   M5.Lcd.println("done!");
 }
-
+*/
 void printDirectory(File dir, int numTabs)
 {
   while (true)
@@ -116,8 +124,4 @@ void printDirectory(File dir, int numTabs)
       M5.Lcd.println("\t\t");
     }
   }
-}
-
-void loop()
-{
 }
