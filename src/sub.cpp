@@ -49,14 +49,51 @@ bool buttonProcess(String buttonName, bool status)
         array = data.jsonArray();
         lcd.println(array.size());
         FirebaseJsonData jsonData;
-        if(! array.get(jsonData, 1)){
+        if (!array.get(jsonData, 1))
+        {
             lcd.println("配列取得失敗");
         }
         FirebaseJson json;
         lcd.println(jsonData.stringValue);
         jsonData.get(json);
-        json.get(jsonData,"dateTime");
+        json.get(jsonData, "dateTime");
         lcd.println(jsonData.stringValue);
+        Firebase.setTimestamp(data, "lastUpdateTime");
+        const time_t unixTime = data.intData();
+        auto currentTime = localtime(&unixTime);
+        RTC_TimeTypeDef tr = {0, 0, 0};
+        RTC_DateTypeDef dt = {0, 0, 0};
+        tr.Hours = (uint8_t)(currentTime->tm_hour);
+        tr.Minutes = (uint8_t)(currentTime->tm_min);
+        tr.Seconds = (uint8_t)(currentTime->tm_sec);
+        dt.Year = (uint16_t)(currentTime->tm_year + 1900);
+        dt.Month = (uint8_t)(currentTime->tm_mon + 1);
+        dt.Date = (uint8_t)(currentTime->tm_mday);
+        M5.Rtc.SetTime(&tr);
+        M5.Rtc.SetDate(&dt);
+        M5.Rtc.begin();
+        delay(2000);
+        lcd.setCursor(0, 0);
+        lcd.fillScreen(BLACK);
+        M5.Rtc.GetTime(&tr);
+        M5.Rtc.GetDate(&dt); // Get the date of the real-time clock.
+        M5.Lcd.setCursor(0, 15);
+        lcd.printf("Data: %04d-%02d-%02d\n", dt.Year, dt.Month, dt.Date); // Output the date of the current real-time clock on the screen.
+        lcd.printf("Week: %d\n", dt.WeekDay);
+
+        lcd.printf("Time: %02d : %02d : %02d\n", tr.Hours, tr.Minutes, tr.Seconds);
+        delay(2000);
+        lcd.setCursor(0, 0);
+        lcd.fillScreen(BLACK);
+        M5.Rtc.GetTime(&tr);
+        M5.Rtc.GetDate(&dt); // Get the date of the real-time clock.
+        M5.Lcd.setCursor(0, 15);
+        lcd.printf("Data: %04d-%02d-%02d\n", dt.Year, dt.Month, dt.Date); // Output the date of the current real-time clock on the screen.
+        lcd.printf("Week: %d\n", dt.WeekDay);
+
+        lcd.printf("Time: %02d : %02d : %02d\n", tr.Hours, tr.Minutes, tr.Seconds);
+        lcd.print(currentTime);
+        lcd.print(unixTime);
     }
     else
     {
