@@ -22,7 +22,6 @@ void ReadingScreen::initScreen()
     btn_x = Button(220, 10, 100, 60, true, "Start", this->cl_off, this->cl_on);
     btn_x.addHandler(push, E_RELEASE);
     btn_x.draw();
-    M5.Buttons.draw();
 }
 
 ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)

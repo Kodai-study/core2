@@ -18,7 +18,6 @@ void setup()
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
   readingScreen.initScreen();
-  M5.Buttons.draw();
   settingTimeScreen.btn_plus5.erase();
 }
 
@@ -46,19 +45,15 @@ void loop()
 
   if (M5.BtnB.wasPressed())
   {
-    readingScreen.btn_x.set(0,0,0,0);
     readingScreen.btn_x.erase(BLACK);
-    //readingScreen.btn_x.~Button();
+    readingScreen.btn_x.set(0,0,0,0);
     settingTimeScreen.initScreen();
-    M5.Buttons.draw();
   }
 
   if (M5.BtnC.wasPressed())
   {
+    settingTimeScreen.btn_plus5.erase(BLACK);
     settingTimeScreen.btn_plus5.set(0,0,0,0);
-    settingTimeScreen.btn_plus5.erase();
-    //settingTimeScreen.btn_plus5.~Button();
     readingScreen.initScreen();
-    M5.Buttons.draw();
   }
 }

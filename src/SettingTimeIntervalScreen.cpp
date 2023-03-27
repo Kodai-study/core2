@@ -20,5 +20,4 @@ void SettingTimeIntervalScreen::initScreen()
    this->btn_plus5 = Button(0, 0, 199, 100, true, "+5", this->cl_off, this->cl_on);
    btn_plus5.addHandler(pluc2, E_RELEASE);
    btn_plus5.draw();
-   M5.Buttons.draw();
 }
