@@ -23,7 +23,8 @@ void ReadingScreen::initScreen()
     M5.Buttons.draw();
 }
 
-ReadingScreen::ReadingScreen(int index, int currentPage, String bookName) : currentPage(currentPage), btn_x(220, 10, 100, 60, true, "Start", this->cl_off, this->cl_on)
+ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
+    : currentPage(currentPage), btn_x(220, 10, 100, 60, true, "Start", this->cl_off, this->cl_on)
 {
     this->bookName = bookName;
 }

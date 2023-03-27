@@ -1,5 +1,6 @@
 #include "header.h"
 #include "ReadingScreen.h"
+#include "SettingTimeIntervalScreen.h"
 #define PROGRESS_MAX 100
 using namespace std;
 
@@ -22,7 +23,8 @@ FirebaseAuth auth;
 FirebaseConfig config;
 
 ReadingScreen readingScreen(0, 1, "bookName");
-
+bool lcdOn = true;
+SettingTimeIntervalScreen settingTimeScreen;
 bool split(char *str, char *buff)
 {
   String s;
@@ -51,6 +53,8 @@ void setup()
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
   readingScreen.initScreen();
+  M5.Buttons.draw();
+  settingTimeScreen.btn_plus5.erase();
 }
 
 void loop()
@@ -59,15 +63,28 @@ void loop()
 
   if (M5.BtnA.wasPressed())
   {
-    M5.Axp.SetLcdVoltage(2500);
-    M5.Axp.SetDCDC3(false);
-    M5.Axp.SetLed(0);
-    M5.Lcd.sleep();
+    lcdOn = !lcdOn;
 
-    delay(1000);
+    if (lcdOn)
+    {
+      M5.Axp.SetLcdVoltage(3000);
+      M5.Axp.SetDCDC3(true);
+      M5.lcd.wakeup();
+    }
+    else
+    {
+      M5.Axp.SetDCDC3(false);
+      M5.Axp.SetLed(0);
+      M5.Lcd.sleep();
+    }
+  }
 
-    M5.Axp.SetDCDC3(true);
-    M5.lcd.wakeup();
+  if (M5.BtnB.wasPressed())
+  {
+    readingScreen.btn_x.erase(BLACK);
+    readingScreen.btn_x.~Button();
+    settingTimeScreen.initScreen();
+    M5.Buttons.draw();
   }
 }
 
