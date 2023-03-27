@@ -18,7 +18,6 @@ void event_btn_x(Event &e)
     delay(500);
     M5.Axp.SetLDOEnable(3, false);
     M5.Buttons.draw();
-    e.objName
 }
 class SampleTest
 {
@@ -66,7 +65,6 @@ public:
         Serial.begin(115200);
 
         Llcd.init(); // LCD初期化
-        int _cursorX = 0;
         Llcd.setTextFont(4);
         Llcd.setTextColor(WHITE);
         Llcd.setCursor(0, 0);
@@ -175,6 +173,7 @@ public:
 
     bool connectingWifi()
     {
+        int _cursorX = 0;
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
         Llcd.print("Connecting to Wi-Fi");
         while (WiFi.status() != WL_CONNECTED)
@@ -187,11 +186,13 @@ public:
             if (_cursorX > 320)
             {
                 _cursorX = 0;
+                return false;
             }
         }
         Llcd.fillScreen(BLACK);
         Llcd.setCursor(0, 0);
         Llcd.print("Connected with IP:");
         Llcd.print(WiFi.localIP());
+        return true;
     }
 };

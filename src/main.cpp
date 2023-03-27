@@ -3,20 +3,6 @@
 #include "SettingTimeIntervalScreen.h"
 #define PROGRESS_MAX 100
 using namespace std;
-
-#define WIDTH 144
-#define HEIGHT 205
-
-void printDirectory(File dir, int numTabs);
-
-static unsigned char gucProgress = 0;
-static unsigned char gucOpenFlg = 0;
-fs::File fp;
-int x = 0;
-int y = 0;
-char c[HEIGHT][WIDTH];
-char vec[10];
-
 FirebaseData fbdo;
 
 FirebaseAuth auth;
@@ -25,30 +11,9 @@ FirebaseConfig config;
 ReadingScreen readingScreen(0, 1, "bookName");
 bool lcdOn = true;
 SettingTimeIntervalScreen settingTimeScreen;
-bool split(char *str, char *buff)
-{
-  String s;
-
-  string input = string(str);
-  int first = 0;
-  int i = 0;
-  int last = input.find_first_of(',');
-  while (first < input.size())
-  {
-    std::string subStr(input, first, last - first);
-    buff[i++] = atoi(subStr.c_str());
-    first = last + 1;
-    last = input.find_first_of(',', first);
-    if (last == std::string::npos)
-    {
-      last = input.size();
-    }
-  }
-  return false;
-}
-
 void setup()
 {
+  Serial.begin(9600);
   M5.begin();
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
@@ -81,72 +46,19 @@ void loop()
 
   if (M5.BtnB.wasPressed())
   {
+    readingScreen.btn_x.set(0,0,0,0);
     readingScreen.btn_x.erase(BLACK);
-    readingScreen.btn_x.~Button();
+    //readingScreen.btn_x.~Button();
     settingTimeScreen.initScreen();
     M5.Buttons.draw();
   }
-}
 
-File root;
-/*
-void setup()
-{
-  M5.begin();
-  pinMode(10, OUTPUT);
-  Firebase.begin(&config, &auth);
-
-  auto wifiStat = WiFi.begin("aterm-b9044b-a", "1ca1af621dff7");
-  Serial.printf("%d",(int)wifiStat);
-  SD.begin();
-  root = SD.open("/");
-  printDirectory(root, 0);
-  delay(2000);
-  root.close();
-  File fp = SD.open("/test.csv");
-  if (!fp)
+  if (M5.BtnC.wasPressed())
   {
-    M5.Lcd.println("NO SD!!");
-    return;
-  }
-  delay(2000);
-  // M5.Lcd.println(fp.read());
-  fp.read();
-  fp.read();
-  M5.Lcd.print((char)fp.read());
-  delay(2000);
-  while (fp.available())
-  {
-    // M5.Lcd.print(fp.readString());
-    M5.Lcd.println(fp.readStringUntil('\n'));
-    M5.Llcd.write(99);
-  }
-  M5.Lcd.println("done!");
-}
-*/
-void printDirectory(File dir, int numTabs)
-{
-  while (true)
-  {
-    File entry = dir.openNextFile();
-    if (!entry)
-    {
-      dir.rewindDirectory();
-      break;
-    }
-    for (uint8_t i = 0; i < numTabs; i++)
-    {
-      M5.Lcd.print('\t');
-    }
-    M5.Lcd.print(entry.name());
-    if (entry.isDirectory())
-    {
-      M5.Lcd.println("/");
-      printDirectory(entry, numTabs + 1);
-    }
-    else
-    {
-      M5.Lcd.println("\t\t");
-    }
+    settingTimeScreen.btn_plus5.set(0,0,0,0);
+    settingTimeScreen.btn_plus5.erase();
+    //settingTimeScreen.btn_plus5.~Button();
+    readingScreen.initScreen();
+    M5.Buttons.draw();
   }
 }

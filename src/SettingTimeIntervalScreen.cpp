@@ -2,8 +2,10 @@
 #include "SettingTimeIntervalScreen.h"
 
 SettingTimeIntervalScreen::SettingTimeIntervalScreen()
-    : btn_plus5(0, 0, 0, 0)
-
+    : btn_plus5(0, 0, 0, 0),
+      btn_plus1(0, 0, 0, 0),
+      btn_minus1(0, 0, 0, 0),
+      btn_minus5(0, 0, 0, 0)
 {
    this->btn_plus5.erase(BLACK);
 }
