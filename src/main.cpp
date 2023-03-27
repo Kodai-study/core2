@@ -1,8 +1,5 @@
-#include <string>
-#include <M5Core2.h>
 #include "header.h"
-#include <LinkedList.h>
-#include <FirebaseESP32.h>
+#include "ReadingScreen.h"
 #define PROGRESS_MAX 100
 using namespace std;
 
@@ -24,11 +21,11 @@ FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
+ReadingScreen readingScreen(0, 1, "bookName");
 
 bool split(char *str, char *buff)
 {
   String s;
-  LinkedList<int> linkedList;
 
   string input = string(str);
   int first = 0;
@@ -48,20 +45,31 @@ bool split(char *str, char *buff)
   return false;
 }
 
-/*
-void setup() {
+void setup()
+{
   M5.begin();
-  M5.Lcd.println("start");
-  std::string line;
-  fp = SD.open("/degu.csv");
-  auto st = fp.readStringUntil('\n');
-  // M5Stackの初期化
-  M5.Lcd.println(fp.name());
-  bool isNext = true;
-  M5.Lcd.print(st);
-  fp.read();
+  M5.lcd.begin();
+  Llcd.init(); // LCD初期化
+  readingScreen.initScreen();
 }
-*/
+
+void loop()
+{
+  M5.update();
+
+  if (M5.BtnA.wasPressed())
+  {
+    M5.Axp.SetLcdVoltage(2500);
+    M5.Axp.SetDCDC3(false);
+    M5.Axp.SetLed(0);
+    M5.Lcd.sleep();
+
+    delay(1000);
+
+    M5.Axp.SetDCDC3(true);
+    M5.lcd.wakeup();
+  }
+}
 
 File root;
 /*
@@ -70,7 +78,7 @@ void setup()
   M5.begin();
   pinMode(10, OUTPUT);
   Firebase.begin(&config, &auth);
-  
+
   auto wifiStat = WiFi.begin("aterm-b9044b-a", "1ca1af621dff7");
   Serial.printf("%d",(int)wifiStat);
   SD.begin();
@@ -94,7 +102,7 @@ void setup()
   {
     // M5.Lcd.print(fp.readString());
     M5.Lcd.println(fp.readStringUntil('\n'));
-    M5.lcd.write(99);
+    M5.Llcd.write(99);
   }
   M5.Lcd.println("done!");
 }
