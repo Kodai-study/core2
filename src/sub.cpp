@@ -12,13 +12,13 @@ LGFX_Sprite canvas(&Llcd);     // スプライトを使う場合はLGFX_Sprite�
 #define WIFI_SSID "aterm-b9044b-g"
 #define WIFI_PASSWORD "1ca1af621dff7"
 
-
 void event_btn_x(Event &e)
 {
     M5.Axp.SetLDOEnable(3, true);
     delay(500);
     M5.Axp.SetLDOEnable(3, false);
     M5.Buttons.draw();
+    e.objName
 }
 class SampleTest
 {
@@ -32,7 +32,6 @@ public:
     ButtonColors cl_off = {DARKCYAN, WHITE, WHITE}; // 指を離した時の色 (背景, 文字列, ボーダー)
     // ボタン定義名( X軸, Y軸, 横幅, 高さ, 回転, ボタンのラベル, 指を離した時の色指定, タッチした時の色指定）
     Button btn_x;
-
     Button btn_y;
 
     bool buttonProcess(String buttonName, bool status)
@@ -40,76 +39,15 @@ public:
         Llcd.fillScreen(BLACK);
         if (Firebase.setBool(firebaseData, "/" + buttonName + "/", status))
         {
-            // Success
-            Llcd.setCursor(0, 0);
-            Llcd.print("Set bool data success やった!\n"); // 表示内容をcanvasに準備
-
-            Llcd.println("液晶表示 明朝体"); // 表示内容をcanvasに準備
-            Llcd.println("液晶表示 明朝体");
-            FirebaseData data;
-            if (!Firebase.get(data, "/readDatas/0"))
-                return false;
-            Llcd.setCursor(0, 0);
-            Llcd.fillScreen(BLACK);
+            tm *currentTime;
+            getJson();
             delay(2000);
-            Llcd.println(data.stringData());
-            Llcd.println(data.jsonString());
-
+            getJsonArray();
             delay(2000);
-            Llcd.setCursor(0, 0);
-            Llcd.fillScreen(BLACK);
-            Firebase.getArray(data, "/readDatas/0");
-            Llcd.print(data.dataType());
-
-            FirebaseJsonArray array;
-            array = data.jsonArray();
-            Llcd.println(array.size());
-            FirebaseJsonData jsonData;
-            if (!array.get(jsonData, 1))
-            {
-                Llcd.println("配列取得失敗");
-            }
-            FirebaseJson json;
-            Llcd.println(jsonData.stringValue);
-            jsonData.get(json);
-            json.get(jsonData, "dateTime");
-            Llcd.println(jsonData.stringValue);
-            Firebase.setTimestamp(data, "lastUpdateTime");
-            const time_t unixTime = data.intData();
-            auto currentTime = localtime(&unixTime);
-            RTC_TimeTypeDef tr = {0, 0, 0};
-            RTC_DateTypeDef dt = {0, 0, 0};
-            tr.Hours = (uint8_t)(currentTime->tm_hour);
-            tr.Minutes = (uint8_t)(currentTime->tm_min);
-            tr.Seconds = (uint8_t)(currentTime->tm_sec);
-            dt.Year = (uint16_t)(currentTime->tm_year + 1900);
-            dt.Month = (uint8_t)(currentTime->tm_mon + 1);
-            dt.Date = (uint8_t)(currentTime->tm_mday);
-            M5.Rtc.SetTime(&tr);
-            M5.Rtc.SetDate(&dt);
-            M5.Rtc.begin();
+            currentTime = setRTC();
             delay(2000);
-            Llcd.setCursor(0, 0);
-            Llcd.fillScreen(BLACK);
-            M5.Rtc.GetTime(&tr);
-            M5.Rtc.GetDate(&dt); // Get the date of the real-time clock.
-            M5.Lcd.setCursor(0, 15);
-            Llcd.printf("Data: %04d-%02d-%02d\n", dt.Year, dt.Month, dt.Date); // Output the date of the current real-time clock on the screen.
-            Llcd.printf("Week: %d\n", dt.WeekDay);
-
-            Llcd.printf("Time: %02d : %02d : %02d\n", tr.Hours, tr.Minutes, tr.Seconds);
-            delay(2000);
-            Llcd.setCursor(0, 0);
-            Llcd.fillScreen(BLACK);
-            M5.Rtc.GetTime(&tr);
-            M5.Rtc.GetDate(&dt); // Get the date of the real-time clock.
-            M5.Lcd.setCursor(0, 15);
-            Llcd.printf("Data: %04d-%02d-%02d\n", dt.Year, dt.Month, dt.Date); // Output the date of the current real-time clock on the screen.
-            Llcd.printf("Week: %d\n", dt.WeekDay);
-
-            Llcd.printf("Time: %02d : %02d : %02d\n", tr.Hours, tr.Minutes, tr.Seconds);
+            printCurrentTime();
             Llcd.print(currentTime);
-            Llcd.print(unixTime);
         }
         else
         {
@@ -126,7 +64,6 @@ public:
     {
         M5.begin();
         Serial.begin(115200);
-        WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
         Llcd.init(); // LCD初期化
         int _cursorX = 0;
@@ -134,23 +71,6 @@ public:
         Llcd.setTextColor(WHITE);
         Llcd.setCursor(0, 0);
         // WiFiに接続
-        Llcd.print("Connecting to Wi-Fi");
-        while (WiFi.status() != WL_CONNECTED)
-        {
-            Serial.print(".");
-            Llcd.setCursor(0 + 5 * _cursorX, 30);
-            Llcd.print(".");
-            delay(300);
-            _cursorX++;
-            if (_cursorX > 320)
-            {
-                _cursorX = 0;
-            }
-        }
-        Llcd.fillScreen(BLACK);
-        Llcd.setCursor(0, 0);
-        Llcd.print("Connected with IP:");
-        Llcd.print(WiFi.localIP());
         Llcd.setTextFont(&fonts::lgfxJapanMinchoP_32); // 明朝体（8,12,16,20,24,28,32,36,40）
         Llcd.println("液晶表示 明朝体");               // 表示内容をcanvasに準備
         Llcd.println("M5のメソッドで日本語表示");
@@ -184,5 +104,94 @@ public:
             statusC = buttonProcess("BtnC", statusC);
         }
     }
-};
 
+    void getJson()
+    {
+        FirebaseData data;
+        if (!Firebase.get(data, "/readDatas/0"))
+            return;
+        Llcd.setCursor(0, 0);
+        Llcd.fillScreen(BLACK);
+        Llcd.println(data.jsonString());
+        data.jsonString();
+    }
+
+    void getJsonArray()
+    {
+        FirebaseData data;
+        FirebaseJsonArray array;
+        FirebaseJson json;
+        Llcd.setCursor(0, 0);
+        Llcd.fillScreen(BLACK);
+        Firebase.getArray(data, "/readDatas/0");
+
+        array = data.jsonArray();
+        Llcd.println(array.size());
+        FirebaseJsonData jsonData;
+        if (!array.get(jsonData, 1))
+        {
+            Llcd.println("配列取得失敗");
+            return;
+        }
+        Llcd.println(jsonData.stringValue);
+        jsonData.get(json);
+        json.get(jsonData, "dateTime");
+        Llcd.println(jsonData.stringValue);
+    }
+
+    tm *setRTC()
+    {
+        FirebaseData data;
+        Firebase.setTimestamp(data, "lastUpdateTime");
+        const time_t unixTime = data.intData() + (1000 * 3600 * 9);
+        auto currentTime = localtime(&unixTime);
+        RTC_TimeTypeDef tr = {0, 0, 0};
+        RTC_DateTypeDef dt = {0, 0, 0};
+        tr.Hours = (uint8_t)(currentTime->tm_hour);
+        tr.Minutes = (uint8_t)(currentTime->tm_min);
+        tr.Seconds = (uint8_t)(currentTime->tm_sec);
+        dt.Year = (uint16_t)(currentTime->tm_year + 1900);
+        dt.Month = (uint8_t)(currentTime->tm_mon + 1);
+        dt.Date = (uint8_t)(currentTime->tm_mday);
+        M5.Rtc.SetTime(&tr);
+        M5.Rtc.SetDate(&dt);
+        M5.Rtc.begin();
+        return currentTime;
+    }
+
+    void printCurrentTime()
+    {
+        RTC_TimeTypeDef tr = {0, 0, 0};
+        RTC_DateTypeDef dt = {0, 0, 0};
+        Llcd.setCursor(0, 0);
+        Llcd.fillScreen(BLACK);
+        M5.Rtc.GetTime(&tr);
+        M5.Rtc.GetDate(&dt); // Get the date of the real-time clock.
+        M5.Lcd.setCursor(0, 15);
+        Llcd.printf("Data: %04d-%02d-%02d\n", dt.Year, dt.Month, dt.Date); // Output the date of the current real-time clock on the screen.
+        Llcd.printf("Week: %d\n", dt.WeekDay);
+        Llcd.printf("Time: %02d : %02d : %02d\n", tr.Hours, tr.Minutes, tr.Seconds);
+    }
+
+    bool connectingWifi()
+    {
+        WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+        Llcd.print("Connecting to Wi-Fi");
+        while (WiFi.status() != WL_CONNECTED)
+        {
+            Serial.print(".");
+            Llcd.setCursor(0 + 5 * _cursorX, 30);
+            Llcd.print(".");
+            delay(300);
+            _cursorX++;
+            if (_cursorX > 320)
+            {
+                _cursorX = 0;
+            }
+        }
+        Llcd.fillScreen(BLACK);
+        Llcd.setCursor(0, 0);
+        Llcd.print("Connected with IP:");
+        Llcd.print(WiFi.localIP());
+    }
+};
