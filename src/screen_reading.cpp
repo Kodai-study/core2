@@ -29,3 +29,8 @@ ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
 {
     this->bookName = bookName;
 }
+
+void ReadingScreen::deleteScreen()
+{
+    this->btn_x.erase(BLACK);
+}
