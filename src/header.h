@@ -6,9 +6,15 @@
 #include <LovyanGFX.hpp>       // lovyanGFXのヘッダを準備
 #include <LGFX_AUTODETECT.hpp> // クラス"LGFX"を準備
 extern LGFX Llcd;              // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
+#define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
+#define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
+// #define WIFI_SSID "aterm-b9044b-g"
+// #define WIFI_PASSWORD "1ca1af621dff7"
+#define WIFI_SSID "Buffalo-G-9AD0"
+#define WIFI_PASSWORD "icbdi657e6syp"
 
 void wakeupLcd();
-
 void sleepLcd();
-
 void togglePowerLcd();
+tm *setRTC();
+bool connectingWifi();

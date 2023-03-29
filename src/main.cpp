@@ -16,8 +16,14 @@ void setup()
   M5.begin();
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
+  if (connectingWifi())
+  {
+    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+    Firebase.reconnectWiFi(true);
+  }
   readingScreen.initScreen();
   settingTimeScreen.deleteScreen();
+  setRTC();
 }
 
 void loop()

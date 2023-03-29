@@ -1,6 +1,6 @@
 #include "header.h"
-
-class SettingTimeIntervalScreen
+#include "ScreenBase.h"
+class SettingTimeIntervalScreen : public M5ScreenBase
 {
 private:
    ButtonColors cl_on = {CYAN, WHITE, WHITE};      // タップした時の色 (背景, 文字列, ボーダー)
@@ -10,9 +10,9 @@ private:
    Button btn_plus1;
    Button btn_minus1;
    Button btn_minus5;
-
 public:
-   void initScreen();
    SettingTimeIntervalScreen();
-   void deleteScreen();
+    void initScreen() override;
+    void deleteScreen() override;
+    void scereenUpdate() override;
 };

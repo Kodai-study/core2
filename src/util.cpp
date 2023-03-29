@@ -112,3 +112,53 @@ void togglePowerLcd()
         sleepLcd();
     }
 }
+
+tm *setRTC()
+{
+    FirebaseData data;
+    Firebase.setTimestamp(data, "lastUpdateTime");
+    const time_t unixTime = data.intData() + (1000 * 3600 * 9);
+    auto currentTime = localtime(&unixTime);
+    RTC_TimeTypeDef tr = {0, 0, 0};
+    RTC_DateTypeDef dt = {0, 0, 0};
+    tr.Hours = (uint8_t)(currentTime->tm_hour);
+    tr.Minutes = (uint8_t)(currentTime->tm_min);
+    tr.Seconds = (uint8_t)(currentTime->tm_sec);
+    dt.Year = (uint16_t)(currentTime->tm_year + 1900);
+    dt.Month = (uint8_t)(currentTime->tm_mon + 1);
+    dt.Date = (uint8_t)(currentTime->tm_mday);
+    M5.Rtc.SetTime(&tr);
+    M5.Rtc.SetDate(&dt);
+    M5.Rtc.begin();
+    return currentTime;
+}
+
+bool connectingWifi()
+{
+    Llcd.setCursor(0, 0);
+    int _cursorX = 0;
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Llcd.print("Connecting to Wi-Fi");
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.print(".");
+        Llcd.setCursor(0 + 5 * _cursorX, 30);
+        Llcd.print(".");
+        delay(300);
+        _cursorX++;
+        if (_cursorX > 20)
+        {
+            _cursorX = 0;
+            Llcd.println("\nConnectionFailed");
+            delay(1000);
+            return false;
+        }
+    }
+    Llcd.fillScreen(BLACK);
+    Llcd.setCursor(0, 0);
+    Llcd.print("Connected with IP:");
+    Llcd.print(WiFi.localIP());
+    Llcd.println("\nConnected!!");
+    delay(1000);
+    return true;
+}

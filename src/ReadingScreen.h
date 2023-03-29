@@ -1,6 +1,6 @@
 #include "header.h"
-
-class ReadingScreen
+#include "ScreenBase.h"
+class ReadingScreen : public M5ScreenBase
 {
 private:
    const int OTHERS = 0;
@@ -18,8 +18,8 @@ private:
    const String DATA_PAGEFLIP_PATH = String("readDatas/");
 
 public:
-   void initScreen();
+   void initScreen() override;
    ReadingScreen(int index, int currentPage, String bookName);
-   void deleteScreen();
-   void scereenUpdate();
+   void deleteScreen() override;
+   void scereenUpdate() override;
 };
