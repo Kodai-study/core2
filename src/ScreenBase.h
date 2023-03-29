@@ -1,12 +1,12 @@
 #include "header.h"
 
-#ifndef HEADER
-#define HEADER
-class M5ScreenBase{
+#ifndef SCREEN_BASE
+#define SCREEN_BASE
+class ScreenBase{
     public:
-   virtual void initScreen() = 0;
-   virtual void deleteScreen() = 0;
-   virtual void scereenUpdate() = 0;
+   virtual void initScreen(){};
+   virtual void deleteScreen(){};
+   virtual void scereenUpdate(){};
 };
 
 #endif

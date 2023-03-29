@@ -1,21 +1,27 @@
 #include "header.h"
 #include "ReadingScreen.h"
 #include "SettingTimeIntervalScreen.h"
-#define PROGRESS_MAX 100
-using namespace std;
+#include "ScreenBase.h"
+
+LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
+LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
-ReadingScreen readingScreen(0, 1, "bookName");
-bool lcdOn = true;
-SettingTimeIntervalScreen settingTimeScreen;
+static ReadingScreen readingScreen(0, 1, "bookName");
+static SettingTimeIntervalScreen settingTimeScreen;
+static ScreenBase screens[2];
+static int currentScreenNumber = 0;
+
 void setup()
 {
   Serial.begin(9600);
   M5.begin();
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
+  screens[0] = readingScreen;
+  screens[1] = settingTimeScreen;
   if (connectingWifi())
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);

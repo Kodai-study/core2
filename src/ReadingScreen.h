@@ -1,6 +1,6 @@
 #include "header.h"
 #include "ScreenBase.h"
-class ReadingScreen : public M5ScreenBase
+class ReadingScreen : public ScreenBase
 {
 private:
    const int OTHERS = 0;

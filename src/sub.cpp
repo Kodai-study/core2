@@ -1,16 +1,4 @@
-#include <Arduino.h>
-#include <FirebaseESP32.h>
-#include <M5Core2.h>
-#define LGFX_AUTODETECT        // 自動認識(D-duino-32 XS, PyBadgeはパネルID読取れないため自動認識の対象から外れているそうです)
-#define LGFX_USE_V1            // v1.0.0を有効に(v0からの移行期間の特別措置とのこと。書かない場合は旧v0系で動作)
-#include <LovyanGFX.hpp>       // lovyanGFXのヘッダを準備
-#include <LGFX_AUTODETECT.hpp> // クラス"LGFX"を準備
-LGFX Llcd;                     // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
-LGFX_Sprite canvas(&Llcd);     // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
-#define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
-#define WIFI_SSID "aterm-b9044b-g"
-#define WIFI_PASSWORD "1ca1af621dff7"
+#include "header.h"
 
 void event_btn_x(Event &e)
 {
