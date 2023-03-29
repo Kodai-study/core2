@@ -17,18 +17,19 @@ void pluc2(Event &e)
    Llcd.setCursor(0, 0);
    Llcd.println("PUSHED");
 }
-void SettingTimeIntervalScreen::initScreen() 
+void SettingTimeIntervalScreen::initScreen()
 {
+   ScreenBase::initScreen();
    Llcd.fillScreen(BLACK);
-   this->btn_plus5 = Button(250, 0, 70, 40, true, "+5", this->cl_off, this->cl_on);
-   this->btn_plus1 = Button(250, 55, 70, 40, true, "+1", this->cl_off, this->cl_on);
-   this->btn_minus1 = Button(250, 110, 70, 40, true, "-1", this->cl_off, this->cl_on);
-   this->btn_minus5 = Button(250, 165, 70, 40, true, "-5", this->cl_off, this->cl_on);
+   this->btn_plus5 = Button(250, 0, 70, 40, true, "+5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_plus1 = Button(250, 55, 70, 40, true, "+1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_minus1 = Button(250, 110, 70, 40, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_minus5 = Button(250, 165, 70, 40, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    btn_plus5.addHandler(pluc2, E_RELEASE);
    btn_plus5.draw();
 }
 
-void SettingTimeIntervalScreen::deleteScreen() 
+void SettingTimeIntervalScreen::deleteScreen()
 {
    this->btn_plus5.erase(BLACK);
    this->btn_plus5.set(0, 0, 0, 0);
@@ -40,6 +41,6 @@ void SettingTimeIntervalScreen::deleteScreen()
    this->btn_minus5.set(0, 0, 0, 0);
 }
 
-void SettingTimeIntervalScreen::scereenUpdate() 
+void SettingTimeIntervalScreen::scereenUpdate()
 {
 }

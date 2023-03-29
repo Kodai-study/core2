@@ -9,9 +9,11 @@ void push(Event &e)
 
 void ReadingScreen::initScreen()
 {
+    ScreenBase::initScreen();
     Llcd.fillScreen(BLACK);
     Llcd.setCursor(16, 38);
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_24);
+    Llcd.print(isWifiConnected);
     Llcd.printf("読書中_%02d分", this->currentPage);
     Llcd.setCursor(20, 209);
     Llcd.println("戻る    前ページ  次ページ");
@@ -19,9 +21,10 @@ void ReadingScreen::initScreen()
     Llcd.setCursor(64, 96);
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_40);
     Llcd.printf("ページ:%03d", this->currentPage);
-    btn_x = Button(220, 10, 100, 60, true, "Start", this->cl_off, this->cl_on);
+    btn_x = Button(220, 10, 100, 60, true, "Start", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
     btn_x.addHandler(push, E_RELEASE);
     btn_x.draw();
+    Llcd.setCursor(0, 0);
 }
 
 ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
@@ -42,7 +45,7 @@ void ReadingScreen::scereenUpdate()
     {
         FirebaseData writeData;
         FirebaseJson pageFlipRecord;
-        char dateTimeStringBuffer[20];
+        char dateTimeStringBuffer[30];
         RTC_DateTypeDef date;
         RTC_TimeTypeDef time;
         M5.Rtc.GetDate(&date);
@@ -52,7 +55,13 @@ void ReadingScreen::scereenUpdate()
         pageFlipRecord.set("dateTime", dateTimeStringBuffer);
         pageFlipRecord.set("page", this->currentPage);
         pageFlipRecord.set("mode", this->currentMode);
-        Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
-        Serial.print(writeData.jsonString());
+        if (isWifiConnected){
+            Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
+            Llcd.println("FirebaseWrite");
+        }
+
+        String JSONString;
+        if (pageFlipRecord.toString(JSONString, true))
+            Llcd.println(JSONString);
     }
 }

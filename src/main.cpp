@@ -11,30 +11,31 @@ FirebaseConfig config;
 
 static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
-static ScreenBase screens[2];
+static ScreenBase *screens[2];
 static int currentScreenNumber = 0;
 
 void setup()
 {
-  Serial.begin(9600);
   M5.begin();
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
-  screens[0] = readingScreen;
-  screens[1] = settingTimeScreen;
+  screens[0] = &readingScreen;
+  screens[1] = &settingTimeScreen;
   if (connectingWifi())
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
     Firebase.reconnectWiFi(true);
+    setRTC();
   }
   readingScreen.initScreen();
   settingTimeScreen.deleteScreen();
-  setRTC();
+  Serial.begin(9600);
 }
 
 void loop()
 {
   M5.update();
+  screens[currentScreenNumber]->scereenUpdate();
   if (M5.BtnA.wasPressed())
   {
     togglePowerLcd();

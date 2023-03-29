@@ -9,8 +9,6 @@ private:
    int index;
    int currentPage;
    String bookName;
-   const ButtonColors cl_on = {CYAN, WHITE, WHITE};      // タップした時の色 (背景, 文字列, ボーダー)
-   const ButtonColors cl_off = {DARKCYAN, WHITE, WHITE}; //
    Button btn_x;
    bool isConnecitngWifi = false;
    int currentMode = OTHERS;
