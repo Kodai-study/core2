@@ -34,3 +34,23 @@ void ReadingScreen::deleteScreen()
 {
     this->btn_x.erase(BLACK);
 }
+
+void ReadingScreen::scereenUpdate()
+{
+    if (M5.BtnC.wasPressed())
+    {
+        FirebaseData writeData;
+        FirebaseJson pageFlipRecord;
+        char dateTimeStringBuffer[20];
+        RTC_DateTypeDef date;
+        RTC_TimeTypeDef time;
+        M5.Rtc.GetDate(&date);
+        M5.Rtc.GetTime(&time);
+        sprintf(dateTimeStringBuffer, "%04d-02d-02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
+                time.Hours, time.Minutes, time.Seconds);
+        pageFlipRecord.set("dateTime", dateTimeStringBuffer);
+        pageFlipRecord.set("page", this->currentPage);
+        pageFlipRecord.set("mode", this->currentMode);
+        Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
+    }
+}

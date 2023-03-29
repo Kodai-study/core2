@@ -1,4 +1,5 @@
 #include "header.h"
+#include <LinkedList.h>
 void printDirectory(File dir, int numTabs)
 {
     while (true)
@@ -34,8 +35,7 @@ bool split(char *str, char *buff)
     int last = input.indexOf(',');
     while (first < input.length())
     {
-       
-        String subStr =  input.substring(first, last - first);
+        String subStr = input.substring(first, last - first);
         buff[i++] = atoi(subStr.c_str());
         first = last + 1;
         last = input.indexOf(',', first);
@@ -47,32 +47,37 @@ bool split(char *str, char *buff)
     return false;
 }
 
-void sdCheck()
+bool sdCheck(const char *path, LinkedList<String> list)
 {
-    auto wifiStat = WiFi.begin("aterm-b9044b-a", "1ca1af621dff7");
-    Serial.printf("%d", (int)wifiStat);
-    SD.begin();
-    File root = SD.open("/");
-    printDirectory(root, 0);
-    delay(2000);
-    root.close();
-    File fp = SD.open("/test.csv");
+    File fp = SD.open(path, "rw", false);
     if (!fp)
     {
         Llcd.println("NO SD!!");
-        return;
+        return false;
     }
-    delay(2000);
-    // Llcd.println(fp.read());
-    fp.read();
-    fp.read();
-    Llcd.print((char)fp.read());
-    delay(2000);
     while (fp.available())
     {
-        // Llcd.print(fp.readString());
-        Llcd.println(fp.readStringUntil('\n'));
-        Llcd.write(99);
+        list.add(fp.readStringUntil('\n'));
     }
-    Llcd.println("done!");
+    return true;
+}
+
+String getCSVColum(String lineData, int index)
+{
+    static const char kugiri = ',';
+    int firstIndex = 0;
+    int last = lineData.indexOf(kugiri);
+    if (index == 0)
+    {
+        return lineData.substring(last);
+    }
+    else
+    {
+        for (int i = 0; i < index; i++)
+        {
+            firstIndex = last + 1;
+            last = lineData.indexOf(kugiri);
+        }
+        return lineData.substring(firstIndex, last);
+    }
 }

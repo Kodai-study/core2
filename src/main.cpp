@@ -4,7 +4,6 @@
 #define PROGRESS_MAX 100
 using namespace std;
 FirebaseData fbdo;
-
 FirebaseAuth auth;
 FirebaseConfig config;
 
@@ -24,7 +23,10 @@ void setup()
 void loop()
 {
   M5.update();
+}
 
+void test_screenTransition()
+{
   if (M5.BtnA.wasPressed())
   {
     lcdOn = !lcdOn;
