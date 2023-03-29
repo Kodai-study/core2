@@ -23,26 +23,17 @@ void setup()
 void loop()
 {
   M5.update();
+  if (M5.BtnA.wasPressed())
+  {
+    togglePowerLcd();
+  }
 }
 
 void test_screenTransition()
 {
   if (M5.BtnA.wasPressed())
   {
-    lcdOn = !lcdOn;
-
-    if (lcdOn)
-    {
-      M5.Axp.SetLcdVoltage(3000);
-      M5.Axp.SetDCDC3(true);
-      M5.lcd.wakeup();
-    }
-    else
-    {
-      M5.Axp.SetDCDC3(false);
-      M5.Axp.SetLed(0);
-      M5.Lcd.sleep();
-    }
+    togglePowerLcd();
   }
 
   if (M5.BtnB.wasPressed())

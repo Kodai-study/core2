@@ -33,6 +33,7 @@ ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
 void ReadingScreen::deleteScreen()
 {
     this->btn_x.erase(BLACK);
+    this->btn_x.set(0, 0, 0, 0);
 }
 
 void ReadingScreen::scereenUpdate()
@@ -52,5 +53,6 @@ void ReadingScreen::scereenUpdate()
         pageFlipRecord.set("page", this->currentPage);
         pageFlipRecord.set("mode", this->currentMode);
         Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
+        Serial.print(writeData.jsonString());
     }
 }

@@ -81,3 +81,34 @@ String getCSVColum(String lineData, int index)
         return lineData.substring(firstIndex, last);
     }
 }
+
+bool isLcdOn = true;
+
+void wakeupLcd()
+{
+    isLcdOn = true;
+    M5.Axp.SetLcdVoltage(3000);
+    M5.Axp.SetDCDC3(true);
+    M5.lcd.wakeup();
+}
+
+void sleepLcd()
+{
+    isLcdOn = false;
+    M5.Axp.SetDCDC3(false);
+    M5.Axp.SetLed(0);
+    M5.Lcd.sleep();
+}
+
+void togglePowerLcd()
+{
+    isLcdOn = !isLcdOn;
+    if (isLcdOn)
+    {
+        wakeupLcd();
+    }
+    else
+    {
+        sleepLcd();
+    }
+}

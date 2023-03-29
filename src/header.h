@@ -6,3 +6,9 @@
 #include <LovyanGFX.hpp>       // lovyanGFXのヘッダを準備
 #include <LGFX_AUTODETECT.hpp> // クラス"LGFX"を準備
 extern LGFX Llcd;              // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
+
+void wakeupLcd();
+
+void sleepLcd();
+
+void togglePowerLcd();
