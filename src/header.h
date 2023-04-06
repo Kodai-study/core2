@@ -1,3 +1,11 @@
+/**
+ * @file header.h
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief プロジェクト内で共通して使うライブラリのインクルードや定数、関数の宣言を行うヘッダファイル
+ * @date 2023-04-06
+ * 
+ */
+
 #ifndef HEADER
 #define HEADER
 

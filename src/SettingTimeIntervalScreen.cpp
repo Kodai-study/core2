@@ -1,3 +1,10 @@
+/**
+ * @file SettingTimeIntervalScreen.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief タイムインターバルの設定画面の制御を行うクラス、SettingTimeIntervalScreenの実装を記述するファイル
+ * @date 2023-04-06
+ * 
+ */
 #include "header.h"
 #include "SettingTimeIntervalScreen.h"
 

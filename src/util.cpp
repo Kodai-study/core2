@@ -1,3 +1,10 @@
+/**
+ * @file util.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief プロジェクト内で共通して使う関数の実装
+ * @date 2023-04-06
+ * 
+ */
 #include "header.h"
 #include <LinkedList.h>
 
