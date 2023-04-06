@@ -18,6 +18,7 @@
 #define WIFI_SSID "Buffalo-G-9AD0"
 #define WIFI_PASSWORD "icbdi657e6syp"
 
+
 #include <Arduino.h>
 #include <FirebaseESP32.h>
 #include <M5Core2.h>

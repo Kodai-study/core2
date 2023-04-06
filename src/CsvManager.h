@@ -3,12 +3,11 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief CsvManagerクラスの宣言
  * @date 2023-04-06
- * 
+ *
  */
 
 #include "header.h"
 
-// include guard
 #ifndef CSV_MANAGER_H
 #define CSV_MANAGER_H
 
@@ -18,31 +17,104 @@
  */
 class CsvManager
 {
-    // ファイル名を受け取って、ファイルアクセサを生成するコンストラクタ。
-    // ファイルへのアクセスは、SD.open()で行う。
-    // このとき、ファイルが存在しない場合は、ファイルを作成する。
-    // ファイルが存在する場合は、ファイルの末尾に追記する。
+private:
+    // アクセスするファイル名をパラメータに持ち、コンストラクタで受け取った値に初期化する
+    String m_fileName;
+    File m_file;
 
+    // ファイルが、読み取りモードで開かれているか、書き込みモードで開かれているかを判定するフラグ
+    bool isWriteMode;
 
-    /**
-     * @brief Construct a new Csv Manager object
-     * 
-     * @param fileName 
-     */
-    CsvManager(String fileName) : m_fileName(fileName)
+public:
+    // 変数2つを初期化するコンストラクタ
+    CsvManager(String fileName, openWriteMode = false)
     {
-        File m_file = SD.open(m_fileName, FILE_WRITE, true);
+        m_fileName = fileName;
+        isWriteMode = openWriteMode;
     }
 
     // ファイルアクセサを開放するデストラクタ。
     ~CsvManager()
     {
-        m_file.close();
+        closeFile();
     }
 
+    // 1行分の文字列を受け取って、CSVファイルに書き込む。
+    // isWriteMode = falseの時は、書き込みモードで開きなおす
     void writeLine(String line)
     {
+        if !(openFile())
+            return;
+
+        if (!isWriteMode)
+        {
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_WRITE, true);
+            isWriteMode = true;
+        }
         m_file.println(line);
+    }
+
+    // 1行分の文字列を読み込んで返す関数。
+    // 現在書き込みモードで開いている場合は、読み込みモードで開きなおす。
+    //  isWriteMode = trueの時は、読み込みモードで開きなおす
+    String readLine()
+    {
+        if !(openFile())
+            return "";
+
+        if (isWriteMode)
+        {
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_READ, true);
+            isWriteMode = false;
+        }
+        return m_file.readStringUntil('\n');
+    }
+
+    // ファイルを1行ずつ読み取って、LinkedListに格納して返す関数。
+    // 1行目は無視する。
+    // 現在書き込みモードで開いている場合は、読み込みモードで開きなおす。
+    LinkedList<String> readAllLines()
+    {
+        LinkedList<String> list;
+        if !(openFile())
+            return list;
+
+        if (isWriteMode)
+        {
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_READ, true);
+            isWriteMode = false;
+        }
+        while (m_file.available())
+        {
+            list.add(m_file.readStringUntil('\n'));
+        }
+        return list;
+    }
+
+    // 指定した行数を読み込んで、LinkedListに格納して返す関数。
+    // 現在書き込みモードで開いている場合は、読み込みモードで開きなおす。
+    // 指定した行数がファイルの行数より多い場合は、全ての行を返す。
+    LinkedList<String> readLines(int lineCount)
+    {
+        LinkedList<String> list;
+        if !(openFile())
+            return list;
+
+        if (isWriteMode)
+        {
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_READ, true);
+            isWriteMode = false;
+        }
+        m_file.readStringUntil('\n');
+        for (int i = 0; i < lineCount; i++)
+        {
+            list.add(m_file.readStringUntil('\n'));
+        }
+        return list;
     }
 
     // CSVファイルから読み込む。
@@ -61,6 +133,40 @@ class CsvManager
             m_file.close();
             m_file = SD.open(m_fileName, FILE_WRITE, true);
         }
+    }
+
+    // ファイルが閉じていたら開く関数。もともと開いていた場合と、開くことに成功したときはtrueを返す。
+    bool openFile()
+    {
+        if (!m_file)
+        {
+            m_file = SD.open(m_fileName, isWriteMode ? FILE_WRITE : FILE_READ, true);
+            if (!m_file)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // ファイルを閉じる関数。もともと閉じていた場合と、閉じることに成功したときはtrueを返す。
+    bool closeFile()
+    {
+        if (m_file)
+        {
+            m_file.close();
+            if (m_file)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // ファイルが開いているかどうかを返す関数。
+    bool isFileOpen()
+    {
+        return m_file;
     }
 };
 

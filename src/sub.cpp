@@ -1,9 +1,9 @@
 /**
  * @file sub.cpp
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
- * @brief 機能のテストを行う処理を記述するファイル。 
+ * @brief 機能のテストを行う処理を記述するファイル。
  * @date 2023-04-06
- * 
+ *
  * 機能はSampleTestクラスにまとめている。
  */
 
@@ -18,8 +18,8 @@ void event_btn_x(Event &e)
 }
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 class SampleTest
 {
