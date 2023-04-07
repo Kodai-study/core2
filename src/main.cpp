@@ -14,6 +14,10 @@ static SettingTimeIntervalScreen settingTimeScreen;
 static ScreenBase *screens[2];
 static int currentScreenNumber = 0;
 
+/**
+ * M5Stackの初期化関数
+ * システムによって自動的に呼び出される
+ */
 void setup()
 {
   M5.begin();
@@ -32,6 +36,10 @@ void setup()
   Serial.begin(9600);
 }
 
+/**
+ * M5Stackのメインループ関数
+ * システムによって自動的に呼び出される
+ */
 void loop()
 {
   M5.update();
@@ -42,6 +50,10 @@ void loop()
   }
 }
 
+/**
+ * 画面遷移のテストの時に、メインループで呼び出す関数
+ * ボタンによって画面遷移を行う
+ */
 void test_screenTransition()
 {
   if (M5.BtnA.wasPressed())
