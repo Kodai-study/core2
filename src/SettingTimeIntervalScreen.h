@@ -25,8 +25,19 @@ private:
    // 要素は4つで、次のルールで値が決まる。
    // x座標は、常に250  y座標は、0から始まり、55ずつ増える
    const Point btnPos[4] = {Point(250, 0), Point(250, 55), Point(250, 110), Point(250, 165)};
-   
+
    const Point btnSize = Point(70, 40);
+
+   // カーソルの色を定数で指定する
+   const int cursorColor = RED;
+
+   // カーソルを描写する
+   void drawCursor(int x, int y)
+   {
+      Llcd.fillRect(x, y, 10, 50, cursorColor);
+   }
+
+   static void buttonPushed(Event &e);
 
 public:
    SettingTimeIntervalScreen();

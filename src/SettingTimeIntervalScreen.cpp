@@ -33,6 +33,7 @@ void SettingTimeIntervalScreen::initScreen()
    this->btn_minus1 = Button(btnPos[2].x, btnPos[2].y, btnSize.x, btnSize.y, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    this->btn_minus5 = Button(btnPos[3].x, btnPos[3].y, btnSize.x, btnSize.y, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    btn_plus5.addHandler(pluc2, E_RELEASE);
+   btn_plus1.addHandler(this->buttonPushed, E_RELEASE);
    btn_plus5.draw();
 }
 

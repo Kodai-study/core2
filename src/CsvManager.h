@@ -78,7 +78,7 @@ public:
     LinkedList<String> readAllLines()
     {
         LinkedList<String> list;
-        if !(openFile())
+        if (!openFile())
             return list;
 
         if (isWriteMode)
