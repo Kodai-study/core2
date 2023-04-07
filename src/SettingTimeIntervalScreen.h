@@ -37,8 +37,6 @@ private:
       Llcd.fillRect(x, y, 10, 50, cursorColor);
    }
 
-   static void buttonPushed(Event &e);
-
 public:
    SettingTimeIntervalScreen();
    void initScreen() override;

@@ -31,4 +31,5 @@ void sleepLcd();
 void togglePowerLcd();
 tm *setRTC();
 bool connectingWifi();
+
 #endif

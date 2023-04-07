@@ -55,6 +55,7 @@ public:
         m_file.println(line);
     }
 
+
     // 1行分の文字列を読み込んで返す関数。
     // 現在書き込みモードで開いている場合は、読み込みモードで開きなおす。
     //  isWriteMode = trueの時は、読み込みモードで開きなおす
@@ -168,6 +169,35 @@ public:
     {
         return m_file;
     }
+
+            //CSVファイルの中身をリセットする関数
+        //もし、titleString の変数が空文字列でなかったら、1行目にそれを書き込んで他はすべて削除する
+        //空文字列であったら、ファイルの1行目だけを残して後は削除する
+        void resetFile(String titleString = "")
+        {
+            if (!openFile())
+                return;
+
+            if (!isWriteMode)
+            {
+                m_file.close();
+                m_file = SD.open(m_fileName, FILE_WRITE, true);
+                isWriteMode = true;
+            }
+            if (titleString != "")
+            {
+                m_file.println(titleString);
+            }
+            else
+            {
+                m_file.println(m_file.readStringUntil('\n'));
+            }
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_WRITE, true);
+            m_file.println();
+            m_file.close();
+        }
+
 };
 
 #endif
