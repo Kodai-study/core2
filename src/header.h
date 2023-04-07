@@ -1,3 +1,11 @@
+/**
+ * @file header.h
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief プロジェクト内で共通して使うライブラリのインクルードや定数、関数の宣言を行うヘッダファイル
+ * @date 2023-04-06
+ * 
+ */
+
 #ifndef HEADER
 #define HEADER
 
@@ -9,6 +17,7 @@
 // #define WIFI_PASSWORD "1ca1af621dff7"
 #define WIFI_SSID "Buffalo-G-9AD0"
 #define WIFI_PASSWORD "icbdi657e6syp"
+
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>

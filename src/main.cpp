@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief メイン関数、ループ関数など、主処理を実装するファイル
+ * @date 2023-04-06
+ * 
+ */
+
 #include "header.h"
 #include "ReadingScreen.h"
 #include "SettingTimeIntervalScreen.h"

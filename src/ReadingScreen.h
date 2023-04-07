@@ -1,3 +1,10 @@
+/**
+ * @file ReadingScreen.h
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief 読書中の画面の制御を行うReadingScreenクラスの宣言
+ * @date 2023-04-06
+ * 
+ */
 #include "header.h"
 #include "ScreenBase.h"
 class ReadingScreen : public ScreenBase

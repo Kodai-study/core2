@@ -1,3 +1,12 @@
+/**
+ * @file sub.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief 機能のテストを行う処理を記述するファイル。
+ * @date 2023-04-06
+ *
+ * 機能はSampleTestクラスにまとめている。
+ */
+
 #include "header.h"
 
 void event_btn_x(Event &e)
@@ -7,6 +16,11 @@ void event_btn_x(Event &e)
     M5.Axp.SetLDOEnable(3, false);
     M5.Buttons.draw();
 }
+
+/**
+ * @brief
+ *
+ */
 class SampleTest
 {
 public:

@@ -1,3 +1,11 @@
+/**
+ * @file ReadingScreen.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief 読書中画面の制御を行うクラス、ReadingScreenの実装を記述するファイル
+ * @date 2023-04-06
+ * 
+ */
+
 #include "header.h"
 #include "ReadingScreen.h"
 
@@ -55,7 +63,8 @@ void ReadingScreen::scereenUpdate()
         pageFlipRecord.set("dateTime", dateTimeStringBuffer);
         pageFlipRecord.set("page", this->currentPage);
         pageFlipRecord.set("mode", this->currentMode);
-        if (isWifiConnected){
+        if (isWifiConnected)
+        {
             Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
             Llcd.println("FirebaseWrite");
         }

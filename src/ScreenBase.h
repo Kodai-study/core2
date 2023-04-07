@@ -1,3 +1,11 @@
+/**
+ * @file ScreenBase.h
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief 様々な画面に共通する処理項目をまとめたクラス、ScreenBaseクラスの宣言
+ * @date 2023-04-06
+ * 
+ */
+
 #include "header.h"
 
 #ifndef SCREEN_BASE

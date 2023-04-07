@@ -1,3 +1,10 @@
+/**
+ * @file SettingTimeIntervalScreen.cpp
+ * @author Kodai-study (anchor.kou@softbank.ne.jp)
+ * @brief タイムインターバルの設定画面の制御を行うクラス、SettingTimeIntervalScreenの実装を記述するファイル
+ * @date 2023-04-06
+ *
+ */
 #include "header.h"
 #include "SettingTimeIntervalScreen.h"
 
@@ -21,10 +28,10 @@ void SettingTimeIntervalScreen::initScreen()
 {
    ScreenBase::initScreen();
    Llcd.fillScreen(BLACK);
-   this->btn_plus5 = Button(250, 0, 70, 40, true, "+5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
-   this->btn_plus1 = Button(250, 55, 70, 40, true, "+1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
-   this->btn_minus1 = Button(250, 110, 70, 40, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
-   this->btn_minus5 = Button(250, 165, 70, 40, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_plus5 = Button(btnPos[0].x, btnPos[0].y, btnSize.x, btnSize.y, true, "+5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_plus1 = Button(btnPos[1].x, btnPos[1].y, btnSize.x, btnSize.y, true, "+1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_minus1 = Button(btnPos[2].x, btnPos[2].y, btnSize.x, btnSize.y, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+   this->btn_minus5 = Button(btnPos[3].x, btnPos[3].y, btnSize.x, btnSize.y, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    btn_plus5.addHandler(pluc2, E_RELEASE);
    btn_plus5.draw();
 }
