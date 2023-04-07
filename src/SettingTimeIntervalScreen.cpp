@@ -33,7 +33,6 @@ void SettingTimeIntervalScreen::initScreen()
    this->btn_minus1 = Button(btnPos[2].x, btnPos[2].y, btnSize.x, btnSize.y, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    this->btn_minus5 = Button(btnPos[3].x, btnPos[3].y, btnSize.x, btnSize.y, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
    btn_plus5.addHandler(pluc2, E_RELEASE);
-   btn_plus1.addHandler(this->buttonPushed, E_RELEASE);
    btn_plus5.draw();
 }
 
@@ -51,6 +50,12 @@ void SettingTimeIntervalScreen::deleteScreen()
 
 void SettingTimeIntervalScreen::scereenUpdate()
 {
+   // ボタンCが押されていたら、cursorposを変更する
+   if (M5.BtnC.isPressed())
+   {
+      cursorPos = (cursorPos + 1) % 3;
+   }
+   buttonPressed();
 }
 
 // ページ数、時刻、モード(数字)をcsvファイルに書き込む
@@ -70,52 +75,73 @@ void writeCsv(int page, int time, int mode)
    }
 }
 
-//.iniファイルに設定情報を書き込む。項目は、{SSID,パスワード,タイムインターバル、繰り返し回数}
-void writeIni(String ssid, String pass, int time, int repeat) // write to SD card
+void SettingTimeIntervalScreen::showTimeInterval()
 {
-   File file = SD.open("setting.ini", FILE_WRITE); // open file
-   if (file)
+   // TODO 文字列表示のカーソルと、フォントを設定
+
+   // 指定した位置、幅、高さを黒で塗りつぶす
+   Llcd.fillRect(0, 0, 320, 240, BLACK);
+
+   Llcd.print(timeInterval);
+   Llcd.print("分 休憩 ");
+   Llcd.print(restTime);
+   Llcd.print("分:");
+   Llcd.print(repeat);
+   Llcd.print("回");
+}
+
+// changeSettingValue関数を実装
+// cursorPos に応じて、timeInterval, restTime, repeatの値を変更する
+// 変化させる値は引数のvalueで指定し、負の数にはならない
+void SettingTimeIntervalScreen::changeSettingValue(int value)
+{
+   switch (cursorPos)
    {
-      file.print("SSID="); // write SSID to file
-      file.println(ssid);
-      file.print("PASS="); // write password to file
-      file.println(pass);
-      file.print("TIME="); // write time to file
-      file.println(time);
-      file.print("REPEAT="); // write repeat to file
-      file.println(repeat);
-      file.close(); // close file
+   case 0:
+      timeInterval += value;
+      if (timeInterval < 0)
+      {
+         timeInterval = 0;
+      }
+      break;
+   case 1:
+      restTime += value;
+      if (restTime < 0)
+      {
+         restTime = 0;
+      }
+      break;
+   case 2:
+      repeat += value;
+      if (repeat < 0)
+      {
+         repeat = 0;
+      }
+      break;
+   default:
+      break;
    }
 }
 
-// ボタンを画面に設置して、対応するSSIDのWIFIに接続する。
-// 接続に成功したかどうかをbooleanで返す
-// 接続するSSID,WIFIパスワードは、配列に保存されている
-// 3秒間接続できなかったら、falseを返す
-// 引数は、ボタン番号の1つ
-boolean connectWifi(int btn)
+// ボタンを押した時の処理を実装
+// ボタンの種類に応じて、changeSettingValue関数を呼び出す
+// ボタンの種類に応じて、cursorPosの値を変更する
+void SettingTimeIntervalScreen::buttonPressed()
 {
-   boolean connect = false;
-   Llcd.fillScreen(BLACK);
-   Llcd.setCursor(0, 0);
-   Llcd.setTextSize(2);
-   Llcd.setTextColor(WHITE);
-   Llcd.println("接続中...");
-   Llcd.println("接続先:");
-   // Llcd.println(ssid[btn]);
-   Llcd.println("パスワード:");
-   // Llcd.println(pass[btn]);
-   Llcd.println("接続中...");
-   // WiFi.begin(ssid[btn], pass[btn]);
-   int cnt = 0;
-   while (WiFi.status() != WL_CONNECTED && cnt < 30)
+   if (btn_plus5.wasPressed())
    {
-      delay(100);
-      cnt++;
+      changeSettingValue(5);
    }
-   if (WiFi.status() == WL_CONNECTED)
+   else if (btn_plus1.wasPressed())
    {
-      connect = true;
+      changeSettingValue(1);
    }
-   return connect;
+   else if (btn_minus1.wasPressed())
+   {
+      changeSettingValue(-1);
+   }
+   else if (btn_minus5.wasPressed())
+   {
+      changeSettingValue(-5);
+   }
 }

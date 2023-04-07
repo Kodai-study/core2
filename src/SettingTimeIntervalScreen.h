@@ -16,6 +16,13 @@ private:
    Button btn_minus1;
    Button btn_minus5;
 
+   int timeInterval = 0;
+   int restTime = 0;
+   int repeat = 0;
+
+   // 今のカーソルの位置を示す変数
+   int cursorPos = 0;
+
    // TODO カーソルが来る場所を指定する
    // Point クラスの配列で、カーソルのデフォルトの位置を指定する
    // 要素は5つで、すべて0,0 で初期化する
@@ -36,6 +43,12 @@ private:
    {
       Llcd.fillRect(x, y, 10, 50, cursorColor);
    }
+   // 設定したタイムインタ‐バルの値を表示する関数を宣言
+   void showTimeInterval();
+
+   // 設定項目の値を変化させる関数を宣言
+   void changeSettingValue(int value);
+   void buttonPressed();
 
 public:
    SettingTimeIntervalScreen();

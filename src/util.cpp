@@ -150,3 +150,37 @@ void printDirectory(File dir, int numTabs)
         }
     }
 }
+
+
+
+// ボタンを画面に設置して、対応するSSIDのWIFIに接続する。
+// 接続に成功したかどうかをbooleanで返す
+// 接続するSSID,WIFIパスワードは、配列に保存されている
+// 3秒間接続できなかったら、falseを返す
+// 引数は、ボタン番号の1つ
+boolean connectWifi(int btn)
+{
+   boolean connect = false;
+   Llcd.fillScreen(BLACK);
+   Llcd.setCursor(0, 0);
+   Llcd.setTextSize(2);
+   Llcd.setTextColor(WHITE);
+   Llcd.println("接続中...");
+   Llcd.println("接続先:");
+   // Llcd.println(ssid[btn]);
+   Llcd.println("パスワード:");
+   // Llcd.println(pass[btn]);
+   Llcd.println("接続中...");
+   // WiFi.begin(ssid[btn], pass[btn]);
+   int cnt = 0;
+   while (WiFi.status() != WL_CONNECTED && cnt < 30)
+   {
+      delay(100);
+      cnt++;
+   }
+   if (WiFi.status() == WL_CONNECTED)
+   {
+      connect = true;
+   }
+   return connect;
+}

@@ -15,8 +15,10 @@
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 // #define WIFI_SSID "aterm-b9044b-g"
 // #define WIFI_PASSWORD "1ca1af621dff7"
-#define WIFI_SSID "Buffalo-G-9AD0"
-#define WIFI_PASSWORD "icbdi657e6syp"
+// #define WIFI_SSID "Buffalo-G-9AD0"
+// #define WIFI_PASSWORD "icbdi657e6syp"
+#define WIFI_SSID "Buffalo-G-458A"
+#define WIFI_PASSWORD "hi6bmsk85557v"
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>

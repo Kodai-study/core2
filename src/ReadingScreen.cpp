@@ -58,7 +58,7 @@ void ReadingScreen::scereenUpdate()
         RTC_TimeTypeDef time;
         M5.Rtc.GetDate(&date);
         M5.Rtc.GetTime(&time);
-        sprintf(dateTimeStringBuffer, "%04d-02d-02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
+        sprintf(dateTimeStringBuffer, "%04d-%02d-%02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
                 time.Hours, time.Minutes, time.Seconds);
         pageFlipRecord.set("dateTime", dateTimeStringBuffer);
         pageFlipRecord.set("page", this->currentPage);

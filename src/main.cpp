@@ -3,7 +3,7 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief メイン関数、ループ関数など、主処理を実装するファイル
  * @date 2023-04-06
- * 
+ *
  */
 
 #include "header.h"
@@ -52,6 +52,18 @@ void loop()
 {
   M5.update();
   screens[currentScreenNumber]->scereenUpdate();
+
+  // Bボタンを3秒間ホールドするとtogglePowerLcd()を呼び出す.
+  // さらに5秒間ホールドすると、シャットダウン
+  if (M5.BtnB.pressedFor(3000))
+  {
+    togglePowerLcd();
+    if (M5.BtnB.pressedFor(5000))
+    {
+      M5.shutdown();
+    }
+  }
+
   if (M5.BtnA.wasPressed())
   {
     togglePowerLcd();
