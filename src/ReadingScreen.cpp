@@ -3,7 +3,7 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief 読書中画面の制御を行うクラス、ReadingScreenの実装を記述するファイル
  * @date 2023-04-06
- * 
+ *
  */
 
 #include "header.h"
@@ -33,6 +33,22 @@ void ReadingScreen::initScreen()
     btn_x.addHandler(push, E_RELEASE);
     btn_x.draw();
     Llcd.setCursor(0, 0);
+
+    if (isWifiConnected && readDataindex == -1)
+    {
+        FirebaseData data;
+        FirebaseJsonArray array;
+        FirebaseJson json;
+        Firebase.getArray(data, DATA_PAGEFLIP_PATH + readingBookIndex);
+        array = data.jsonArray();
+        readDataindex = array.size();
+        FirebaseJsonData jsonData;
+        if (!array.get(jsonData, 1))
+        {
+            Llcd.println("配列取得失敗");
+            return;
+        }
+    }
 }
 
 ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
@@ -65,12 +81,12 @@ void ReadingScreen::scereenUpdate()
         pageFlipRecord.set("mode", this->currentMode);
         if (isWifiConnected)
         {
-            Firebase.pushJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex, pageFlipRecord);
-            Llcd.println("FirebaseWrite");
+            Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++, pageFlipRecord);
         }
-
-        String JSONString;
-        if (pageFlipRecord.toString(JSONString, true))
-            Llcd.println(JSONString);
     }
+}
+
+int ReadingScreen::getreadDataindex()
+{
+    return this->readDataindex;
 }

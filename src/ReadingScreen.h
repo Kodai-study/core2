@@ -13,7 +13,7 @@ private:
    const int OTHERS = 0;
    const int FOCUS_MODE = 1;
    const int FREE_MODE = 2;
-   int index;
+   static int readDataindex = -1;
    int currentPage;
    String bookName;
    Button btn_x;
@@ -24,7 +24,8 @@ private:
 
 public:
    void initScreen() override;
-   ReadingScreen(int index, int currentPage, String bookName);
+   ReadingScreen(int readDataindex, int currentPage, String bookName);
    void deleteScreen() override;
    void scereenUpdate() override;
+   int getreadDataindex();
 };

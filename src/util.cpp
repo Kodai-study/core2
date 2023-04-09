@@ -74,25 +74,80 @@ void togglePowerLcd()
     }
 }
 
+// ミリ秒のUNIXTIMEを引数で受け取って、その時間を表示する
+
 tm *setRTC()
 {
     FirebaseData data;
     Firebase.setTimestamp(data, "lastUpdateTime");
-    const time_t unixTime = data.intData() + (1000 * 3600 * 9);
+    time_t unixTime = (int)(data.doubleData());
+
+    // ミリ秒単位のUNIX時間から、日本時間の tm 構造体を取得する
+
     auto currentTime = localtime(&unixTime);
+
+    // LCDに時刻を表示
+    Llcd.setCursor(0, 0);
+    Llcd.printf("\n\n%d\n", unixTime);
+    Llcd.print(currentTime->tm_year + 1900);
+    Llcd.print("/");
+    Llcd.print(currentTime->tm_mon + 1);
+    Llcd.print("/");
+    Llcd.print(currentTime->tm_mday);
+    Llcd.print(" ");
+    Llcd.print(currentTime->tm_hour);
+    Llcd.print(":");
+    Llcd.print(currentTime->tm_min);
+    Llcd.print(":");
+    Llcd.print(currentTime->tm_sec);
+    Llcd.println();
+
+    delay(4000);
+    // RTCに時刻をセット
+    
+    unixTime = data.intData();
+    unixTime += (60 * 60 * 9);
+
+    // ミリ秒単位のUNIX時間から、日本時間の tm 構造体を取得する
+
+    currentTime = localtime(&unixTime);
+
+    // LCDに時刻を表示
+    Llcd.printf("\n\n%d\n", unixTime);
+    Llcd.print(currentTime->tm_year + 1900);
+    Llcd.print("/");
+    Llcd.print(currentTime->tm_mon + 1);
+    Llcd.print("/");
+    Llcd.print(currentTime->tm_mday);
+    Llcd.print(" ");
+    Llcd.print(currentTime->tm_hour);
+    Llcd.print(":");
+    Llcd.print(currentTime->tm_min);
+    Llcd.print(":");
+    Llcd.print(currentTime->tm_sec);
+    Llcd.println();
+
+    delay(4000);
+    // RTCに時刻をセット
+
+
     RTC_TimeTypeDef tr = {0, 0, 0};
     RTC_DateTypeDef dt = {0, 0, 0};
     tr.Hours = (uint8_t)(currentTime->tm_hour);
     tr.Minutes = (uint8_t)(currentTime->tm_min);
     tr.Seconds = (uint8_t)(currentTime->tm_sec);
-    dt.Year = (uint16_t)(currentTime->tm_year + 1900);
+
+    dt.WeekDay = (uint8_t)(currentTime->tm_wday + 1);
     dt.Month = (uint8_t)(currentTime->tm_mon + 1);
     dt.Date = (uint8_t)(currentTime->tm_mday);
+    dt.Year = (uint16_t)(currentTime->tm_year + 1900);
     M5.Rtc.SetTime(&tr);
     M5.Rtc.SetDate(&dt);
     M5.Rtc.begin();
     return currentTime;
 }
+
+// ミリ秒のUNIXTIMEを引数で受け取って、その時間をRTCにセットする
 
 bool connectingWifi()
 {
@@ -151,8 +206,6 @@ void printDirectory(File dir, int numTabs)
     }
 }
 
-
-
 // ボタンを画面に設置して、対応するSSIDのWIFIに接続する。
 // 接続に成功したかどうかをbooleanで返す
 // 接続するSSID,WIFIパスワードは、配列に保存されている
@@ -160,27 +213,27 @@ void printDirectory(File dir, int numTabs)
 // 引数は、ボタン番号の1つ
 boolean connectWifi(int btn)
 {
-   boolean connect = false;
-   Llcd.fillScreen(BLACK);
-   Llcd.setCursor(0, 0);
-   Llcd.setTextSize(2);
-   Llcd.setTextColor(WHITE);
-   Llcd.println("接続中...");
-   Llcd.println("接続先:");
-   // Llcd.println(ssid[btn]);
-   Llcd.println("パスワード:");
-   // Llcd.println(pass[btn]);
-   Llcd.println("接続中...");
-   // WiFi.begin(ssid[btn], pass[btn]);
-   int cnt = 0;
-   while (WiFi.status() != WL_CONNECTED && cnt < 30)
-   {
-      delay(100);
-      cnt++;
-   }
-   if (WiFi.status() == WL_CONNECTED)
-   {
-      connect = true;
-   }
-   return connect;
+    boolean connect = false;
+    Llcd.fillScreen(BLACK);
+    Llcd.setCursor(0, 0);
+    Llcd.setTextSize(2);
+    Llcd.setTextColor(WHITE);
+    Llcd.println("接続中...");
+    Llcd.println("接続先:");
+    // Llcd.println(ssid[btn]);
+    Llcd.println("パスワード:");
+    // Llcd.println(pass[btn]);
+    Llcd.println("接続中...");
+    // WiFi.begin(ssid[btn], pass[btn]);
+    int cnt = 0;
+    while (WiFi.status() != WL_CONNECTED && cnt < 30)
+    {
+        delay(100);
+        cnt++;
+    }
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        connect = true;
+    }
+    return connect;
 }
