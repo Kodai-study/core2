@@ -3,8 +3,6 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief
  * @date 2023-04-06
- *
- *
  */
 
 // include guard
@@ -18,9 +16,6 @@ class SettingManager
 private:
     // 設定ファイルのパス。 定数文字列
     static const char *SETTING_FILE_PATH = "/setting.csv";
-    
-    
-
 };
 
 #endif

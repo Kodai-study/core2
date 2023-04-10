@@ -96,3 +96,6 @@ void Setting::readIni()
 
 const char *Setting::SSID_COLUM[] = {"SSID"};
 const char *Setting::WIFI_PASS_COLUM[] = {"PASS"};
+
+
+// CPUの温度、動作周波数、を取得して、MySQLにインサートするSQL文を出力する関数

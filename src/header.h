@@ -3,14 +3,13 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief プロジェクト内で共通して使うライブラリのインクルードや定数、関数の宣言を行うヘッダファイル
  * @date 2023-04-06
- *
  */
 
 #ifndef HEADER
 #define HEADER
 
-#define LGFX_AUTODETECT // 自動認識(D-duino-32 XS, PyBadgeはパネルID読取れないため自動認識の対象から外れているそうです)
-#define LGFX_USE_V1     // v1.0.0を有効に(v0からの移行期間の特別措置とのこと。書かない場合は旧v0系で動作)
+#define LGFX_AUTODETECT
+#define LGFX_USE_V1
 #define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 // #define WIFI_SSID "aterm-b9044b-g"
@@ -28,10 +27,32 @@
 
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 
+/**
+ * @brief sleepLcd関数でスリープモードとなったLcdを起床させる
+ */
 void wakeupLcd();
+/**
+ * @brief Lcdをスリープモードにする。
+ * バックライトと液晶のコントラストを0にする。 画面を表示するには、wakeupLcd関数を呼び出す必要がある。
+ */
 void sleepLcd();
+/**
+ * @brief Lcdのスリープモードと起床モードを切り替える。
+ */
 void togglePowerLcd();
+/**
+ * @brief Firebaseの時刻をRTCにセットする
+ * ついでに、Firebaseのデータベースにも、セットした時刻をUNIX時間で保存する
+ * 
+ * @return tm* 
+ */
 tm *setRTC();
+/**
+ * @brief Wi-Fiへの接続を試みる
+ * 
+ * @return true 
+ * @return false 
+ */
 bool connectingWifi();
 
 #endif

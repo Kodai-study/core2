@@ -8,6 +8,14 @@
 #include "header.h"
 #include <LinkedList.h>
 
+/**
+ * @brief SDカードが読み取り可能かどうかを確認する関数
+ *
+ * @param path
+ * @param list
+ * @return true
+ * @return false
+ */
 bool sdCheck(const char *path, LinkedList<String> list)
 {
     File fp = SD.open(path, "rw", false);
@@ -23,6 +31,13 @@ bool sdCheck(const char *path, LinkedList<String> list)
     return true;
 }
 
+/**
+ * @brief
+ *
+ * @param lineData
+ * @param index
+ * @return String
+ */
 String getCSVColum(String lineData, int index)
 {
     static const char kugiri = ',';
@@ -104,7 +119,7 @@ tm *setRTC()
 
     delay(4000);
     // RTCに時刻をセット
-    
+
     unixTime = data.intData();
     unixTime += (60 * 60 * 9);
 
@@ -129,7 +144,6 @@ tm *setRTC()
 
     delay(4000);
     // RTCに時刻をセット
-
 
     RTC_TimeTypeDef tr = {0, 0, 0};
     RTC_DateTypeDef dt = {0, 0, 0};
