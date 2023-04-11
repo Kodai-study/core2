@@ -7,9 +7,9 @@
  */
 
 #include "header.h"
-#include "ReadingScreen.h"
-#include "SettingTimeIntervalScreen.h"
-#include "ScreenBase.h"
+#include "screens/ReadingScreen.h"
+#include "screens/SettingTimeIntervalScreen.h"
+#include "screens/ScreenBase.h"
 
 LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
