@@ -79,16 +79,16 @@ void ReadingScreen::scereenUpdate()
                 time.Hours, time.Minutes, time.Seconds);
         PageFlipHistory pageFlipHistory(
             String(dateTimeStringBuffer), currentMode, currentPage);
-        FirebaseJson* json = pageFlipHistory.getJson();
+        FirebaseJson *json = pageFlipHistory.getJson();
 
-        if (isWifiConnected)
+        if (isWifiConnected || readDataindex < 0)
         {
-            Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++,
-                             *json);
+            this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
         else
         {
-            this->csvManager.writeLine(pageFlipHistory.getCsvLine());
+            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++, *json))
+                this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
     }
 }

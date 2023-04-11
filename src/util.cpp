@@ -18,7 +18,7 @@
  */
 bool sdCheck(const char *path, LinkedList<String> list)
 {
-    File fp = SD.open(path, "rw", false);
+    File fp = SD.open(path, FILE_READ);
     if (!fp)
     {
         Llcd.println("NO SD!!");
