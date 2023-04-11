@@ -7,6 +7,8 @@
  */
 #include "header.h"
 #include "ScreenBase.h"
+#include "ObjectFromCsvFactory.h"
+#include "module/PageFlipData.h"
 
 /**
  * @brief 読書中の画面の制御を行うクラス
@@ -15,19 +17,6 @@
 class ReadingScreen : public ScreenBase
 {
 private:
-   /**
-    * @brief 読書モード_その他
-    */
-   const int OTHERS_MODE = 0;
-   /**
-    * @brief 読書モード_集中モード
-    */
-   const int FOCUS_MODE = 1;
-   /**
-    * @brief 自由モード
-    */
-   const int FREE_MODE = 2;
-
    /**
     * @brief 読書データ配列の数
     * イコールで、次に書き込む配列のインデックスになる
@@ -46,7 +35,7 @@ private:
    /**
     * @brief 現在の読書モード
     */
-   int currentMode = OTHERS_MODE;
+   PageFlipHistory::ReadingMode currentMode = PageFlipHistory::ReadingMode::OTHERS_MODE;
    /**
     * @brief 現在読書中の本を表すインデックス
     * 本データの配列のインデックスを表す
@@ -57,14 +46,16 @@ private:
     */
    const String DATA_PAGEFLIP_PATH = String("readDatas/");
 
+   CreateObjectFromCsvFactory factory;
+
 public:
    void initScreen() override;
    /**
     * @brief Construct a new Reading Screen object
-    * 
-    * @param readDataindex 
-    * @param currentPage 
-    * @param bookName 
+    *
+    * @param readDataindex
+    * @param currentPage
+    * @param bookName
     */
    ReadingScreen(int readDataindex, int currentPage, String bookName);
    void deleteScreen() override;

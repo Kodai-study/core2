@@ -31,20 +31,20 @@ public:
     // 全ての変数を引数の値に初期化するコンストラクタ
     MemoData(MemoType memoType, String memo, int pageNumber, bool resolved)
     {
-        this.memoType = memoType;
-        this.memo = memo;
-        this.pageNumber = pageNumber;
-        this.resolved = resolved;
+        this->memoType = memoType;
+        this->memo = memo;
+        this->pageNumber = pageNumber;
+        this->resolved = resolved;
     }
 
     // デフォルトコンストラクタ
     MemoData()
     {
-        this.memoType = MEMO_TYPE_UNKNOWN;
-        this.memo = "";
-        this.pageNumber = -1;
-        this.resolved = false;
+        this->memoType = MEMO_TYPE_UNKNOWN;
+        this->memo = "";
+        this->pageNumber = -1;
+        this->resolved = false;
     }
-}
+};
 
 #endif

@@ -3,11 +3,11 @@
  * @author Kodai-study (anchor.kou@softbank.ne.jp)
  * @brief 読書中画面の制御を行うクラス、ReadingScreenの実装を記述するファイル
  * @date 2023-04-06
- *
  */
 
 #include "header.h"
 #include "ReadingScreen.h"
+#include "module/PageFlipData.h"
 
 void push(Event &e)
 {
@@ -68,20 +68,26 @@ void ReadingScreen::scereenUpdate()
     if (M5.BtnC.wasPressed())
     {
         FirebaseData writeData;
-        FirebaseJson pageFlipRecord;
         char dateTimeStringBuffer[30];
         RTC_DateTypeDef date;
         RTC_TimeTypeDef time;
         M5.Rtc.GetDate(&date);
         M5.Rtc.GetTime(&time);
+
         sprintf(dateTimeStringBuffer, "%04d-%02d-%02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
                 time.Hours, time.Minutes, time.Seconds);
-        pageFlipRecord.set("dateTime", dateTimeStringBuffer);
-        pageFlipRecord.set("page", this->currentPage);
-        pageFlipRecord.set("mode", this->currentMode);
+
+        PageFlipHistory pageFlipHistory(
+            String(dateTimeStringBuffer), currentMode, currentPage);
+        auto json = pageFlipHistory.getJson();
         if (isWifiConnected)
         {
-            Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++, pageFlipRecord);
+            Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++,
+                             *json);
+        }
+        else
+        {
+            // TODO FIrebaseの代わりに、CSVファイルに書き込む
         }
     }
 }
