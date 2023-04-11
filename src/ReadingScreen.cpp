@@ -61,6 +61,7 @@ void ReadingScreen::deleteScreen()
 {
     this->btn_x.erase(BLACK);
     this->btn_x.set(0, 0, 0, 0);
+    this->csvManager.closeFile();
 }
 
 void ReadingScreen::scereenUpdate()
@@ -76,10 +77,10 @@ void ReadingScreen::scereenUpdate()
 
         sprintf(dateTimeStringBuffer, "%04d-%02d-%02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
                 time.Hours, time.Minutes, time.Seconds);
-
         PageFlipHistory pageFlipHistory(
             String(dateTimeStringBuffer), currentMode, currentPage);
-        auto json = pageFlipHistory.getJson();
+        FirebaseJson* json = pageFlipHistory.getJson();
+
         if (isWifiConnected)
         {
             Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++,
@@ -87,7 +88,7 @@ void ReadingScreen::scereenUpdate()
         }
         else
         {
-            // TODO FIrebaseの代わりに、CSVファイルに書き込む
+            this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
     }
 }

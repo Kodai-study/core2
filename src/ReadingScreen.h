@@ -9,6 +9,7 @@
 #include "ScreenBase.h"
 #include "ObjectFromCsvFactory.h"
 #include "module/PageFlipData.h"
+#include "CsvManager.h"
 
 /**
  * @brief 読書中の画面の制御を行うクラス
@@ -47,6 +48,9 @@ private:
    const String DATA_PAGEFLIP_PATH = String("readDatas/");
 
    CreateObjectFromCsvFactory factory;
+
+   // TODO ページめくりのローカルデータを保存するCSVファイルのパスを定義する
+   CsvManager csvManager = CsvManager("readDatas.csv");
 
 public:
    void initScreen() override;

@@ -45,6 +45,16 @@ public:
         this->pageNumber = -1;
         this->resolved = false;
     }
+
+    String getCsvLine()
+    {
+        String csvLine = "";
+        csvLine += String(this->memoType) + ",";
+        csvLine += this->memo + ",";
+        csvLine += String(this->pageNumber) + ",";
+        csvLine += String(this->resolved) + ",";
+        return csvLine;
+    }
 };
 
 #endif

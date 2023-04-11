@@ -7,6 +7,7 @@
  */
 
 #include "header.h"
+#include "LinkedList.h"
 
 #ifndef CSV_MANAGER_H
 #define CSV_MANAGER_H
@@ -46,13 +47,13 @@ public:
      */
     void writeLine(String line)
     {
-        if !(openFile())
+        if (!openFile())
             return;
 
         if (!isWriteMode)
         {
             m_file.close();
-            m_file = SD.open(m_fileName, FILE_WRITE, true);
+            m_file = SD.open(m_fileName, FILE_APPEND, true);
             isWriteMode = true;
         }
         m_file.println(line);
@@ -65,7 +66,7 @@ public:
      */
     String readLine()
     {
-        if !(openFile())
+        if (!openFile())
             return "";
 
         if (isWriteMode)
@@ -107,7 +108,7 @@ public:
         if (!m_file.available())
         {
             m_file.close();
-            m_file = SD.open(m_fileName, FILE_WRITE, true);
+            m_file = SD.open(m_fileName, FILE_APPEND, true);
         }
     }
 
@@ -116,7 +117,7 @@ public:
     {
         if (!m_file)
         {
-            m_file = SD.open(m_fileName, isWriteMode ? FILE_WRITE : FILE_READ, true);
+            m_file = SD.open(m_fileName, isWriteMode ? FILE_APPEND : FILE_READ, true);
             if (!m_file)
             {
                 return false;
@@ -152,15 +153,10 @@ public:
      */
     void resetFile(String titleString = "")
     {
-        if (!openFile())
-            return;
+        m_file.close();
+        m_file = SD.open(m_fileName, FILE_WRITE, true);
+        isWriteMode = true;
 
-        if (!isWriteMode)
-        {
-            m_file.close();
-            m_file = SD.open(m_fileName, FILE_WRITE, true);
-            isWriteMode = true;
-        }
         if (titleString != "")
         {
             m_file.println(titleString);

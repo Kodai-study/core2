@@ -55,6 +55,17 @@ public:
         pageFlipRecord->set("mode", (int)this->mode);
         return pageFlipRecord;
     }
+
+    String getCsvLine()
+    {
+        String csvLine = "";
+        csvLine += this->dateTime;
+        csvLine += ",";
+        csvLine += this->page;
+        csvLine += ",";
+        csvLine += this->mode;
+        return csvLine;
+    }
 };
 
 #endif
