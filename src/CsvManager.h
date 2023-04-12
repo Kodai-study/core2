@@ -52,6 +52,7 @@ public:
 
         if (!isWriteMode)
         {
+
             m_file.close();
             m_file = SD.open(m_fileName, FILE_APPEND, true);
             isWriteMode = true;
@@ -170,6 +171,8 @@ public:
         m_file.println();
         m_file.close();
     }
+
+    // m_file でファイルにアクセスして、ファイルの最後の行を削除する関数
 };
 
 #endif
