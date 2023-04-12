@@ -5,8 +5,8 @@
  * @date 2023-04-06
  */
 
-#ifndef HEADER
-#define HEADER
+#ifndef HEADER_H
+#define HEADER_H
 
 #define LGFX_AUTODETECT
 #define LGFX_USE_V1
@@ -27,6 +27,16 @@
 
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 
+// 画面の一覧を定義する列挙型を作成
+enum Screen
+{
+    SCREEN_NONE = -1,
+    Screen_Reading,
+    Screen_SettingTimeInterval,
+    Screen_SelectBook,
+    Screen_NUM
+};
+
 /**
  * @brief sleepLcd関数でスリープモードとなったLcdを起床させる
  */
@@ -43,16 +53,23 @@ void togglePowerLcd();
 /**
  * @brief Firebaseの時刻をRTCにセットする
  * ついでに、Firebaseのデータベースにも、セットした時刻をUNIX時間で保存する
- * 
- * @return tm* 
+ *
+ * @return tm*
  */
 tm *setRTC();
 /**
  * @brief Wi-Fiへの接続を試みる
- * 
- * @return true 
- * @return false 
+ *
+ * @return true
+ * @return false
  */
 bool connectingWifi();
+
+/**
+ * @brief 画面遷移を行う関数
+ * 
+ * @param screenList 遷移先の画面を指定する列挙型の変数
+ */
+void screenTransitionHandler(Screen screenList);
 
 #endif

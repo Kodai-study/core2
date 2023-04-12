@@ -23,7 +23,6 @@ private:
     int cursorPosition = -1;
 
     void drawLine(int y);
-    // データベースから本のデータを取得して、bookDataListに格納する
     bool getBookData();
     void drawBookList();
 
@@ -31,6 +30,7 @@ public:
     void initScreen() override;
     void deleteScreen() override;
     void scereenUpdate() override;
+    int selectBookIndex = -1;
 };
 
 #endif

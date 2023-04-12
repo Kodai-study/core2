@@ -34,20 +34,9 @@ void ReadingScreen::initScreen()
     btn_x.draw();
     Llcd.setCursor(0, 0);
 
-    if (isWifiConnected && readDataindex == -1)
+    if (isWifiConnected)
     {
-        FirebaseData data;
-        FirebaseJsonArray array;
-        FirebaseJson json;
-        Firebase.getArray(data, DATA_PAGEFLIP_PATH + readingBookIndex);
-        array = data.jsonArray();
-        readDataindex = array.size();
-        FirebaseJsonData jsonData;
-        if (!array.get(jsonData, 1))
-        {
-            Llcd.println("配列取得失敗");
-            return;
-        }
+        // TODO 現在のページ数を取得する
     }
 }
 
@@ -81,13 +70,13 @@ void ReadingScreen::scereenUpdate()
             String(dateTimeStringBuffer), currentMode, currentPage);
         FirebaseJson *json = pageFlipHistory.getJson();
 
-        if (isWifiConnected || readDataindex < 0)
+        if (isWifiConnected || currentBookIndex < 0)
         {
             this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
         else
         {
-            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + readDataindex++, *json))
+            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + currentBookIndex++, *json))
                 this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
     }
@@ -95,5 +84,10 @@ void ReadingScreen::scereenUpdate()
 
 int ReadingScreen::getreadDataindex()
 {
-    return this->readDataindex;
+    return this->currentBookIndex;
+}
+
+void ReadingScreen::setReadDataindex(int currentBookIndex)
+{
+    this->currentBookIndex = currentBookIndex;
 }

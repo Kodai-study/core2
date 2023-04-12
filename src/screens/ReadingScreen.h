@@ -22,7 +22,7 @@ private:
     * @brief 読書データ配列の数
     * イコールで、次に書き込む配列のインデックスになる
     */
-   int readDataindex = -1;
+   int currentBookIndex = -1;
    /**
     * @brief 現在読んでいるページ数
     */
@@ -57,12 +57,13 @@ public:
    /**
     * @brief Construct a new Reading Screen object
     *
-    * @param readDataindex
+    * @param currentBookIndex
     * @param currentPage
     * @param bookName
     */
-   ReadingScreen(int readDataindex, int currentPage, String bookName);
+   ReadingScreen(int currentBookIndex, int currentPage, String bookName);
    void deleteScreen() override;
    void scereenUpdate() override;
    int getreadDataindex();
+   void setReadDataindex(int currentBookIndex);
 };

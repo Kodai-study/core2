@@ -56,18 +56,24 @@ void SelectBookScreen::drawBookList()
 
     if (cursorPosition - 3 > 0)
     {
-        // TODO 上にスクロールする矢印を描画する
+        Llcd.setCursor(220, 10);
+        Llcd.print("↑");
     }
-    // 画面に表示されている下にまだ項目がある場合、下にスクロールする矢印を描画する
     if (firstIndex + 3 < (bookDataList.size() - 1))
     {
-        // TODO 下にスクロールする矢印を描画する
+        Llcd.setCursor(220, 160);
+        Llcd.print("↓");
     }
 }
 
 void SelectBookScreen::scereenUpdate()
 {
-    // ボタンAを押すと、
+    // ボタンAを押すと、カーソルの値が1つ増えて、本のリストを再表示する
+    if (M5.BtnA)
+    {
+        cursorPosition++;
+        drawBookList();
+    }
 }
 
 void SelectBookScreen::deleteScreen()
@@ -87,14 +93,12 @@ bool SelectBookScreen::getBookData()
             {
                 FirebaseJson json;
                 FirebaseJsonData jsonData;
-                uint32_t hoge;
+                FirebaseJsonArray bookMarkArray;
                 bool isGetSuccess = true;
 
                 if (!arrayData.get(jsonData, i))
                     return false;
                 jsonData.get(json);
-
-                // json 変数のデータから、BookDataクラスのインスタンスを生成する
 
                 isGetSuccess &= json.get(jsonData, "bookName");
                 String bookName = jsonData.stringValue;
@@ -105,8 +109,12 @@ bool SelectBookScreen::getBookData()
                 isGetSuccess &= json.get(jsonData, "readingTime");
                 bool isReadEnd = jsonData.boolValue;
 
-                if (!isGetSuccess)
-                    return false;
+                isGetSuccess &= json.get(jsonData, "MemoList");
+                isGetSuccess &= jsonData.getArray(bookMarkArray);
+                bookMarkArray.size();
+
+                if (!isGetSuccess || isReadEnd)
+                    continue;
 
                 this->bookDataList.add(new BookData(bookName, currentPage, i, isReadEnd));
             }
@@ -117,4 +125,9 @@ bool SelectBookScreen::getBookData()
         // TODO 取得したデータをbookDataListに格納する
     }
     return true;
+}
+
+void SelectBookScreen::drawLine(int y)
+{
+    Llcd.drawLine(20, y, 300, y, WHITE);
 }
