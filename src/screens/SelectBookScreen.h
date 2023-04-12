@@ -3,7 +3,6 @@
 
 #include "header.h"
 #include "ScreenBase.h"
-// BookDataクラスをインクルード
 #include "../module/BookData.h"
 #include <LinkedList.h>
 
@@ -16,20 +15,17 @@ private:
     const String BOOKDATA_PATH = String("/books");
     const int LINE_WIDTH = 2;
     const int LINE_LENGTH = 20;
-    /**
-     * @brief データベースに保存されている本のデータを格納するリスト
-     */
+    const int MAX_BOOK_NUM = 4;
+    const int MAX_BOOK_NAME_LENGTH = 8;
+
+    // データベースに保存されている本のデータを格納するリスト
     LinkedList<BookData *> bookDataList;
+    int cursorPosition = -1;
 
     void drawLine(int y);
-
-    /**
-     * @brief データベースから本のデータを取得して、bookDataListに格納する
-     *
-     * @return true 取得が成功して、bookDataListを利用できる
-     * @return false 取得が失敗した
-     */
+    // データベースから本のデータを取得して、bookDataListに格納する
     bool getBookData();
+    void drawBookList();
 
 public:
     void initScreen() override;
