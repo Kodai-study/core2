@@ -40,10 +40,13 @@ void ReadingScreen::initScreen()
     }
 }
 
-ReadingScreen::ReadingScreen(int index, int currentPage, String bookName)
-    : currentPage(currentPage), btn_x(0, 0, 0, 0)
+ReadingScreen::ReadingScreen(int currentBookIndex, int currentPage, String bookName)
+    : currentBookData(bookName, currentPage, currentBookIndex, false),
+    btn_x(0, 0, 0, 0)
 {
     this->bookName = bookName;
+    this->btn_x = Button(0, 0, 0, 0);
+    this->currentPage = currentPage;
 }
 
 void ReadingScreen::deleteScreen()

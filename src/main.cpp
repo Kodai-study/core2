@@ -17,6 +17,8 @@ LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのイ
 static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
 static SelectBookScreen selectBookScreen;
+
+// 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
 static Screen currentScreenNumber = Screen_SelectBook;
 static bool buttonInput = false;
@@ -39,8 +41,13 @@ void setup()
     Firebase.reconnectWiFi(true);
     setRTC();
   }
-  readingScreen.initScreen();
-  settingTimeScreen.deleteScreen();
+  for (int i = 0; i < Screen_NUM; i++)
+  {
+    if (i != (int)currentScreenNumber)
+      screens[i]->deleteScreen();
+    else
+      screens[i]->initScreen();
+  }
   Serial.begin(9600);
 }
 
@@ -60,6 +67,7 @@ void loop()
     if (M5.BtnB.pressedFor(5000))
     {
       M5.shutdown(5);
+      wakeupLcd();
       Llcd.fillScreen(BLACK);
       Llcd.setCursor(200, 100);
       Llcd.setFont(&fonts::lgfxJapanGothic_40);
@@ -97,7 +105,11 @@ void test_screenTransition()
   }
 }
 
-// 画面一覧の列挙型を引数にとって、画面遷移を行うハンドラ関数
+/**
+ * @brief 遷移先の画面を選択して、画面遷移を行う関数
+ *
+ * @param screenList Screen列挙型の中で、遷移先の画面を選択する
+ */
 void screenTransitionHandler(Screen screenList)
 {
   screens[(int)currentScreenNumber]->deleteScreen();

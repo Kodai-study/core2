@@ -10,19 +10,15 @@
 #include "ObjectFromCsvFactory.h"
 #include "module/PageFlipData.h"
 #include "CsvManager.h"
+#include "../module/BookData.h"
 
 /**
  * @brief 読書中の画面の制御を行うクラス
- *
  */
 class ReadingScreen : public ScreenBase
 {
 private:
-   /**
-    * @brief 読書データ配列の数
-    * イコールで、次に書き込む配列のインデックスになる
-    */
-   int currentBookIndex = -1;
+   BookData currentBookData;
    /**
     * @brief 現在読んでいるページ数
     */
@@ -32,6 +28,7 @@ private:
     */
    String bookName;
    Button btn_x;
+   int currentBookIndex;
 
    /**
     * @brief 現在の読書モード
