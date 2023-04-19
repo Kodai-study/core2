@@ -64,20 +64,21 @@ void loop()
   {
     togglePowerLcd();
     buttonInput = true;
-    if (M5.BtnB.pressedFor(5000))
-    {
-      M5.shutdown(5);
-      wakeupLcd();
-      Llcd.fillScreen(BLACK);
-      Llcd.setCursor(200, 100);
-      Llcd.setFont(&fonts::lgfxJapanGothic_40);
-      Llcd.print("ShutDown");
-      delay(4500);
-    }
   }
   else if (buttonInput && !M5.BtnB.isPressed())
   {
     buttonInput = false;
+  }
+
+  if (M5.BtnB.pressedFor(5000))
+  {
+    M5.shutdown(5);
+    wakeupLcd();
+    Llcd.fillScreen(BLACK);
+    Llcd.setCursor(200, 100);
+    Llcd.setFont(&fonts::lgfxJapanGothic_40);
+    Llcd.print("ShutDown");
+    delay(4500);
   }
 }
 

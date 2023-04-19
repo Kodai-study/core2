@@ -12,7 +12,7 @@
 class SelectBookScreen : public ScreenBase
 {
 private:
-    const String BOOKDATA_PATH = String("/books");
+    const String BOOKDATA_PATH = String("/bookDatas");
     const int LINE_WIDTH = 2;
     const int LINE_LENGTH = 20;
     const int MAX_BOOK_NUM = 4;

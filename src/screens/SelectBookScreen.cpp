@@ -12,6 +12,8 @@ void SelectBookScreen::initScreen()
 
     if (!getBookData())
     {
+        Llcd.setCursor(50, 50);
+        Llcd.setFont(&fonts::lgfxJapanMinchoP_28);
         Llcd.println("データ取得失敗");
         return;
     }
@@ -100,6 +102,10 @@ bool SelectBookScreen::getBookData()
                     return false;
                 jsonData.get(json);
 
+                Llcd.fillScreen(BLACK);
+                Llcd.print(jsonData.stringValue);
+                delay(1000);
+
                 isGetSuccess &= json.get(jsonData, "bookName");
                 String bookName = jsonData.stringValue;
 
@@ -109,7 +115,7 @@ bool SelectBookScreen::getBookData()
                 isGetSuccess &= json.get(jsonData, "readingTime");
                 bool isReadEnd = jsonData.boolValue;
 
-                isGetSuccess &= json.get(jsonData, "MemoList");
+                isGetSuccess &= json.get(jsonData, "memoList");
                 isGetSuccess &= jsonData.getArray(bookMarkArray);
                 bookMarkArray.size();
 
