@@ -16,8 +16,10 @@
 // #define WIFI_PASSWORD "1ca1af621dff7"
 // #define WIFI_SSID "Buffalo-G-9AD0"
 // #define WIFI_PASSWORD "icbdi657e6syp"
-#define WIFI_SSID "Buffalo-G-458A"
-#define WIFI_PASSWORD "hi6bmsk85557v"
+// #define WIFI_SSID "Buffalo-G-458A"
+// #define WIFI_PASSWORD "hi6bmsk85557v"
+#define WIFI_SSID "Pixel_8000"
+#define WIFI_PASSWORD "45451919"
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>

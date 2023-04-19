@@ -26,27 +26,25 @@ void SelectBookScreen::initScreen()
 void SelectBookScreen::drawBookList()
 {
     // 一番下のボタンのプロンプト以外の部分を消す
-    Llcd.fillRect(0, 0, 320, 200, BLACK);
-    int yPosition = 10;
-
-    Llcd.setCursor(20, yPosition);
+    Llcd.fillRect(0, 0, 320, 210, BLACK);
+    int yPosition = 2;
     Llcd.setFont(&fonts::lgfxJapanMinchoP_32);
 
     int firstIndex = (cursorPosition >= MAX_BOOK_NUM ? cursorPosition - 3 : 0);
+
     for (int i = firstIndex; i < firstIndex + MAX_BOOK_NUM && i < bookDataList.size(); i++)
     {
         BookData *bookData = bookDataList.get(i);
-        if (bookData->getBookName().length() > MAX_BOOK_NAME_LENGTH)
+        Llcd.setCursor(20, yPosition + 15);
+        if (bookData->getBookName().length() / 4 > MAX_BOOK_NAME_LENGTH)
         {
             Llcd.print(bookData->getBookName().substring(0, MAX_BOOK_NAME_LENGTH));
-            Llcd.println("...");
+            Llcd.print("...");
         }
         else
         {
             Llcd.println(bookData->getBookName());
         }
-        drawLine(yPosition + 40);
-        yPosition += 50;
         if (i == cursorPosition)
         {
             Llcd.setCursor(150, yPosition + 15);
@@ -54,16 +52,18 @@ void SelectBookScreen::drawBookList()
             Llcd.printf("ページ:%03d", bookData->getCurrentPage());
             Llcd.setFont(&fonts::lgfxJapanMinchoP_32);
         }
+        drawLine(yPosition + 40);
+        yPosition += 50;
     }
 
     if (cursorPosition - 3 > 0)
     {
-        Llcd.setCursor(220, 10);
+        Llcd.setCursor(250, 10);
         Llcd.print("↑");
     }
     if (firstIndex + 3 < (bookDataList.size() - 1))
     {
-        Llcd.setCursor(220, 160);
+        Llcd.setCursor(250, 160);
         Llcd.print("↓");
     }
 }
@@ -71,9 +71,14 @@ void SelectBookScreen::drawBookList()
 void SelectBookScreen::scereenUpdate()
 {
     // ボタンAを押すと、カーソルの値が1つ増えて、本のリストを再表示する
-    if (M5.BtnA)
+    if (M5.BtnA.wasPressed())
     {
-        cursorPosition++;
+        cursorPosition = (cursorPosition + 1) % bookDataList.size();
+        drawBookList();
+    }
+    else if (M5.BtnC.wasPressed() && cursorPosition > 0)
+    {
+        cursorPosition--;
         drawBookList();
     }
 }
@@ -102,8 +107,6 @@ bool SelectBookScreen::getBookData()
                     return false;
                 jsonData.get(json);
 
-                Llcd.fillScreen(BLACK);
-                Llcd.print(jsonData.stringValue);
                 delay(1000);
 
                 isGetSuccess &= json.get(jsonData, "bookName");
@@ -129,11 +132,18 @@ bool SelectBookScreen::getBookData()
     {
         // TODO ローカルのCSVファイルからデータを取得する
         // TODO 取得したデータをbookDataListに格納する
+
+        // bookDataListに、10個のデータを追加する
+        // データは、"テスト(1～10)"、ページ数は1～10、IDは0～9、読了フラグはTrueとfalseを交互に設定する
+        for (int i = 1; i <= 10; i++)
+        {
+            this->bookDataList.add(new BookData("テスト" + String(i), i, i - 1, i % 2 == 0));
+        }
     }
     return true;
 }
 
 void SelectBookScreen::drawLine(int y)
 {
-    Llcd.drawLine(20, y, 300, y, WHITE);
+    Llcd.drawLine(20, y, 200, y, WHITE);
 }

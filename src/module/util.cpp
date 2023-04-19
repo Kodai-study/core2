@@ -100,53 +100,11 @@ tm *setRTC()
     // ミリ秒単位のUNIX時間から、日本時間の tm 構造体を取得する
 
     auto currentTime = localtime(&unixTime);
-
-    // LCDに時刻を表示
-    Llcd.setCursor(0, 0);
-    Llcd.printf("\n\n%d\n", unixTime);
-    Llcd.print(currentTime->tm_year + 1900);
-    Llcd.print("/");
-    Llcd.print(currentTime->tm_mon + 1);
-    Llcd.print("/");
-    Llcd.print(currentTime->tm_mday);
-    Llcd.print(" ");
-    Llcd.print(currentTime->tm_hour);
-    Llcd.print(":");
-    Llcd.print(currentTime->tm_min);
-    Llcd.print(":");
-    Llcd.print(currentTime->tm_sec);
-    Llcd.println();
-
-    delay(4000);
-    // RTCに時刻をセット
-
     unixTime = data.intData();
     unixTime += (60 * 60 * 9);
-
-    // ミリ秒単位のUNIX時間から、日本時間の tm 構造体を取得する
-
     currentTime = localtime(&unixTime);
-
-    // LCDに時刻を表示
-    Llcd.printf("\n\n%d\n", unixTime);
-    Llcd.print(currentTime->tm_year + 1900);
-    Llcd.print("/");
-    Llcd.print(currentTime->tm_mon + 1);
-    Llcd.print("/");
-    Llcd.print(currentTime->tm_mday);
-    Llcd.print(" ");
-    Llcd.print(currentTime->tm_hour);
-    Llcd.print(":");
-    Llcd.print(currentTime->tm_min);
-    Llcd.print(":");
-    Llcd.print(currentTime->tm_sec);
-    Llcd.println();
-
-    delay(4000);
-    // RTCに時刻をセット
-
-    RTC_TimeTypeDef tr = {0, 0, 0};
-    RTC_DateTypeDef dt = {0, 0, 0};
+    RTC_TimeTypeDef tr;
+    RTC_DateTypeDef dt;
     tr.Hours = (uint8_t)(currentTime->tm_hour);
     tr.Minutes = (uint8_t)(currentTime->tm_min);
     tr.Seconds = (uint8_t)(currentTime->tm_sec);
@@ -176,7 +134,7 @@ bool connectingWifi()
         Llcd.print(".");
         delay(300);
         _cursorX++;
-        if (_cursorX > 20)
+        if (_cursorX > 5)
         {
             _cursorX = 0;
             Llcd.println("\nConnectionFailed");
