@@ -14,12 +14,13 @@
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 // #define WIFI_SSID "aterm-b9044b-g"
 // #define WIFI_PASSWORD "1ca1af621dff7"
-// #define WIFI_SSID "Buffalo-G-9AD0"
-// #define WIFI_PASSWORD "icbdi657e6syp"
-// #define WIFI_SSID "Buffalo-G-458A"
-// #define WIFI_PASSWORD "hi6bmsk85557v"
-#define WIFI_SSID "Pixel_8000"
-#define WIFI_PASSWORD "45451919"
+#define WIFI_SSID "Buffalo-G-458A"
+#define WIFI_PASSWORD "hi6bmsk85557v"
+// #define WIFI_SSID "Pixel_8000"
+// #define WIFI_PASSWORD "45451919"
+
+// #define WIFI_SSID "IODATA-298088-2G"
+// #define WIFI_PASSWORD "Fx8EM83998089"
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>
@@ -69,7 +70,7 @@ bool connectingWifi();
 
 /**
  * @brief 画面遷移を行う関数
- * 
+ *
  * @param screenList 遷移先の画面を指定する列挙型の変数
  */
 void screenTransitionHandler(Screen screenList);

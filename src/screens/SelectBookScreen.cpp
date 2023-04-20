@@ -27,7 +27,7 @@ void SelectBookScreen::drawBookList()
 {
     // 一番下のボタンのプロンプト以外の部分を消す
     Llcd.fillRect(0, 0, 320, 210, BLACK);
-    int yPosition = 2;
+    int yPosition = 5;
     Llcd.setFont(&fonts::lgfxJapanMinchoP_32);
 
     int firstIndex = (cursorPosition >= MAX_BOOK_NUM ? cursorPosition - 3 : 0);
@@ -35,7 +35,7 @@ void SelectBookScreen::drawBookList()
     for (int i = firstIndex; i < firstIndex + MAX_BOOK_NUM && i < bookDataList.size(); i++)
     {
         BookData *bookData = bookDataList.get(i);
-        Llcd.setCursor(20, yPosition + 15);
+        Llcd.setCursor(20, yPosition);
         if (bookData->getBookName().length() / 4 > MAX_BOOK_NAME_LENGTH)
         {
             Llcd.print(bookData->getBookName().substring(0, MAX_BOOK_NAME_LENGTH));
@@ -107,23 +107,21 @@ bool SelectBookScreen::getBookData()
                     return false;
                 jsonData.get(json);
 
-                delay(1000);
-
                 isGetSuccess &= json.get(jsonData, "bookName");
                 String bookName = jsonData.stringValue;
 
                 isGetSuccess &= json.get(jsonData, "currentPage");
                 int currentPage = jsonData.intValue;
 
-                isGetSuccess &= json.get(jsonData, "readingTime");
+                isGetSuccess &= json.get(jsonData, "isReadEnd");
                 bool isReadEnd = jsonData.boolValue;
 
                 isGetSuccess &= json.get(jsonData, "memoList");
                 isGetSuccess &= jsonData.getArray(bookMarkArray);
                 bookMarkArray.size();
 
-                if (!isGetSuccess || isReadEnd)
-                    continue;
+                // if (!isGetSuccess || isReadEnd)
+                //     continue;
 
                 this->bookDataList.add(new BookData(bookName, currentPage, i, isReadEnd));
             }
