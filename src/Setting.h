@@ -45,6 +45,10 @@ public:
     String getWifiPass();
     int getTime();
     int getRepeat();
+
+    // 日付と時刻を引数にとって、設定ファイルに書き込む関数の定義
+    void setDateTime(RTC_DateTypeDef date, RTC_TimeTypeDef time);
+
     /**
      * @brief 接続するWi-FiのSSIDの一覧
      * 設定画面で、Wi-Fiの接続を行うときに、この配列の中から選択する
@@ -68,6 +72,10 @@ private:
     String wifiPass = "PASS";
     int timeInterval = 10;
     int repeat = 5;
+
+   RTC_TimeTypeDef time;
+   RTC_DateTypeDef date;
+
 };
 
 #endif

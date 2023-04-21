@@ -1,6 +1,5 @@
 // Setting.cpp に書いてある内容を、Setting.h の宣言を実装する形に書き換える
 #include "header.h"
-#include "Setting.h"
 
 Setting::Setting()
 {
@@ -10,6 +9,13 @@ Setting::Setting()
 void Setting::setSSID(String ssid)
 {
     ssid = ssid;
+    writeIni();
+}
+
+void Setting::setDateTime(RTC_DateTypeDef date, RTC_TimeTypeDef time)
+{
+    this->date = date;
+    this->time = time;
     writeIni();
 }
 
@@ -96,6 +102,5 @@ void Setting::readIni()
 
 const char *Setting::SSID_COLUM[] = {"SSID"};
 const char *Setting::WIFI_PASS_COLUM[] = {"PASS"};
-
 
 // CPUの温度、動作周波数、を取得して、MySQLにインサートするSQL文を出力する関数

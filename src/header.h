@@ -27,8 +27,10 @@
 #include <M5Core2.h>
 #include <LovyanGFX.hpp>       // lovyanGFXのヘッダを準備
 #include <LGFX_AUTODETECT.hpp> // クラス"LGFX"を準備
+#include "Setting.h"
 
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
+extern Setting setting;
 
 // 画面の一覧を定義する列挙型を作成
 enum Screen
