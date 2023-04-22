@@ -43,6 +43,7 @@ enum Screen
     Screen_SettingTimeInterval,
     Screen_SelectBook,
     Screen_DateTimeSetting,
+    Screen_Debug,
     Screen_NUM
 };
 
@@ -83,5 +84,6 @@ void screenTransitionHandler(Screen screenList);
 
 // RTC_TimeTypeDef RTC_DateTypeDef の2つから、日付時刻の文字列を作成する関数
 String getDateTimeString(RTC_DateTypeDef date, RTC_TimeTypeDef time);
+void getDateTimeFromString(String str, RTC_DateTypeDef &date, RTC_TimeTypeDef &time);
 
 #endif

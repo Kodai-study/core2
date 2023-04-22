@@ -40,6 +40,12 @@ void TimeSettingScreen::initScreen()
 void TimeSettingScreen::deleteScreen()
 {
     setting.setDateTime(settingDate, settingTime);
+    Llcd.fillScreen(BLACK);
+    // ボタンのサイズを全て0にする
+    for (int i = 0; i < 4; i++)
+    {
+        btns[i] = Button(0, 0, 0, 0);
+    }
 }
 
 void TimeSettingScreen::scereenUpdate()

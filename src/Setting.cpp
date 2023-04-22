@@ -67,6 +67,8 @@ void Setting::writeIni() // write to SD card
         file.println(timeInterval);
         file.print("REPEAT="); // write repeat to file
         file.println(repeat);
+        file.print("DATE="); // write date to file
+        file.println(getDateTimeString(date, time));
         file.close(); // close file
     }
 }
@@ -95,9 +97,21 @@ void Setting::readIni()
             {
                 repeat = line.substring(7).toInt();
             }
+            else if (line.startsWith("DATE="))
+            {
+                String dateStr = line.substring(5);
+                // header.h で定義した、文字列から日付と時刻を取得する関数を呼び出す
+                getDateTimeFromString(dateStr, date, time);
+            }
         }
         file.close();
     }
+}
+
+String Setting::getDateTime()
+{
+    // header.h で定義した、日付と時刻から文字列を作成する関数を呼び出す
+    return getDateTimeString(date, time);
 }
 
 const char *Setting::SSID_COLUM[] = {"SSID"};

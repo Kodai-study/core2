@@ -45,9 +45,15 @@ public:
     String getWifiPass();
     int getTime();
     int getRepeat();
+    /**
+     * @brief 設定情報をファイルから読み込む
+     */
+    void readIni();
 
     // 日付と時刻を引数にとって、設定ファイルに書き込む関数の定義
     void setDateTime(RTC_DateTypeDef date, RTC_TimeTypeDef time);
+
+    String getDateTime();
 
     /**
      * @brief 接続するWi-FiのSSIDの一覧
@@ -64,10 +70,6 @@ private:
      * @brief 設定情報をファイルに書き込む
      */
     void writeIni();
-    /**
-     * @brief 設定情報をファイルから読み込む
-     */
-    void readIni();
     String ssid = "SSID";
     String wifiPass = "PASS";
     int timeInterval = 10;

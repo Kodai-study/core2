@@ -11,6 +11,7 @@
 #include "screens/ScreenBase.h"
 #include "screens/SelectBookScreen.h"
 #include "screens/TimeSettingScreen.h"
+#include "screens/DebugScreen.h"
 
 LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
@@ -20,11 +21,16 @@ static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
 static SelectBookScreen selectBookScreen;
 static TimeSettingScreen timeSettingScreen;
+static DebugScreen debugScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
-static Screen currentScreenNumber = Screen_DateTimeSetting;
-static bool buttonInput = false;
+static Screen currentScreenNumber = Screen::Screen_DateTimeSetting;
+
+// ボタンを長押ししたときに1回だけ実行するためのフラグ
+
+static bool buttonB_longPress_flag = false;
+static bool buttonC_longPress_flag = false;
 
 /**
  * M5Stackの初期化関数
@@ -39,6 +45,7 @@ void setup()
   screens[Screen_SettingTimeInterval] = &settingTimeScreen;
   screens[Screen_SelectBook] = &selectBookScreen;
   screens[Screen_DateTimeSetting] = &timeSettingScreen;
+  screens[Screen_Debug] = &debugScreen;
   if (connectingWifi())
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
@@ -64,14 +71,23 @@ void loop()
   M5.update();
   screens[(int)currentScreenNumber]->scereenUpdate();
 
-  if (!buttonInput && M5.BtnB.pressedFor(3000))
+  if (!buttonB_longPress_flag && M5.BtnB.pressedFor(3000))
   {
     togglePowerLcd();
-    buttonInput = true;
+    buttonB_longPress_flag = true;
   }
-  else if (buttonInput && !M5.BtnB.isPressed())
+  else if (buttonB_longPress_flag && !M5.BtnB.isPressed())
   {
-    buttonInput = false;
+    buttonB_longPress_flag = false;
+  }
+
+  if (!buttonC_longPress_flag && M5.BtnC.pressedFor(3000))
+  {
+    screenTransitionHandler(Screen::Screen_Debug);
+  }
+  else if (buttonC_longPress_flag && !M5.BtnC.isPressed())
+  {
+    buttonC_longPress_flag = false;
   }
 
   if (M5.BtnB.pressedFor(5000))
@@ -118,18 +134,6 @@ void test_screenTransition()
 void screenTransitionHandler(Screen screenList)
 {
   screens[(int)currentScreenNumber]->deleteScreen();
-  switch (screenList)
-  {
-  case Screen::Screen_Reading:
-    readingScreen.initScreen();
-    break;
-  case Screen::Screen_SettingTimeInterval:
-    settingTimeScreen.initScreen();
-    break;
-  case Screen::Screen_SelectBook:
-    selectBookScreen.initScreen();
-    break;
-  default:
-    break;
-  }
+  currentScreenNumber = screenList;
+  screens[(int)currentScreenNumber]->initScreen();
 }

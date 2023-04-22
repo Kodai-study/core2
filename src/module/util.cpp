@@ -216,3 +216,20 @@ String getDateTimeString(RTC_DateTypeDef date, RTC_TimeTypeDef time)
     sprintf(buf, "%04d/%02d/%02d %02d:%02d:%02d", date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds);
     return String(buf);
 }
+
+// 一つ上の関数とは逆に、日付の文字列から RTC_DateTypeDef date, RTC_TimeTypeDef time を取得する
+void getDateTimeFromString(String str, RTC_DateTypeDef &date, RTC_TimeTypeDef &time)
+{
+    int year = str.substring(0, 4).toInt();
+    int month = str.substring(5, 7).toInt();
+    int day = str.substring(8, 10).toInt();
+    int hour = str.substring(11, 13).toInt();
+    int minute = str.substring(14, 16).toInt();
+    int second = str.substring(17, 19).toInt();
+    date.Year = year;
+    date.Month = month;
+    date.Date = day;
+    time.Hours = hour;
+    time.Minutes = minute;
+    time.Seconds = second;
+}
