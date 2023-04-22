@@ -209,3 +209,15 @@ boolean connectWifi(int btn)
     }
     return connect;
 }
+
+String getDateTimeString(RTC_DateTypeDef date, RTC_TimeTypeDef time)
+{
+    String timeString = "";
+    timeString += String(date.Year) + "/";
+    timeString += String(date.Month) + "/";
+    timeString += String(date.Date) + " ";
+    timeString += String(time.Hours) + ":";
+    timeString += String(time.Minutes) + ":";
+    timeString += String(time.Seconds);
+    return timeString;
+}
