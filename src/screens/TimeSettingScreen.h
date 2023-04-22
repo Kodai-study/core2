@@ -21,12 +21,11 @@ private:
    const RTC_DateTypeDef DEFAULT_TIME = {0, 4, 21, 2023};
    const RTC_TimeTypeDef DEFAULT_DATE = {12, 0, 0};
    const Point DATETIME_SHOW_POSITION = Point(10, 100);
+   const Point BTN_POSITIONS[4] = {Point(5, 145), Point(85, 145), Point(170, 145), Point(240, 145)};
+   const Point BTN_SIZE = Point(70, 40);
 
    RTC_TimeTypeDef settingTime;
    RTC_DateTypeDef settingDate;
-   Button sampleButton = Button(0, 0, 0, 0, false, "sample");
-   const Point BTN_POSITIONS[4] = {Point(15, 145), Point(95, 145), Point(180, 145), Point(250, 145)};
-   const Point BTN_SIZE = Point(70, 40);
 
    enum SetMode
    {

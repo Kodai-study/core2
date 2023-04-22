@@ -213,8 +213,6 @@ boolean connectWifi(int btn)
 String getDateTimeString(RTC_DateTypeDef date, RTC_TimeTypeDef time)
 {
     char buf[32];
-    // フォーマットを使って、日付時刻の文字列を作成する
     sprintf(buf, "%04d/%02d/%02d %02d:%02d:%02d", date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds);
-
     return String(buf);
 }

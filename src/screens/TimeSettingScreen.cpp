@@ -17,18 +17,23 @@ void TimeSettingScreen::initScreen()
     M5.Rtc.GetTime(&settingTime);
     M5.Rtc.GetDate(&settingDate);
 
+    settingTime.Minutes -= settingTime.Minutes % 10;
+    settingTime.Seconds = 0;
+
     btns[0] = Button(BTN_POSITIONS[0].x, BTN_POSITIONS[0].y, BTN_SIZE.x, BTN_SIZE.y, true, "+10", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
     btns[1] = Button(BTN_POSITIONS[1].x, BTN_POSITIONS[1].y, BTN_SIZE.x, BTN_SIZE.y, true, "+1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
     btns[2] = Button(BTN_POSITIONS[2].x, BTN_POSITIONS[2].y, BTN_SIZE.x, BTN_SIZE.y, true, "-1", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
     btns[3] = Button(BTN_POSITIONS[3].x, BTN_POSITIONS[3].y, BTN_SIZE.x, BTN_SIZE.y, true, "-10", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
 
-    Llcd.setCursor(55, 217);
+    Llcd.setCursor(30, 217);
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_24);
-    Llcd.print("前      決定        次");
-    this->sampleButton = Button(100, 100, 100, 100, true, "-5", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
+    Llcd.print("切り替え      決定         次");
+
+    Llcd.setFont(&fonts::lgfxJapanMinchoP_28);
+    Llcd.setCursor(30, 20);
+    Llcd.print("時刻設定");
 
     Llcd.setCursor(DATETIME_SHOW_POSITION.x, DATETIME_SHOW_POSITION.y);
-    Llcd.setFont(&fonts::lgfxJapanMinchoP_28);
     Llcd.print(getDateTimeString(settingDate, settingTime));
 }
 
@@ -39,20 +44,30 @@ void TimeSettingScreen::deleteScreen()
 
 void TimeSettingScreen::scereenUpdate()
 {
-    if (this->sampleButton.wasPressed())
-    {
-        sampleButton.setLabel("test");
-        // settingTime の値を、1時間文増やす
-        settingTime.Hours++;
-        correctDateTime();
-        updateDateTimeView();
-    }
-
     if (M5.BtnA.wasPressed())
     {
-        // SetMode を切り替える
-        SetMode = SetMode == SetMode::DATE ? SetMode::MINUTE : SetMode::DATE;
-        updateDateTimeView();
+        Llcd.fillRect(0, 0, 100, 40, BLACK);
+        Llcd.setCursor(30, 20);
+        switch (SetMode)
+        {
+        case SetMode::DATE:
+            SetMode = SetMode::MINUTE;
+            btns[0].setLabel("+30");
+            btns[1].setLabel("+10");
+            btns[2].setLabel("-10");
+            btns[3].setLabel("-30");
+            Llcd.print("時刻設定:(分)");
+            break;
+        case SetMode::MINUTE:
+            SetMode = SetMode::DATE;
+            btns[0].setLabel("+10");
+            btns[1].setLabel("+1");
+            btns[2].setLabel("-1");
+            btns[3].setLabel("-10");
+            Llcd.print("日付設定:(日)");
+            break;
+        }
+        M5.Buttons.draw();
     }
 
     // btns のボタンが、押されているかどうかを確認する
@@ -64,17 +79,28 @@ void TimeSettingScreen::scereenUpdate()
             switch (i)
             {
             case 0:
-
-                settingTime.Minutes += 10;
+                if (SetMode == SetMode::DATE)
+                    settingDate.Date += 10;
+                else if (SetMode == SetMode::MINUTE)
+                    settingTime.Minutes += 30;
                 break;
             case 1:
-                settingTime.Minutes++;
+                if (SetMode == SetMode::DATE)
+                    settingDate.Date++;
+                else if (SetMode == SetMode::MINUTE)
+                    settingTime.Minutes += 10;
                 break;
             case 2:
-                settingTime.Minutes--;
+                if (SetMode == SetMode::DATE)
+                    settingDate.Date--;
+                else if (SetMode == SetMode::MINUTE)
+                    settingTime.Minutes -= 10;
                 break;
             case 3:
-                settingTime.Minutes -= 10;
+                if (SetMode == SetMode::DATE)
+                    settingDate.Date -= 10;
+                else if (SetMode == SetMode::MINUTE)
+                    settingTime.Minutes -= 30;
                 break;
             }
             correctDateTime();
@@ -106,6 +132,31 @@ void TimeSettingScreen::correctDateTime()
 {
     static const uint8_t monthMaxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+    // uint_8型のため、200を超えている値は負の数と考え、調節を行う。
+    //  例えば、分の値が-nになったら、時の値を1減らし、分の値を60-nにする
+    if (settingTime.Minutes > 200)
+    {
+        settingTime.Hours--;
+        settingTime.Minutes += 60;
+    }
+    if (settingTime.Hours > 200)
+    {
+        settingDate.Date--;
+        settingTime.Hours += 24;
+    }
+    if (settingDate.Date == 0 || settingDate.Date > 200)
+    {
+        settingDate.Date += monthMaxDay[settingDate.Month];
+        settingDate.Month--;
+    }
+    if (settingDate.Month == 0 || settingDate.Month > 200)
+    {
+        settingDate.Year--;
+        settingDate.Month += 12;
+    }
+
+    // 0~60の範囲に収まるように、値を調節する
+
     if (settingTime.Minutes >= 60)
     {
         settingTime.Hours++;
@@ -116,9 +167,9 @@ void TimeSettingScreen::correctDateTime()
         settingDate.Date++;
         settingTime.Hours -= 24;
     }
-    if (settingDate.Date > monthMaxDay[settingDate.Month])
+    if (settingDate.Date > monthMaxDay[settingDate.Month - 1])
     {
-        settingDate.Date -= monthMaxDay[settingDate.Month];
+        settingDate.Date -= monthMaxDay[settingDate.Month - 1];
         settingDate.Month++;
     }
     if (settingDate.Month > 12)
