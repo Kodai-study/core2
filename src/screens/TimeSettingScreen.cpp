@@ -91,7 +91,9 @@ void TimeSettingScreen::setRTC()
 
 void TimeSettingScreen::updateDateTimeView()
 {
-    Llcd.setCursor(0, 0);
+    // 画面の指定した範囲を、黒で塗りつぶす
+    Llcd.fillRect(0, 70, 320, 75, BLACK);
+    Llcd.setCursor(DATETIME_SHOW_POSITION.x, DATETIME_SHOW_POSITION.y);
     Llcd.print(getDateTimeString(settingDate, settingTime));
 }
 

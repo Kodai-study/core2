@@ -24,7 +24,7 @@ private:
 
    RTC_TimeTypeDef settingTime;
    RTC_DateTypeDef settingDate;
-   Button sampleButton;
+   Button sampleButton = Button(0, 0, 0, 0, false, "sample");
    const Point BTN_POSITIONS[4] = {Point(15, 145), Point(95, 145), Point(180, 145), Point(250, 145)};
    const Point BTN_SIZE = Point(70, 40);
 

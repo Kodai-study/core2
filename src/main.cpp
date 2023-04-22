@@ -10,17 +10,20 @@
 #include "screens/SettingTimeIntervalScreen.h"
 #include "screens/ScreenBase.h"
 #include "screens/SelectBookScreen.h"
+#include "screens/TimeSettingScreen.h"
 
 LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
+Setting setting;           // 設定を保持するクラスのインスタンスを作成
 
 static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
 static SelectBookScreen selectBookScreen;
+static TimeSettingScreen timeSettingScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
-static Screen currentScreenNumber = Screen_SelectBook;
+static Screen currentScreenNumber = Screen_DateTimeSetting;
 static bool buttonInput = false;
 
 /**
@@ -35,6 +38,7 @@ void setup()
   screens[Screen_Reading] = &readingScreen;
   screens[Screen_SettingTimeInterval] = &settingTimeScreen;
   screens[Screen_SelectBook] = &selectBookScreen;
+  screens[Screen_DateTimeSetting] = &timeSettingScreen;
   if (connectingWifi())
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
@@ -74,7 +78,7 @@ void loop()
   {
     wakeupLcd();
     Llcd.fillScreen(BLACK);
-    Llcd.setCursor(200, 100);
+    Llcd.setCursor(20, 100);
     Llcd.setFont(&fonts::lgfxJapanGothic_40);
     Llcd.print("ShutDown");
     delay(4500);
