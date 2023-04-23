@@ -67,6 +67,11 @@ public:
      */
     static const char *WIFI_PASS_COLUM[];
 
+    static constexpr const char *SETTING_FILE_NAME = "/setting.ini";
+
+    // 設定情報の一覧をデバッグ出力する関数
+    void printAllSetting();
+
 private:
     /**
      * @brief 設定情報をファイルに書き込む
@@ -77,8 +82,20 @@ private:
     int timeInterval = 10;
     int repeat = 5;
 
-    RTC_TimeTypeDef time;
-    RTC_DateTypeDef date;
+    RTC_TimeTypeDef time =
+        {
+            .Hours = 12,
+            .Minutes = 0,
+            .Seconds = 0,
+    };
+
+    RTC_DateTypeDef date =
+        {
+            .WeekDay = 6,
+            .Month = 4,
+            .Date = 22,
+            .Year = 23,
+    };
 };
 
 #endif

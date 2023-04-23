@@ -30,6 +30,7 @@ public:
       Llcd.println(setting.getSSID());
       Llcd.println(setting.getWifiPass());
       Llcd.println(setting.getDateTime());
+      setting.printAllSetting();
    }
    // ScreenBaseクラスのdeleteScreenをオーバーライドし、その実装を空で記述する。
 

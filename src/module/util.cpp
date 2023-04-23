@@ -130,6 +130,10 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
     int _cursorX = 0;
     WiFi.begin(wifiSSID.c_str(), wifiPassWord.c_str());
 
+    Serial.print("SSID: ");
+    Serial.println(wifiSSID.c_str());
+    Serial.print("PASS: ");
+    Serial.println(wifiPassWord.c_str());
     Llcd.print("Connecting to Wi-Fi");
     while (WiFi.status() != WL_CONNECTED)
     {

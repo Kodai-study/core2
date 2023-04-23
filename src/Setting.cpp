@@ -56,7 +56,7 @@ int Setting::getRepeat()
 
 void Setting::writeIni() // write to SD card
 {
-    File file = SD.open("setting.ini", FILE_WRITE, true); // open file
+    File file = SD.open(SETTING_FILE_NAME, FILE_WRITE, true); // open file
     if (file)
     {
         file.print("SSID="); // write SSID to file
@@ -71,16 +71,21 @@ void Setting::writeIni() // write to SD card
         file.println(getDateTimeString(date, time));
         file.close(); // close file
     }
+    else
+    {
+        Serial.println("file open failed");
+    }
 }
 
 void Setting::readIni()
 {
-    File file = SD.open("setting.ini", FILE_READ, true);
+    File file = SD.open(SETTING_FILE_NAME, FILE_READ, true);
     if (file)
     {
         while (file.available())
         {
             String line = file.readStringUntil('\n');
+            line.trim();
             if (line.startsWith("SSID="))
             {
                 this->ssid = line.substring(5);
@@ -106,6 +111,10 @@ void Setting::readIni()
         }
         file.close();
     }
+    else
+    {
+        Serial.println("file open failed");
+    }
 }
 
 String Setting::getDateTime()
@@ -125,5 +134,14 @@ RTC_TimeTypeDef Setting::getTime()
     return time;
 }
 
-const char *Setting::SSID_COLUM[] = {"SSID"};
-const char *Setting::WIFI_PASS_COLUM[] = {"PASS"};
+void Setting::printAllSetting()
+{
+    Serial.println("SSID: " + ssid);
+    Serial.println("PASS: " + wifiPass);
+    Serial.println("TIME: " + String(timeInterval));
+    Serial.println("REPEAT: " + String(repeat));
+    Serial.println("DATE: " + getDateTime());
+}
+
+String SSID_COLUM[] = {"aterm-b9044b-g", "Buffalo-G-458A", "Pixel_8000", "IODATA-298088-2G"};
+String WIFI_PASS_COLUM[] = {"1ca1af621dff7", "hi6bmsk85557v", "45451919", "Fx8EM83998089"};

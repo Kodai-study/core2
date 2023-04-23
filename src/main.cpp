@@ -39,6 +39,7 @@ static bool buttonC_longPress_flag = false;
 void setup()
 {
   M5.begin();
+  Serial.begin(9600);
   M5.lcd.begin();
   Llcd.init(); // LCD初期化
   screens[Screen_Reading] = &readingScreen;
@@ -50,10 +51,12 @@ void setup()
 
   bool isWifiConnected;
 
-  if (setting.getSSID() != "NULL" && setting.getWifiPass() != "NULL")
-    isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
-  else
+  if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
+  {
     isWifiConnected = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
+  }
+  else
+    isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
 
   if (isWifiConnected)
   {
