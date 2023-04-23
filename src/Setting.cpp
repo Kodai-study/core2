@@ -8,7 +8,7 @@ Setting::Setting()
 
 void Setting::setSSID(String ssid)
 {
-    ssid = ssid;
+    this->ssid = ssid;
     writeIni();
 }
 
@@ -19,21 +19,21 @@ void Setting::setDateTime(RTC_DateTypeDef date, RTC_TimeTypeDef time)
     writeIni();
 }
 
-void Setting::setWifiPass(String pass)
+void Setting::setWifiPass(String wifiPass)
 {
-    wifiPass = pass;
+    this->wifiPass = wifiPass;
     writeIni();
 }
 
 void Setting::setTimeInterval(int timeInterval)
 {
-    timeInterval = timeInterval;
+    this->timeInterval = timeInterval;
     writeIni();
 }
 
-void Setting::setRepeat(int rep)
+void Setting::setRepeat(int repeat)
 {
-    repeat = rep;
+    this->repeat = repeat;
     writeIni();
 }
 
@@ -45,7 +45,7 @@ String Setting::getWifiPass()
 {
     return wifiPass;
 }
-int Setting::getTime()
+int Setting::getTimeInterval()
 {
     return timeInterval;
 }
@@ -56,7 +56,7 @@ int Setting::getRepeat()
 
 void Setting::writeIni() // write to SD card
 {
-    File file = SD.open("setting.ini", FILE_WRITE); // open file
+    File file = SD.open("setting.ini", FILE_WRITE, true); // open file
     if (file)
     {
         file.print("SSID="); // write SSID to file
@@ -75,7 +75,7 @@ void Setting::writeIni() // write to SD card
 
 void Setting::readIni()
 {
-    File file = SD.open("setting.ini", FILE_READ);
+    File file = SD.open("setting.ini", FILE_READ, true);
     if (file)
     {
         while (file.available())
@@ -112,6 +112,17 @@ String Setting::getDateTime()
 {
     // header.h で定義した、日付と時刻から文字列を作成する関数を呼び出す
     return getDateTimeString(date, time);
+}
+
+// 日付、時刻の2つのローカル変数のゲッタを作成
+RTC_DateTypeDef Setting::getDate()
+{
+    return date;
+}
+
+RTC_TimeTypeDef Setting::getTime()
+{
+    return time;
 }
 
 const char *Setting::SSID_COLUM[] = {"SSID"};

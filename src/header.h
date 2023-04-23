@@ -73,7 +73,7 @@ tm *setRTC();
  * @return true
  * @return false
  */
-bool connectingWifi();
+bool connectingWifi(String wifiSSID, String wifiPassWord);
 
 /**
  * @brief 画面遷移を行う関数

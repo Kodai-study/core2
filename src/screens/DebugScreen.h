@@ -26,7 +26,7 @@ public:
       Llcd.setTextFont(&fonts::lgfxJapanMinchoP_16);
       setting.readIni();
       Llcd.println(setting.getRepeat());
-      Llcd.println(setting.getTime());
+      Llcd.println(setting.getTimeInterval());
       Llcd.println(setting.getSSID());
       Llcd.println(setting.getWifiPass());
       Llcd.println(setting.getDateTime());

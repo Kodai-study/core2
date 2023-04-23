@@ -113,6 +113,9 @@ tm *setRTC()
     dt.Month = (uint8_t)(currentTime->tm_mon + 1);
     dt.Date = (uint8_t)(currentTime->tm_mday);
     dt.Year = (uint16_t)(currentTime->tm_year + 1900);
+
+    setting.setDateTime(dt, tr);
+
     M5.Rtc.SetTime(&tr);
     M5.Rtc.SetDate(&dt);
     M5.Rtc.begin();
@@ -121,11 +124,12 @@ tm *setRTC()
 
 // ミリ秒のUNIXTIMEを引数で受け取って、その時間をRTCにセットする
 
-bool connectingWifi()
+bool connectingWifi(String wifiSSID, String wifiPassWord)
 {
     Llcd.setCursor(0, 0);
     int _cursorX = 0;
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    WiFi.begin(wifiSSID.c_str(), wifiPassWord.c_str());
+
     Llcd.print("Connecting to Wi-Fi");
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -134,7 +138,7 @@ bool connectingWifi()
         Llcd.print(".");
         delay(300);
         _cursorX++;
-        if (_cursorX > 5)
+        if (_cursorX > 15)
         {
             _cursorX = 0;
             Llcd.println("\nConnectionFailed");
@@ -147,6 +151,8 @@ bool connectingWifi()
     Llcd.print("Connected with IP:");
     Llcd.print(WiFi.localIP());
     Llcd.println("\nConnected!!");
+    setting.setSSID(wifiSSID);
+    setting.setWifiPass(wifiPassWord);
     delay(1000);
     return true;
 }

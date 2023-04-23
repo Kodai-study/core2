@@ -43,8 +43,10 @@ public:
     void setRepeat(int rep);
     String getSSID();
     String getWifiPass();
-    int getTime();
+    int getTimeInterval();
     int getRepeat();
+    RTC_DateTypeDef getDate();
+    RTC_TimeTypeDef getTime();
     /**
      * @brief 設定情報をファイルから読み込む
      */
@@ -70,14 +72,13 @@ private:
      * @brief 設定情報をファイルに書き込む
      */
     void writeIni();
-    String ssid = "SSID";
-    String wifiPass = "PASS";
+    String ssid = "NULL";
+    String wifiPass = "NULL";
     int timeInterval = 10;
     int repeat = 5;
 
-   RTC_TimeTypeDef time;
-   RTC_DateTypeDef date;
-
+    RTC_TimeTypeDef time;
+    RTC_DateTypeDef date;
 };
 
 #endif

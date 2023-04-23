@@ -46,11 +46,27 @@ void setup()
   screens[Screen_SelectBook] = &selectBookScreen;
   screens[Screen_DateTimeSetting] = &timeSettingScreen;
   screens[Screen_Debug] = &debugScreen;
-  if (connectingWifi())
+  setting.readIni();
+
+  bool isWifiConnected;
+
+  if (setting.getSSID() != "NULL" && setting.getWifiPass() != "NULL")
+    isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
+  else
+    isWifiConnected = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
+
+  if (isWifiConnected)
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
     Firebase.reconnectWiFi(true);
     setRTC();
+  }
+  else
+  {
+    auto time = setting.getTime();
+    auto date = setting.getDate();
+    M5.Rtc.SetTime(&time);
+    M5.Rtc.SetDate(&date);
   }
   for (int i = 0; i < Screen_NUM; i++)
   {
@@ -59,7 +75,6 @@ void setup()
     else
       screens[i]->initScreen();
   }
-  Serial.begin(9600);
 }
 
 /**
