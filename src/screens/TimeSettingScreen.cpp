@@ -31,7 +31,7 @@ void TimeSettingScreen::initScreen()
 
     Llcd.setFont(&fonts::lgfxJapanMinchoP_28);
     Llcd.setCursor(30, 20);
-    Llcd.print("時刻設定");
+    Llcd.print("日付設定:(日)");
 
     Llcd.setCursor(DATETIME_SHOW_POSITION.x, DATETIME_SHOW_POSITION.y);
     Llcd.print(getDateTimeString(settingDate, settingTime));

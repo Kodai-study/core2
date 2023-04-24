@@ -51,8 +51,7 @@ public:
         return readingHistory;
     }
 
-    static MemoData
-    CreateMemoDataFromCsv(const String csvLine)
+    static MemoData CreateMemoDataFromCsv(const String csvLine)
     {
         String array[4];
         split(csvLine, array);
