@@ -33,11 +33,12 @@ private:
      * 初期値は現在のメモの個数になり、書き込むごとに増えていく
      */
     int memoDataIndex = -1;
+    int memoDataSize = -1;
 
 public:
     // ブックマークの配列の数を取得する関数の定義。
     // memoDataIndexの値を更新し、取得に成功したか否かを返す
-    bool getMemoDataSize();
+    int getMemoDataSize() { return this->memoDataSize; }
 
     String getBookName() { return this->bookName; }
     int getCurrentPage() { return this->currentPage; }
@@ -55,6 +56,15 @@ public:
         this->currentPage = currentPage;
         this->bookIndex = bookIndex;
         this->isReadEnd = isReadEnd;
+    }
+    // 全てのパラメータを初期化するコンストラクタ
+    BookData(String bookName, int currentPage, int bookIndex, bool isReadEnd, int memoDataSize)
+    {
+        this->bookName = bookName;
+        this->currentPage = currentPage;
+        this->bookIndex = bookIndex;
+        this->isReadEnd = isReadEnd;
+        this->memoDataSize = memoDataSize;
     }
 };
 

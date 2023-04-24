@@ -19,7 +19,8 @@
 // #define WIFI_SSID "Buffalo-G-458A"
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
-#define CONNECTING_MODE
+// デバッグ用に、Wifiへの接続を行うかどうかのシンボルを定義する
+// #define DEBUG_WIFI_CONNECT
 
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
@@ -29,7 +30,6 @@
 
 // #define WIFI_SSID "denshi24G"
 // #define WIFI_PASSWORD "TESTSAMPLE"
-
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>

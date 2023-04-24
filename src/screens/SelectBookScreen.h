@@ -13,6 +13,7 @@ class SelectBookScreen : public ScreenBase
 {
 private:
     const String BOOKDATA_PATH = String("/bookDatas");
+    const String BOOKDATA_FILE_NAME = String("/bookData.csv");
     const int LINE_WIDTH = 2;
     const int LINE_LENGTH = 20;
     const int MAX_BOOK_NUM = 4;

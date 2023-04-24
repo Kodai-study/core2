@@ -28,7 +28,7 @@ void SelectBookScreen::initScreen()
 void SelectBookScreen::drawBookList()
 {
     // 一番下のボタンのプロンプト以外の部分を消す
-    Llcd.fillRect(0, 0, 320, 210, BLACK);
+    Llcd.fillRect(0, 0, 320, 190, BLACK);
     int yPosition = 5;
     Llcd.setFont(&fonts::lgfxJapanMinchoP_32);
 
@@ -83,6 +83,18 @@ void SelectBookScreen::scereenUpdate()
         cursorPosition--;
         drawBookList();
     }
+
+    // Bボタンが押されたら、本の情報を表示する
+    if (M5.BtnB.wasPressed())
+    {
+        BookData *bookData = bookDataList.get(cursorPosition);
+        // bookDataのゲットメソッドを全て呼び出して、Serial で表示する
+        Serial.println("bookName:" + bookData->getBookName());
+        Serial.println("currentPage:" + String(bookData->getCurrentPage()));
+        Serial.println("bookIndex:" + String(bookData->getBookIndex()));
+        Serial.println("isReadEnd:" + String(bookData->getIsReadEnd()));
+        Serial.println("memoListsize:" + String(bookData->getMemoDataSize()));
+    }
 }
 
 void SelectBookScreen::deleteScreen()
@@ -121,10 +133,6 @@ bool SelectBookScreen::getBookData()
                 isGetSuccess &= json.get(jsonData, "memoList");
                 isGetSuccess &= jsonData.getArray(bookMarkArray);
                 bookMarkArray.size();
-
-                // if (!isGetSuccess || isReadEnd)
-                //     continue;
-
                 this->bookDataList.add(new BookData(bookName, currentPage, i, isReadEnd));
             }
     }
@@ -132,16 +140,13 @@ bool SelectBookScreen::getBookData()
     {
         // TODO ローカルのCSVファイルからデータを取得する
         // TODO 取得したデータをbookDataListに格納する
-        CsvManager csvManager(BOOKDATA_PATH, true);
+        CsvManager csvManager(BOOKDATA_FILE_NAME, true);
 
-        // 次のデータ項目の文字列を作って、CSVファイルに書き込む
-        //String bookName, int currentPage, int bookIndex, bool isReadEnd
-        // １行目に項目名を書き込む
-        csvManager.writeLine("bookName,currentPage,bookIndex,isReadEnd");
-        csvManager.writeLine("テスト1,1,0,0");
-        csvManager.writeLine("テスト2,2,1,0");
-        csvManager.writeLine("テスト3,3,2,0");
-        csvManager.writeLine("テスト4,4,3,0");
+        csvManager.resetFile();
+        csvManager.writeLine("テスト1,1,0,0,5");
+        csvManager.writeLine("テスト2,2,1,0,6");
+        csvManager.writeLine("テスト3,3,2,0,7");
+        csvManager.writeLine("テスト4,4,3,0,8");
 
         LinkedList<String> lines = csvManager.readAllLines(true);
 

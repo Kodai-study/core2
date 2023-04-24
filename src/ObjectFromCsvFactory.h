@@ -75,7 +75,8 @@ public:
             array[0],
             array[1].toInt(),
             array[2].toInt(),
-            array[3].toInt() != 0);
+            array[3].toInt() != 0,
+            array[4].toInt());
     }
 };
 

@@ -132,6 +132,7 @@ public:
             m_file = SD.open(m_fileName, isWriteMode ? FILE_APPEND : FILE_READ, true);
             if (!m_file)
             {
+                Serial.println("file open error");
                 return false;
             }
         }

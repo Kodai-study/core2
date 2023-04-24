@@ -50,14 +50,16 @@ void setup()
   setting.readIni();
 
   bool isWifiConnected;
-
+#ifdef DEBUG_WIFI_CONNECT
   if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
   {
     isWifiConnected = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
   }
   else
     isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
-
+#else
+  isWifiConnected = false;
+#endif
   if (isWifiConnected)
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
@@ -71,13 +73,8 @@ void setup()
     M5.Rtc.SetTime(&time);
     M5.Rtc.SetDate(&date);
   }
-  for (int i = 0; i < Screen_NUM; i++)
-  {
-    if (i != (int)currentScreenNumber)
-      screens[i]->deleteScreen();
-    else
-      screens[i]->initScreen();
-  }
+
+  screens[(int)currentScreenNumber]->initScreen();
 }
 
 /**
