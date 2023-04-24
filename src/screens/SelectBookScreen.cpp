@@ -1,6 +1,8 @@
 #include "header.h"
 #include "SelectBookScreen.h"
 #include "module/BookData.h"
+#include "../CsvManager.h"
+#include "../ObjectFromCsvFactory.h"
 
 void SelectBookScreen::initScreen()
 {
@@ -130,13 +132,34 @@ bool SelectBookScreen::getBookData()
     {
         // TODO ローカルのCSVファイルからデータを取得する
         // TODO 取得したデータをbookDataListに格納する
+        CsvManager csvManager(BOOKDATA_PATH, true);
 
-        // bookDataListに、10個のデータを追加する
-        // データは、"テスト(1～10)"、ページ数は1～10、IDは0～9、読了フラグはTrueとfalseを交互に設定する
-        for (int i = 1; i <= 10; i++)
+        // 次のデータ項目の文字列を作って、CSVファイルに書き込む
+        //String bookName, int currentPage, int bookIndex, bool isReadEnd
+        // １行目に項目名を書き込む
+        csvManager.writeLine("bookName,currentPage,bookIndex,isReadEnd");
+        csvManager.writeLine("テスト1,1,0,0");
+        csvManager.writeLine("テスト2,2,1,0");
+        csvManager.writeLine("テスト3,3,2,0");
+        csvManager.writeLine("テスト4,4,3,0");
+
+        LinkedList<String> lines = csvManager.readAllLines(true);
+
+        // ObjectFromCsvFactoryのメソッドを使って、１行ずつBookDataを生成する
+        for (int i = 0; i < lines.size(); i++)
         {
-            this->bookDataList.add(new BookData("テスト" + String(i), i, i - 1, i % 2 == 0));
+            String line = lines.get(i);
+            BookData *bookData = CreateObjectFromCsvFactory::CreateBookDataFromCsv(line);
+            if (bookData != nullptr)
+                this->bookDataList.add(bookData);
+            else
+                Serial.println("bookData is null. line:" + line);
         }
+
+        // for (int i = 1; i <= 10; i++)
+        // {
+        //     this->bookDataList.add(new BookData("テスト" + String(i), i, i - 1, i % 2 == 0));
+        // }
     }
     return true;
 }

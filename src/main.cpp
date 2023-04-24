@@ -25,7 +25,7 @@ static DebugScreen debugScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
-static Screen currentScreenNumber = Screen::Screen_DateTimeSetting;
+static Screen currentScreenNumber = Screen::Screen_SelectBook;
 
 // ボタンを長押ししたときに1回だけ実行するためのフラグ
 

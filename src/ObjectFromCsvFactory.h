@@ -10,6 +10,7 @@
 #include "header.h"
 #include "module/PageFlipData.h"
 #include "module/MemoData.h"
+#include "module/BookData.h"
 
 class CreateObjectFromCsvFactory
 {
@@ -63,6 +64,18 @@ public:
             array[3].toInt()};
 
         return memoData;
+    }
+
+    static BookData *CreateBookDataFromCsv(const String csvLine)
+    {
+        String array[4];
+        split(csvLine, array);
+
+        return new BookData(
+            array[0],
+            array[1].toInt(),
+            array[2].toInt(),
+            array[3].toInt() != 0);
     }
 };
 

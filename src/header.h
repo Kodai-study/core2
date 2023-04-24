@@ -13,17 +13,23 @@
 #define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 
-// #define WIFI_SSID "aterm-b9044b-g"
-// #define WIFI_PASSWORD "1ca1af621dff7"
+#define WIFI_SSID "aterm-b9044b-g"
+#define WIFI_PASSWORD "1ca1af621dff7"
 
-#define WIFI_SSID "Buffalo-G-458A"
-#define WIFI_PASSWORD "hi6bmsk85557v"
+// #define WIFI_SSID "Buffalo-G-458A"
+// #define WIFI_PASSWORD "hi6bmsk85557v"
+
+#define CONNECTING_MODE
 
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
 
 // #define WIFI_SSID "IODATA-298088-2G"
 // #define WIFI_PASSWORD "Fx8EM83998089"
+
+// #define WIFI_SSID "denshi24G"
+// #define WIFI_PASSWORD "TESTSAMPLE"
+
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>

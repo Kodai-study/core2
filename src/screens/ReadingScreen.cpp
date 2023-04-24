@@ -42,7 +42,7 @@ void ReadingScreen::initScreen()
 
 ReadingScreen::ReadingScreen(int currentBookIndex, int currentPage, String bookName)
     : currentBookData(bookName, currentPage, currentBookIndex, false),
-    btn_x(0, 0, 0, 0)
+      btn_x(0, 0, 0, 0)
 {
     this->bookName = bookName;
     this->btn_x = Button(0, 0, 0, 0);

@@ -52,7 +52,6 @@ public:
 
         if (!isWriteMode)
         {
-
             m_file.close();
             m_file = SD.open(m_fileName, FILE_APPEND, true);
             isWriteMode = true;
@@ -84,8 +83,12 @@ public:
      *
      * @return LinkedList<String> 1行の文字列を1つの要素としたLinkedList
      */
-    LinkedList<String> readAllLines()
+    LinkedList<String> readAllLines(bool isSkipFirstLine = true)
     {
+        // 最初の１行を捨てるかどうかのフラグを追加する
+        // ファイルの先頭に、ヘッダー行がある場合に、ヘッダー行を捨てるために使う
+        // デフォルトでは、ヘッダー行を捨てる
+
         LinkedList<String> list;
         if (!openFile())
             return list;
@@ -96,9 +99,17 @@ public:
             m_file = SD.open(m_fileName, FILE_READ, true);
             isWriteMode = false;
         }
+
+        if (isSkipFirstLine)
+        {
+            m_file.readStringUntil('\n');
+        }
+
         while (m_file.available())
         {
-            list.add(m_file.readStringUntil('\n'));
+            String line = m_file.readStringUntil('\n');
+            line.trim();
+            list.add(line);
         }
         return list;
     }
