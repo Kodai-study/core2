@@ -126,6 +126,7 @@ tm *setRTC()
 
 bool connectingWifi(String wifiSSID, String wifiPassWord)
 {
+    M5.update();
     Llcd.setCursor(0, 0);
     int _cursorX = 0;
     WiFi.begin(wifiSSID.c_str(), wifiPassWord.c_str());
@@ -137,12 +138,12 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
     Llcd.print("Connecting to Wi-Fi");
     while (WiFi.status() != WL_CONNECTED)
     {
-        Serial.print(".");
+        M5.update();
         Llcd.setCursor(0 + 5 * _cursorX, 30);
         Llcd.print(".");
         delay(300);
         _cursorX++;
-        if (_cursorX > 15)
+        if (_cursorX > 15 || M5.BtnA.isPressed() || M5.BtnA.wasPressed())
         {
             _cursorX = 0;
             Llcd.println("\nConnectionFailed");

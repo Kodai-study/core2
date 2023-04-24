@@ -20,7 +20,7 @@
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
 // デバッグ用に、Wifiへの接続を行うかどうかのシンボルを定義する
-// #define DEBUG_WIFI_CONNECT
+#define DEBUG_WIFI_CONNECT
 
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
@@ -40,6 +40,7 @@
 
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 extern Setting setting;
+extern bool isWifiConnected;
 
 // 画面の一覧を定義する列挙型を作成
 enum Screen

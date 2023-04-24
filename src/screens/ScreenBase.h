@@ -27,13 +27,12 @@ protected:
     /**
      * @brief 現在Wi-Fi、インターネットに接続されているか
      */
-    bool isWifiConnected;
 
 public:
     /**
      * @brief 画面の初期化を行う。画面遷移され、画面が表示される時に呼び出す。
      */
-    virtual void initScreen() { isWifiConnected = (WiFi.status() == WL_CONNECTED); };
+    virtual void initScreen() {};
 
     /**
      * @brief 画面の更新を行う。現在画面が有効な時に、ループ処理でこの処理を呼び出す。

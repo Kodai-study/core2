@@ -68,7 +68,7 @@ public:
 
     static BookData *CreateBookDataFromCsv(const String csvLine)
     {
-        String array[4];
+        String array[6];
         split(csvLine, array);
 
         return new BookData(

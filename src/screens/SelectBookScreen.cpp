@@ -105,11 +105,12 @@ bool SelectBookScreen::getBookData()
 {
     if (isWifiConnected)
     {
+        CsvManager csvManager(BOOKDATA_FILE_NAME, true);
         FirebaseData data;
         FirebaseJsonArray arrayData;
-
         if (Firebase.getArray(data, BOOKDATA_PATH, &arrayData))
-            // 取得したデータをbookDataListに格納する
+        {
+            csvManager.resetFile(BookData::COLUM_CSV_LINE);
             for (int i = 0; i < arrayData.size(); i++)
             {
                 FirebaseJson json;
@@ -132,39 +133,47 @@ bool SelectBookScreen::getBookData()
 
                 isGetSuccess &= json.get(jsonData, "memoList");
                 isGetSuccess &= jsonData.getArray(bookMarkArray);
-                bookMarkArray.size();
-                this->bookDataList.add(new BookData(bookName, currentPage, i, isReadEnd));
+                BookData *bookData = new BookData(bookName, currentPage, i, isReadEnd, bookMarkArray.size());
+
+                Serial.println(isGetSuccess ? "CSV Write Success" : "CSV Write Failed");
+                this->bookDataList.add(bookData);
+                csvManager.writeLine(bookData->getCsvLine());
+                csvManager.closeFile();
             }
+        }
     }
     else
     {
-        // TODO ローカルのCSVファイルからデータを取得する
-        // TODO 取得したデータをbookDataListに格納する
-        CsvManager csvManager(BOOKDATA_FILE_NAME, true);
-
-        csvManager.resetFile();
-        csvManager.writeLine("テスト1,1,0,0,5");
-        csvManager.writeLine("テスト2,2,1,0,6");
-        csvManager.writeLine("テスト3,3,2,0,7");
-        csvManager.writeLine("テスト4,4,3,0,8");
-
-        LinkedList<String> lines = csvManager.readAllLines(true);
-
+        auto csvManager = new CsvManager(BOOKDATA_FILE_NAME, false);
+        Serial.println(BOOKDATA_FILE_NAME);
+        LinkedList<String> lines = csvManager->readAllLines(true);
+        // linesにテストデータの代入
+        // LinkedList<String> lines = LinkedList<String>();
+        lines.add("テスト本1,1,0,false,0");
+        // lines.add("テスト本2,2,1,false,0");
+        // lines.add("テスト本3,3,2,false,0");
+        csvManager->closeFile();
+        if (lines.size() == 0)
+        {
+            Serial.println("lines is null or size is 0");
+            return false;
+        }
+        Serial.println(lines.size());
+        CreateObjectFromCsvFactory *factory = new CreateObjectFromCsvFactory();
         // ObjectFromCsvFactoryのメソッドを使って、１行ずつBookDataを生成する
         for (int i = 0; i < lines.size(); i++)
         {
             String line = lines.get(i);
-            BookData *bookData = CreateObjectFromCsvFactory::CreateBookDataFromCsv(line);
+            BookData *bookData = factory->CreateBookDataFromCsv(line);
+
             if (bookData != nullptr)
+            {
                 this->bookDataList.add(bookData);
+                Serial.println(bookData->getCsvLine());
+            }
             else
                 Serial.println("bookData is null. line:" + line);
         }
-
-        // for (int i = 1; i <= 10; i++)
-        // {
-        //     this->bookDataList.add(new BookData("テスト" + String(i), i, i - 1, i % 2 == 0));
-        // }
     }
     return true;
 }

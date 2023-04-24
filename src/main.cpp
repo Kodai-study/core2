@@ -16,6 +16,7 @@
 LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
 Setting setting;           // 設定を保持するクラスのインスタンスを作成
+bool isWifiConnected;      // Wi-Fiに接続されているかどうかのフラグ
 
 static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
@@ -49,7 +50,6 @@ void setup()
   screens[Screen_Debug] = &debugScreen;
   setting.readIni();
 
-  bool isWifiConnected;
 #ifdef DEBUG_WIFI_CONNECT
   if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
   {

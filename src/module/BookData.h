@@ -48,6 +48,22 @@ public:
 
     void setCurrentPage(int currentPage) { this->currentPage = currentPage; }
     void setMemoDataIndex(int memoDataIndex) { this->memoDataIndex = memoDataIndex; }
+    constexpr static const char *COLUM_CSV_LINE = "bookName,currentPage,bookIndex,isReadEnd,memoDataSize";
+
+    String getCsvLine()
+    {
+        String csvLine = "";
+        csvLine += this->bookName;
+        csvLine += ",";
+        csvLine += this->currentPage;
+        csvLine += ",";
+        csvLine += this->bookIndex;
+        csvLine += ",";
+        csvLine += this->isReadEnd;
+        csvLine += ",";
+        csvLine += this->memoDataSize;
+        return csvLine;
+    }
 
     // 全てのパラメータを初期化するコンストラクタ
     BookData(String bookName, int currentPage, int bookIndex, bool isReadEnd)

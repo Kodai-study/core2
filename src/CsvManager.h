@@ -57,6 +57,7 @@ public:
             isWriteMode = true;
         }
         m_file.println(line);
+        Serial.println(line);
     }
 
     /**
@@ -136,6 +137,7 @@ public:
                 return false;
             }
         }
+        Serial.println("file open success");
         return true;
     }
 
@@ -147,9 +149,11 @@ public:
             m_file.close();
             if (m_file)
             {
+                Serial.println("file close error");
                 return false;
             }
         }
+        Serial.println("file close success");
         return true;
     }
 
@@ -176,15 +180,15 @@ public:
         }
         else
         {
-            m_file.println(m_file.readStringUntil('\n'));
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_READ, false);
+            String firstLine = m_file.readStringUntil('\n');
+            m_file.close();
+            m_file = SD.open(m_fileName, FILE_WRITE, true);
+            m_file.println(firstLine);
         }
         m_file.close();
-        m_file = SD.open(m_fileName, FILE_WRITE, true);
-        m_file.println();
-        m_file.close();
     }
-
-    // m_file でファイルにアクセスして、ファイルの最後の行を削除する関数
 };
 
 #endif
