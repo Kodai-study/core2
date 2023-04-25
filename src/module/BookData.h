@@ -48,6 +48,7 @@ public:
 
     void setCurrentPage(int currentPage) { this->currentPage = currentPage; }
     void setMemoDataIndex(int memoDataIndex) { this->memoDataIndex = memoDataIndex; }
+    void setMemoDataSize(int memoDataSize) { this->memoDataSize = memoDataSize; }
     constexpr static const char *COLUM_CSV_LINE = "bookName,currentPage,bookIndex,isReadEnd,memoDataSize";
 
     String getCsvLine()
@@ -81,6 +82,15 @@ public:
         this->bookIndex = bookIndex;
         this->isReadEnd = isReadEnd;
         this->memoDataSize = memoDataSize;
+    }
+
+    BookData()
+    {
+        this->bookName = "NULL";
+        this->currentPage = 0;
+        this->bookIndex = 0;
+        this->isReadEnd = false;
+        this->memoDataSize = 0;
     }
 };
 

@@ -22,7 +22,7 @@ void ReadingScreen::initScreen()
     Llcd.setCursor(16, 38);
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_24);
     Llcd.print(isEnableWifiConnect);
-    Llcd.printf("読書中_%02d分", this->currentPage);
+    Llcd.printf("読書中_%02d分", setting.getTimeInterval());
     Llcd.setCursor(20, 209);
     Llcd.println("戻る    前ページ  次ページ");
 
@@ -40,13 +40,15 @@ void ReadingScreen::initScreen()
     }
 }
 
-ReadingScreen::ReadingScreen(int currentBookIndex, int currentPage, String bookName)
-    : currentBookData(bookName, currentPage, currentBookIndex, false),
-      btn_x(0, 0, 0, 0)
+ReadingScreen::ReadingScreen()
+    : btn_x(0, 0, 0, 0)
 {
-    this->bookName = bookName;
-    this->btn_x = Button(0, 0, 0, 0);
-    this->currentPage = currentPage;
+}
+
+void ReadingScreen::setCurrentBookData(BookData currentBookData)
+{
+    this->currentBookData = currentBookData;
+    this->currentPage = currentBookData.getCurrentPage();
 }
 
 void ReadingScreen::deleteScreen()
@@ -70,27 +72,17 @@ void ReadingScreen::scereenUpdate()
         sprintf(dateTimeStringBuffer, "%04d-%02d-%02d %02d:%02d:%02d", date.Year, date.Month, date.Date,
                 time.Hours, time.Minutes, time.Seconds);
         PageFlipHistory pageFlipHistory(
-            String(dateTimeStringBuffer), currentMode, currentPage);
+            String(dateTimeStringBuffer), currentMode, this->currentPage);
         FirebaseJson *json = pageFlipHistory.getJson();
 
-        if (isEnableWifiConnect || currentBookIndex < 0)
+        if (!isWifiConnected)
         {
             this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
         else
         {
-            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + readingBookIndex + "/" + currentBookIndex++, *json))
+            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex, *json))
                 this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
     }
-}
-
-int ReadingScreen::getreadDataindex()
-{
-    return this->currentBookIndex;
-}
-
-void ReadingScreen::setReadDataindex(int currentBookIndex)
-{
-    this->currentBookIndex = currentBookIndex;
 }

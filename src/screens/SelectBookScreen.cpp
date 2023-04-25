@@ -88,12 +88,10 @@ void SelectBookScreen::scereenUpdate()
     if (M5.BtnB.wasPressed())
     {
         BookData *bookData = bookDataList.get(cursorPosition);
-        // bookDataのゲットメソッドを全て呼び出して、Serial で表示する
-        Serial.println("bookName:" + bookData->getBookName());
-        Serial.println("currentPage:" + String(bookData->getCurrentPage()));
-        Serial.println("bookIndex:" + String(bookData->getBookIndex()));
-        Serial.println("isReadEnd:" + String(bookData->getIsReadEnd()));
-        Serial.println("memoListsize:" + String(bookData->getMemoDataSize()));
+        readingBook = *bookData;
+        // 読書中画面に遷移する
+        // 遷移処理はheader.hにある
+        screenTransitionHandler(Screen::Screen_Reading);
     }
 }
 

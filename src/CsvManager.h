@@ -30,7 +30,13 @@ public:
      */
     CsvManager(String fileName, bool openWriteMode = false)
     {
+        // ファイル名が / で始まっていなかったら、/ を付け足す
+        if (fileName.charAt(0) != '/')
+        {
+            fileName = '/' + fileName;
+        }
         m_fileName = fileName;
+
         isWriteMode = openWriteMode;
     }
 

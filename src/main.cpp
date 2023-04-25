@@ -17,8 +17,9 @@ LGFX Llcd;                       // LGFXのインスタンスを作成（クラ�
 LGFX_Sprite canvas(&Llcd);       // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
 Setting setting;                 // 設定を保持するクラスのインスタンスを作成
 bool isEnableWifiConnect = true; // Wi-Fiに接続されているかどうかのフラグ
+BookData readingBook;            // 現在読んでいる本の情報を保持するクラスのインスタンスを作成
 
-static ReadingScreen readingScreen(0, 1, "bookName");
+static ReadingScreen readingScreen;
 static SettingTimeIntervalScreen settingTimeScreen;
 static SelectBookScreen selectBookScreen;
 static TimeSettingScreen timeSettingScreen;
@@ -156,6 +157,11 @@ void test_screenTransition()
  */
 void screenTransitionHandler(Screen screenList)
 {
+  if (screenList == Screen::Screen_Reading)
+  {
+    readingScreen.setCurrentBookData(readingBook);
+  }
+
   screens[(int)currentScreenNumber]->deleteScreen();
   currentScreenNumber = screenList;
   screens[(int)currentScreenNumber]->initScreen();

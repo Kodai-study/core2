@@ -19,26 +19,14 @@ class ReadingScreen : public ScreenBase
 {
 private:
    BookData currentBookData;
-   /**
-    * @brief 現在読んでいるページ数
-    */
-   int currentPage;
-   /**
-    * @brief 本の名前
-    */
-   String bookName;
    Button btn_x;
-   int currentBookIndex;
-
+   int currentPage = -1;
+   int memoIndex = -1;
    /**
     * @brief 現在の読書モード
     */
    PageFlipHistory::ReadingMode currentMode = PageFlipHistory::ReadingMode::OTHERS_MODE;
-   /**
-    * @brief 現在読書中の本を表すインデックス
-    * 本データの配列のインデックスを表す
-    */
-   int readingBookIndex = 0;
+
    /**
     * @brief ページめくりデータの配列にアクセスするパス
     */
@@ -47,7 +35,7 @@ private:
    CreateObjectFromCsvFactory factory;
 
    // TODO ページめくりのローカルデータを保存するCSVファイルのパスを定義する
-   CsvManager csvManager = CsvManager("readDatas.csv");
+   CsvManager csvManager = CsvManager("/readDatas.csv");
 
 public:
    void initScreen() override;
@@ -58,9 +46,11 @@ public:
     * @param currentPage
     * @param bookName
     */
-   ReadingScreen(int currentBookIndex, int currentPage, String bookName);
+   ReadingScreen();
+   // currentBookDataをセットする関数を定義
+   // ページ数を取り出して、currentPageにセットする。
+   void setCurrentBookData(BookData currentBookData);
+
    void deleteScreen() override;
    void scereenUpdate() override;
-   int getreadDataindex();
-   void setReadDataindex(int currentBookIndex);
 };
