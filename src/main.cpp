@@ -13,10 +13,10 @@
 #include "screens/TimeSettingScreen.h"
 #include "screens/DebugScreen.h"
 
-LGFX Llcd;                 // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
-LGFX_Sprite canvas(&Llcd); // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
-Setting setting;           // 設定を保持するクラスのインスタンスを作成
-bool isWifiConnected;      // Wi-Fiに接続されているかどうかのフラグ
+LGFX Llcd;                       // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
+LGFX_Sprite canvas(&Llcd);       // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
+Setting setting;                 // 設定を保持するクラスのインスタンスを作成
+bool isEnableWifiConnect = true; // Wi-Fiに接続されているかどうかのフラグ
 
 static ReadingScreen readingScreen(0, 1, "bookName");
 static SettingTimeIntervalScreen settingTimeScreen;
@@ -50,17 +50,25 @@ void setup()
   screens[Screen_Debug] = &debugScreen;
   setting.readIni();
 
-#ifdef DEBUG_WIFI_CONNECT
+  bool isWifiConnectSuccess;
+
+#ifndef DEBUG_WITHOUT_WIFI
+#ifndef DEBUG_SSID_WITHOUT_SETTINGFILE
+
   if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
   {
-    isWifiConnected = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
+    isWifiConnectSuccess = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
   }
   else
-    isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
+    isWifiConnectSuccess = connectingWifi(setting.getSSID(), setting.getWifiPass());
 #else
-  isWifiConnected = false;
+  isWifiConnectSuccess = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
 #endif
-  if (isWifiConnected)
+#else
+  isWifiConnectSuccess = false;
+  isEnableWifiConnect = false;
+#endif
+  if (isWifiConnectSuccess)
   {
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
     Firebase.reconnectWiFi(true);

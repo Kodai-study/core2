@@ -145,6 +145,7 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
         _cursorX++;
         if (_cursorX > 15 || M5.BtnA.isPressed() || M5.BtnA.wasPressed())
         {
+            isEnableWifiConnect = false;
             _cursorX = 0;
             Llcd.println("\nConnectionFailed");
             delay(1000);

@@ -99,11 +99,12 @@ void SelectBookScreen::scereenUpdate()
 
 void SelectBookScreen::deleteScreen()
 {
+    Llcd.fillScreen(BLACK);
 }
 
 bool SelectBookScreen::getBookData()
 {
-    if (isWifiConnected)
+    if (this->isWifiConnected)
     {
         CsvManager csvManager(BOOKDATA_FILE_NAME, true);
         FirebaseData data;
@@ -147,11 +148,7 @@ bool SelectBookScreen::getBookData()
         auto csvManager = new CsvManager(BOOKDATA_FILE_NAME, false);
         Serial.println(BOOKDATA_FILE_NAME);
         LinkedList<String> lines = csvManager->readAllLines(true);
-        // linesにテストデータの代入
-        // LinkedList<String> lines = LinkedList<String>();
         lines.add("テスト本1,1,0,false,0");
-        // lines.add("テスト本2,2,1,false,0");
-        // lines.add("テスト本3,3,2,false,0");
         csvManager->closeFile();
         if (lines.size() == 0)
         {

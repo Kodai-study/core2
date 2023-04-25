@@ -13,14 +13,14 @@
 #define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 
-#define WIFI_SSID "aterm-b9044b-g"
-#define WIFI_PASSWORD "1ca1af621dff7"
+// #define WIFI_SSID "aterm-b9044b-g"
+// #define WIFI_PASSWORD "1ca1af621dff7"
 
 // #define WIFI_SSID "Buffalo-G-458A"
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
-// デバッグ用に、Wifiへの接続を行うかどうかのシンボルを定義する
-#define DEBUG_WIFI_CONNECT
+// #define DEBUG_WITHOUT_WIFI
+#define DEBUG_SSID_WITHOUT_SETTINGFILE
 
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
@@ -28,8 +28,8 @@
 // #define WIFI_SSID "IODATA-298088-2G"
 // #define WIFI_PASSWORD "Fx8EM83998089"
 
-// #define WIFI_SSID "denshi24G"
-// #define WIFI_PASSWORD "TESTSAMPLE"
+#define WIFI_SSID "denshi24G"
+#define WIFI_PASSWORD "TESTSAMPLE"
 
 #include <Arduino.h>
 #include <FirebaseESP32.h>
@@ -40,7 +40,7 @@
 
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 extern Setting setting;
-extern bool isWifiConnected;
+extern bool isEnableWifiConnect;
 
 // 画面の一覧を定義する列挙型を作成
 enum Screen

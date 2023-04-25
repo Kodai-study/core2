@@ -21,7 +21,7 @@ void ReadingScreen::initScreen()
     Llcd.fillScreen(BLACK);
     Llcd.setCursor(16, 38);
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_24);
-    Llcd.print(isWifiConnected);
+    Llcd.print(isEnableWifiConnect);
     Llcd.printf("読書中_%02d分", this->currentPage);
     Llcd.setCursor(20, 209);
     Llcd.println("戻る    前ページ  次ページ");
@@ -34,7 +34,7 @@ void ReadingScreen::initScreen()
     btn_x.draw();
     Llcd.setCursor(0, 0);
 
-    if (isWifiConnected)
+    if (isEnableWifiConnect)
     {
         // TODO 現在のページ数を取得する
     }
@@ -73,7 +73,7 @@ void ReadingScreen::scereenUpdate()
             String(dateTimeStringBuffer), currentMode, currentPage);
         FirebaseJson *json = pageFlipHistory.getJson();
 
-        if (isWifiConnected || currentBookIndex < 0)
+        if (isEnableWifiConnect || currentBookIndex < 0)
         {
             this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
