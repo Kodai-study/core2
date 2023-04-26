@@ -16,8 +16,8 @@
 // #define WIFI_SSID "aterm-b9044b-g"
 // #define WIFI_PASSWORD "1ca1af621dff7"
 
-#define WIFI_SSID "Buffalo-G-458A"
-#define WIFI_PASSWORD "hi6bmsk85557v"
+// #define WIFI_SSID "Buffalo-G-458A"
+// #define WIFI_PASSWORD "hi6bmsk85557v"
 
 // #define DEBUG_WITHOUT_WIFI
 #define DEBUG_SSID_WITHOUT_SETTINGFILE
@@ -25,8 +25,8 @@
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
 
-// #define WIFI_SSID "IODATA-298088-2G"
-// #define WIFI_PASSWORD "Fx8EM83998089"
+#define WIFI_SSID "IODATA-298088-2G"
+#define WIFI_PASSWORD "Fx8EM83998089"
 
 // #define WIFI_SSID "denshi24G"
 // #define WIFI_PASSWORD "TESTSAMPLE"

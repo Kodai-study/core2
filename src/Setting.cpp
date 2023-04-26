@@ -53,6 +53,10 @@ int Setting::getRepeat()
 {
     return repeat;
 }
+int Setting::getBookIndex()
+{
+    return bookIndex;
+}
 
 void Setting::writeIni() // write to SD card
 {

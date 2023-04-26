@@ -20,8 +20,7 @@ void SelectBookScreen::initScreen()
         return;
     }
 
-    // TODO 本を選択するカーソルを設定ファイルから初期化する
-    cursorPosition = 0;
+    cursorPosition = setting.getBookIndex();
     drawBookList();
 }
 

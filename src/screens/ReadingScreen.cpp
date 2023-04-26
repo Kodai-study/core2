@@ -33,11 +33,6 @@ void ReadingScreen::initScreen()
     btn_x.addHandler(push, E_RELEASE);
     btn_x.draw();
     Llcd.setCursor(0, 0);
-
-    if (isEnableWifiConnect)
-    {
-        // TODO 現在のページ数を取得する
-    }
 }
 
 ReadingScreen::ReadingScreen()
@@ -49,6 +44,7 @@ void ReadingScreen::setCurrentBookData(BookData currentBookData)
 {
     this->currentBookData = currentBookData;
     this->currentPage = currentBookData.getCurrentPage();
+    this->memoIndex = currentBookData.getMemoDataSize();
 }
 
 void ReadingScreen::deleteScreen()
@@ -81,7 +77,7 @@ void ReadingScreen::scereenUpdate()
         }
         else
         {
-            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex, *json))
+            if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex++, *json))
                 this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
     }

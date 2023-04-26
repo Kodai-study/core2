@@ -45,6 +45,7 @@ public:
     String getWifiPass();
     int getTimeInterval();
     int getRepeat();
+    int getBookIndex();
     RTC_DateTypeDef getDate();
     RTC_TimeTypeDef getTime();
     /**
@@ -81,6 +82,7 @@ private:
     String wifiPass = "NULL";
     int timeInterval = 10;
     int repeat = 5;
+    int bookIndex = 0;
 
     RTC_TimeTypeDef time =
         {

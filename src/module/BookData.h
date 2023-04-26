@@ -82,6 +82,7 @@ public:
         this->bookIndex = bookIndex;
         this->isReadEnd = isReadEnd;
         this->memoDataSize = memoDataSize;
+        this->memoDataIndex = memoDataSize;
     }
 
     BookData()

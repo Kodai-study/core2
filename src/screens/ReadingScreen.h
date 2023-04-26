@@ -34,7 +34,6 @@ private:
 
    CreateObjectFromCsvFactory factory;
 
-   // TODO ページめくりのローカルデータを保存するCSVファイルのパスを定義する
    CsvManager csvManager = CsvManager("/readDatas.csv");
 
 public:
@@ -50,7 +49,6 @@ public:
    // currentBookDataをセットする関数を定義
    // ページ数を取り出して、currentPageにセットする。
    void setCurrentBookData(BookData currentBookData);
-
    void deleteScreen() override;
    void scereenUpdate() override;
 };
