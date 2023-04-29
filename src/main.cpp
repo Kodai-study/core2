@@ -12,6 +12,7 @@
 #include "screens/SelectBookScreen.h"
 #include "screens/TimeSettingScreen.h"
 #include "screens/DebugScreen.h"
+#include "screens/RegisterBookMarkScreen.h"
 
 LGFX Llcd;                       // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 LGFX_Sprite canvas(&Llcd);       // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
@@ -24,6 +25,7 @@ static SettingTimeIntervalScreen settingTimeScreen;
 static SelectBookScreen selectBookScreen;
 static TimeSettingScreen timeSettingScreen;
 static DebugScreen debugScreen;
+static RegisterBookMarkScreen registerBookMarkScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
@@ -46,6 +48,7 @@ void setup()
   Llcd.init(); // LCD初期化
   screens[Screen_Reading] = &readingScreen;
   screens[Screen_SettingTimeInterval] = &settingTimeScreen;
+  screens[Screen_RegisterBookMark] = &registerBookMarkScreen;
   screens[Screen_SelectBook] = &selectBookScreen;
   screens[Screen_DateTimeSetting] = &timeSettingScreen;
   screens[Screen_Debug] = &debugScreen;

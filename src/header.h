@@ -49,6 +49,7 @@ enum Screen
 {
     SCREEN_NONE = -1,
     Screen_Reading,
+    Screen_RegisterBookMark,
     Screen_SettingTimeInterval,
     Screen_SelectBook,
     Screen_DateTimeSetting,

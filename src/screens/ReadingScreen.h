@@ -22,6 +22,10 @@ private:
    Button btn_x;
    int currentPage = -1;
    int memoIndex = -1;
+
+   // 現在集中モードかどうか
+   bool isConcentrationMode = false;
+
    /**
     * @brief 現在の読書モード
     */
@@ -51,4 +55,6 @@ public:
    void setCurrentBookData(BookData currentBookData);
    void deleteScreen() override;
    void scereenUpdate() override;
+   void updatePageView();
+   void updateTimeView();
 };

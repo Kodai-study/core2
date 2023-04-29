@@ -9,6 +9,9 @@
 #include "ReadingScreen.h"
 #include "module/PageFlipData.h"
 
+// TODO 1分ごとにカウントダウンを減らし、0になったらバイブレーションを鳴らす
+// TODO 設定ファイルから、集中モードと休憩モードの時間を取得して設定
+
 void push(Event &e)
 {
     Llcd.setCursor(0, 0);
@@ -80,5 +83,30 @@ void ReadingScreen::scereenUpdate()
             if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex++, *json))
                 this->csvManager.writeLine(pageFlipHistory.getCsvLine());
         }
+        currentPage++;
+        updatePageView();
     }
+
+    // ボタンBが押されたとき、グローバル変数の本データのページ数を更新し、画面遷移する
+    if (M5.BtnB.wasPressed())
+    {
+        this->currentBookData.setCurrentPage(this->currentPage);
+        screenTransitionHandler(Screen::Screen_RegisterBookMark);
+    }
+}
+
+void ReadingScreen::updatePageView()
+{
+    Llcd.fillRect(0, 0, 320, 40, BLACK);
+    Llcd.setCursor(64, 96);
+    Llcd.setTextFont(&fonts::lgfxJapanMinchoP_40);
+    Llcd.printf("ページ:%03d", this->currentPage);
+}
+
+void ReadingScreen::updateTimeView()
+{
+    Llcd.fillRect(0, 50, 320, 60, BLACK);
+    Llcd.setCursor(16, 38);
+    Llcd.setTextFont(&fonts::lgfxJapanMinchoP_24);
+    Llcd.printf("読書中_%02d分", setting.getTimeInterval());
 }
