@@ -11,6 +11,7 @@
 #include "module/PageFlipData.h"
 #include "CsvManager.h"
 #include "../module/BookData.h"
+#include "../module/BookMarkData.h"
 
 /**
  * @brief 現在の時刻を手動で設定する画面の制御を行うクラス
@@ -18,16 +19,8 @@
 class RegisterBookMarkScreen : public ScreenBase
 {
 public:
-   enum BookMarkType
-   {
-      IMPORTANT,
-      DONT_UNDERSTAND,
-      DONT_UNDERSTAND_WORD,
-      OTHERS
-   };
-
 private:
-   static BookMarkType lastSelectedBookMarkType;
+   BookMarkType lastSelectedBookMarkType;
    // ブックマーク登録のための情報を表示する関数
    void showRegisterBookmarkDialog();
    BookData currentBookData;

@@ -9,7 +9,7 @@
 
 #include "header.h"
 #include "module/PageFlipData.h"
-#include "module/MemoData.h"
+#include "module/BookMarkData.h"
 #include "module/BookData.h"
 
 class CreateObjectFromCsvFactory
@@ -52,13 +52,13 @@ public:
         return readingHistory;
     }
 
-    static MemoData CreateMemoDataFromCsv(const String csvLine)
+    static BookMarkData CreateMemoDataFromCsv(const String csvLine)
     {
         String array[4];
         split(csvLine, array);
 
-        MemoData memoData{
-            (MemoData::MemoType)array[0].toInt(),
+        BookMarkData memoData{
+            (BookMarkType)array[0].toInt(),
             array[1],
             array[2].toInt(),
             array[3].toInt()};
