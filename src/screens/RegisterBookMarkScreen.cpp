@@ -40,7 +40,7 @@ void RegisterBookMarkScreen::scereenUpdate()
 
     if (M5.BtnB.wasPressed())
     {
-        //   BookMarkData(int bookIndex, BookMarkType memoType, int pageNumber, String memo = "", bool resolved = false)
+        // BookMarkData(int bookIndex, BookMarkType memoType, int pageNumber, String memo = "", bool resolved = false)
         BookMarkData bookMarkData(readingBook.getBookIndex(), this->lastSelectedBookMarkType, readingBook.getCurrentPage());
         // WIfiに接続されていたら、JSONデータを作成してFIrebaseに書き込む
         if (isWifiConnected)
@@ -48,14 +48,24 @@ void RegisterBookMarkScreen::scereenUpdate()
             FirebaseData firebaseData;
             // JSONデータを作成する
             FirebaseJson *jsonData = bookMarkData.getJson();
-            int index = currentBookData.getMemoDataIndex() + 1;
-            // Firebaseにデータを書き込む
+            int index = currentBookData.getMemoDataSize();
 
-            Firebase.setJSON(firebaseData, "/bookMarkList/" + String(readingBook.getBookIndex()), *jsonData);
+            String bookMarkDataPath = "/bookMarkList/";
+            bookMarkDataPath += readingBook.getBookIndex();
+            bookMarkDataPath += "/";
+            bookMarkDataPath += index;
+
+            if (Firebase.setJSON(firebaseData, bookMarkDataPath, *jsonData))
+            {
+                currentBookData.setMemoDataSize(index + 1);
+            }
         }
         else
         {
+            CsvManager csvManager = CsvManager("/bookMarks.csv", true);
             csvManager.writeLine(bookMarkData.getCsvLine());
+            Serial.println(bookMarkData.getCsvLine());
+            csvManager.closeFile();
             screenTransitionHandler(Screen::Screen_Reading);
         }
     }

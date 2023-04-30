@@ -24,7 +24,6 @@ private:
    // ブックマーク登録のための情報を表示する関数
    void updateBookmarkType();
    BookData currentBookData;
-   CsvManager csvManager = CsvManager("/bookMarks.csv");
 
 public:
    void initScreen() override;

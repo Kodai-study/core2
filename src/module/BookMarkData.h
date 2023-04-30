@@ -4,8 +4,8 @@
  * @brief 読書中のブックマークのデータを保持するクラスMemoDataの宣言を記述するファイル
  * @date 2023-04-10
  */
-#ifndef MEMO_DATA_H
-#define MEMO_DATA_H
+#ifndef BOOKMARK_DATA_H
+#define BOOKMARK_DATA_H
 
 // ブックマークの種類を表す変数
 enum BookMarkType

@@ -32,7 +32,6 @@ private:
      * @brief 次に書き込むメモデータのインデックス
      * 初期値は現在のメモの個数になり、書き込むごとに増えていく
      */
-    int memoDataIndex = -1;
     int memoDataSize = -1;
 
 public:
@@ -44,10 +43,8 @@ public:
     int getCurrentPage() { return this->currentPage; }
     int getBookIndex() { return this->bookIndex; }
     bool getIsReadEnd() { return this->isReadEnd; }
-    int getMemoDataIndex() { return this->memoDataIndex; }
 
     void setCurrentPage(int currentPage) { this->currentPage = currentPage; }
-    void setMemoDataIndex(int memoDataIndex) { this->memoDataIndex = memoDataIndex; }
     void setMemoDataSize(int memoDataSize) { this->memoDataSize = memoDataSize; }
     constexpr static const char *COLUM_CSV_LINE = "bookName,currentPage,bookIndex,isReadEnd,memoDataSize";
 
@@ -82,7 +79,6 @@ public:
         this->bookIndex = bookIndex;
         this->isReadEnd = isReadEnd;
         this->memoDataSize = memoDataSize;
-        this->memoDataIndex = memoDataSize;
     }
 
     BookData()
