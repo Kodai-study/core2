@@ -78,8 +78,8 @@ private:
      * @brief 設定情報をファイルに書き込む
      */
     void writeIni();
-    String ssid = "NULL";
-    String wifiPass = "NULL";
+    String ssid = DATA_NULL;
+    String wifiPass = DATA_NULL;
     int timeInterval = 10;
     int repeat = 5;
     int bookIndex = 0;

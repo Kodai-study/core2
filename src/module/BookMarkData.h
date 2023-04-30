@@ -23,10 +23,20 @@ enum BookMarkType
 class BookMarkData
 {
 public:
+    int bookIndex;
     BookMarkType memoType;
     String memo;
     int pageNumber;
     bool resolved;
+
+    BookMarkData(int bookIndex, BookMarkType memoType, int pageNumber, String memo = DATA_NULL, bool resolved = false)
+    {
+        this->bookIndex = bookIndex;
+        this->memoType = memoType;
+        this->memo = memo;
+        this->pageNumber = pageNumber;
+        this->resolved = resolved;
+    }
 
     // 全ての変数を引数の値に初期化するコンストラクタ
     BookMarkData(BookMarkType memoType, String memo, int pageNumber, bool resolved)
@@ -36,12 +46,19 @@ public:
         this->pageNumber = pageNumber;
         this->resolved = resolved;
     }
+    // 全ての変数を引数の値に初期化するコンストラクタ
+    BookMarkData(BookMarkType memoType, int pageNumber)
+    {
+        this->memoType = memoType;
+        this->memo = DATA_NULL;
+        this->pageNumber = pageNumber;
+    }
 
     // デフォルトコンストラクタ
     BookMarkData()
     {
         this->memoType = IMPORTANT;
-        this->memo = "";
+        this->memo = DATA_NULL;
         this->pageNumber = -1;
         this->resolved = false;
     }
@@ -49,11 +66,24 @@ public:
     String getCsvLine()
     {
         String csvLine = "";
+        csvLine += String(this->bookIndex) + ",";
         csvLine += String(this->memoType) + ",";
         csvLine += this->memo + ",";
         csvLine += String(this->pageNumber) + ",";
-        csvLine += String(this->resolved) + ",";
+        csvLine += String(this->resolved);
         return csvLine;
+    }
+
+    // 以下は、読書データからJSONデータを作成する処理です。同じようにこのクラスのものも作成してください
+    FirebaseJson *getJson()
+    {
+        FirebaseJson *memoRecord = new FirebaseJson();
+        memoRecord->set("bookIndex", this->bookIndex);
+        memoRecord->set("memoType", (int)this->memoType);
+        memoRecord->set("memo", this->memo);
+        memoRecord->set("pageNumber", this->pageNumber);
+        memoRecord->set("resolved", this->resolved);
+        return memoRecord;
     }
 };
 

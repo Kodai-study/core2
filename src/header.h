@@ -31,6 +31,8 @@
 // #define WIFI_SSID "denshi24G"
 // #define WIFI_PASSWORD "TESTSAMPLE"
 
+#define DATA_NULL "NULL"
+
 #include <Arduino.h>
 #include <FirebaseESP32.h>
 #include <M5Core2.h>

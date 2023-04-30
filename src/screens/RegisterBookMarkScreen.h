@@ -22,8 +22,9 @@ public:
 private:
    BookMarkType lastSelectedBookMarkType;
    // ブックマーク登録のための情報を表示する関数
-   void showRegisterBookmarkDialog();
+   void updateBookmarkType();
    BookData currentBookData;
+   CsvManager csvManager = CsvManager("/bookMarks.csv");
 
 public:
    void initScreen() override;
