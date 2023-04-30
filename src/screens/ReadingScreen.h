@@ -38,7 +38,7 @@ private:
 
    CreateObjectFromCsvFactory factory;
 
-   CsvManager csvManager = CsvManager("/readDatas.csv");
+   CsvManager csvManager = CsvManager(String("/readDatas.csv"));
 
 public:
    void initScreen() override;

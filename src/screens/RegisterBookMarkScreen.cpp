@@ -15,6 +15,13 @@ void RegisterBookMarkScreen::initScreen()
     Llcd.setFont(&fonts::lgfxJapanGothicP_24);
     Llcd.println("キャンセル    作成    モード切替");
 
+    Llcd.setCursor(20, 40);
+    Llcd.printf("%dページ目", readingBook.getCurrentPage());
+
+    Llcd.fillTriangle(0, 0, 0, 20, 20, 0, WHITE);
+    Llcd.fillTriangle(0, 0, 20, 0, 0, 20, WHITE);
+    Llcd.fillRect(0, 20, 20, 20, WHITE);
+
     Llcd.setCursor(64, 96);
     Llcd.setFont(&fonts::lgfxJapanGothicP_32);
     Llcd.println("これはサンプルの表示です");
@@ -25,9 +32,6 @@ void RegisterBookMarkScreen::deleteScreen()
     Llcd.fillScreen(BLACK);
 
     // 四角の描写と三角の描写を合わせてブックマークアイコンの描写を行う
-    Llcd.fillTriangle(0, 0, 0, 20, 20, 0, WHITE);
-    Llcd.fillTriangle(0, 0, 20, 0, 0, 20, WHITE);
-    Llcd.fillRect(0, 20, 20, 20, WHITE);
 }
 
 void RegisterBookMarkScreen::scereenUpdate()
@@ -55,10 +59,14 @@ void RegisterBookMarkScreen::scereenUpdate()
             bookMarkDataPath += "/";
             bookMarkDataPath += index;
 
-            if (Firebase.setJSON(firebaseData, bookMarkDataPath, *jsonData))
-            {
-                currentBookData.setMemoDataSize(index + 1);
-            }
+            if (!Firebase.setJSON(firebaseData, bookMarkDataPath, *jsonData))
+                return;
+
+            currentBookData.setMemoDataSize(index + 1);
+            String bookDataPath = "/bookDatas/";
+            bookDataPath += readingBook.getBookIndex();
+            bookDataPath += "/bookMarkSize";
+            Firebase.setInt(firebaseData, bookDataPath, currentBookData.getMemoDataSize());
         }
         else
         {
@@ -80,7 +88,7 @@ void RegisterBookMarkScreen::scereenUpdate()
 
 void RegisterBookMarkScreen::updateBookmarkType()
 {
-    Llcd.fillRect(0, 100, 240, 80, BLACK);
+    Llcd.fillRect(0, 100, 240, 100, BLACK);
     Llcd.setCursor(50, 100);
 
     // ブックマークの種類によって、表示する文字列を変更する

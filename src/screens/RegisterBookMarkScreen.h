@@ -18,7 +18,6 @@
  */
 class RegisterBookMarkScreen : public ScreenBase
 {
-public:
 private:
    BookMarkType lastSelectedBookMarkType;
    // ブックマーク登録のための情報を表示する関数

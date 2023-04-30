@@ -142,11 +142,11 @@ bool SelectBookScreen::getBookData()
     }
     else
     {
-        auto csvManager = new CsvManager(BOOKDATA_FILE_NAME, false);
+        CsvManager csvManager = CsvManager(BOOKDATA_FILE_NAME, false);
         Serial.println(BOOKDATA_FILE_NAME);
-        LinkedList<String> lines = csvManager->readAllLines(true);
+        LinkedList<String> lines = csvManager.readAllLines(true);
         lines.add("テスト本1,1,0,false,0");
-        csvManager->closeFile();
+        csvManager.closeFile();
         if (lines.size() == 0)
         {
             Serial.println("lines is null or size is 0");

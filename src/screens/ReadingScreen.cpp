@@ -55,6 +55,7 @@ void ReadingScreen::deleteScreen()
     this->btn_x.erase(BLACK);
     this->btn_x.set(0, 0, 0, 0);
     this->csvManager.closeFile();
+    Llcd.fillScreen(BLACK);
 }
 
 void ReadingScreen::scereenUpdate()
@@ -82,6 +83,9 @@ void ReadingScreen::scereenUpdate()
         {
             if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex++, *json))
                 this->csvManager.writeLine(pageFlipHistory.getCsvLine());
+
+            String bookPageDataPath = String("/bookDatas/") + currentBookData.getBookIndex() + "/currentPage";
+            Firebase.setInt(writeData, bookPageDataPath, this->currentPage);
         }
         currentPage++;
         updatePageView();
@@ -91,6 +95,7 @@ void ReadingScreen::scereenUpdate()
     if (M5.BtnB.wasPressed())
     {
         this->currentBookData.setCurrentPage(this->currentPage);
+        readingBook.setCurrentPage(this->currentPage);
         screenTransitionHandler(Screen::Screen_RegisterBookMark);
     }
 }
