@@ -12,12 +12,6 @@
 // TODO 1分ごとにカウントダウンを減らし、0になったらバイブレーションを鳴らす
 // TODO 設定ファイルから、集中モードと休憩モードの時間を取得して設定
 
-void push(Event &e)
-{
-    Llcd.setCursor(0, 0);
-    Llcd.println("PUSHED");
-}
-
 void ReadingScreen::initScreen()
 {
     ScreenBase::initScreen();
@@ -33,7 +27,6 @@ void ReadingScreen::initScreen()
     Llcd.setTextFont(&fonts::lgfxJapanMinchoP_40);
     Llcd.printf("ページ:%03d", this->currentPage);
     btn_x = Button(220, 10, 100, 60, true, "Start", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
-    btn_x.addHandler(push, E_RELEASE);
     btn_x.draw();
     Llcd.setCursor(0, 0);
 }
@@ -43,6 +36,11 @@ ReadingScreen::ReadingScreen()
 {
 }
 
+/**
+ * @brief 現在読んでいる本のデータをセットする
+ *
+ * @param currentBookData 現在読んでいる本のデータ
+ */
 void ReadingScreen::setCurrentBookData(BookData currentBookData)
 {
     this->currentBookData = currentBookData;
@@ -54,7 +52,6 @@ void ReadingScreen::deleteScreen()
 {
     this->btn_x.erase(BLACK);
     this->btn_x.set(0, 0, 0, 0);
-    this->csvManager.closeFile();
     Llcd.fillScreen(BLACK);
 }
 
@@ -77,13 +74,18 @@ void ReadingScreen::scereenUpdate()
 
         if (!isWifiConnected)
         {
-            this->csvManager.writeLine(pageFlipHistory.getCsvLine());
+            CsvManager csvManager = CsvManager(CSV_FILE_PATH, true);
+            csvManager.writeLine(pageFlipHistory.getCsvLine());
+            csvManager.closeFile();
         }
         else
         {
             if (!Firebase.setJSON(writeData, DATA_PAGEFLIP_PATH + currentBookData.getBookIndex() + "/" + memoIndex++, *json))
-                this->csvManager.writeLine(pageFlipHistory.getCsvLine());
-
+            {
+                CsvManager csvManager = CsvManager(CSV_FILE_PATH, true);
+                csvManager.writeLine(pageFlipHistory.getCsvLine());
+                csvManager.closeFile();
+            }
             String bookPageDataPath = String("/bookDatas/") + currentBookData.getBookIndex() + "/currentPage";
             Firebase.setInt(writeData, bookPageDataPath, this->currentPage);
         }
@@ -100,6 +102,10 @@ void ReadingScreen::scereenUpdate()
     }
 }
 
+/**
+ * @brief ページ数の表示を更新する
+ *
+ */
 void ReadingScreen::updatePageView()
 {
     Llcd.fillRect(0, 0, 320, 40, BLACK);

@@ -37,8 +37,7 @@ private:
    const String DATA_PAGEFLIP_PATH = String("readDatas/");
 
    CreateObjectFromCsvFactory factory;
-
-   CsvManager csvManager = CsvManager(String("/readDatas.csv"));
+   const String CSV_FILE_PATH = String("/readDatas.csv");
 
 public:
    void initScreen() override;

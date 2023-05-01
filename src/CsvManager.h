@@ -35,6 +35,9 @@ public:
         {
             fileName = '/' + fileName;
         }
+
+        // 開くファイル名を表示
+        Serial.printf("open file name: %s\n", fileName.c_str());
         m_fileName = fileName;
 
         isWriteMode = openWriteMode;

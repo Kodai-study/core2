@@ -19,7 +19,7 @@
 // #define WIFI_SSID "Buffalo-G-458A"
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
-#define DEBUG_WITHOUT_WIFI
+// #define DEBUG_WITHOUT_WIFI
 #define DEBUG_SSID_WITHOUT_SETTINGFILE
 
 // #define WIFI_SSID "Pixel_8000"
