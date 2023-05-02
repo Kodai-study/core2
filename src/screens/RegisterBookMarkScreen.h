@@ -27,7 +27,7 @@ private:
 public:
    void initScreen() override;
    void deleteScreen() override;
-   void scereenUpdate() override;
+   void screenUpdate() override;
    // ブックマークの種類の一覧を表した列挙型の宣言。  項目は以下の通り
    /* 大事なところ、分からなかったところ、分からなかった単語、その他 */
 };

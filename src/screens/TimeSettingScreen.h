@@ -46,7 +46,7 @@ private:
 public:
    void initScreen() override;
    void deleteScreen() override;
-   void scereenUpdate() override;
+   void screenUpdate() override;
    void setRTC();
    // 日付時刻を再表示する関数
    void updateDateTimeView();

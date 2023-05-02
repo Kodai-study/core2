@@ -34,7 +34,7 @@ void RegisterBookMarkScreen::deleteScreen()
     // 四角の描写と三角の描写を合わせてブックマークアイコンの描写を行う
 }
 
-void RegisterBookMarkScreen::scereenUpdate()
+void RegisterBookMarkScreen::screenUpdate()
 {
     // ボタンAが押されたら、読書中画面に遷移する
     if (M5.BtnA.wasPressed())

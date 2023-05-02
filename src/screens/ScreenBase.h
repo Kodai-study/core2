@@ -39,7 +39,7 @@ public:
     /**
      * @brief 画面の更新を行う。現在画面が有効な時に、ループ処理でこの処理を呼び出す。
      */
-    virtual void scereenUpdate(){};
+    virtual void screenUpdate(){};
 
     /**
      * @brief 画面の削除を行う。画面遷移の際に、次の画面に進む前に処理を行う。

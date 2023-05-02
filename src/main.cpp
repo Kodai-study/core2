@@ -31,10 +31,9 @@ static SettingHomeScreen settingHomeScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
-static Screen currentScreenNumber = Screen::Screen_SelectBook;
+static Screen currentScreenNumber = Screen::Screen_SettingHome;
 
 // ボタンを長押ししたときに1回だけ実行するためのフラグ
-
 static bool buttonB_longPress_flag = false;
 static bool buttonC_longPress_flag = false;
 
@@ -99,7 +98,7 @@ void setup()
 void loop()
 {
   M5.update();
-  screens[(int)currentScreenNumber]->scereenUpdate();
+  screens[(int)currentScreenNumber]->screenUpdate();
 
   if (!buttonB_longPress_flag && M5.BtnB.pressedFor(3000))
   {

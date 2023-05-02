@@ -48,7 +48,7 @@ void TimeSettingScreen::deleteScreen()
     }
 }
 
-void TimeSettingScreen::scereenUpdate()
+void TimeSettingScreen::screenUpdate()
 {
     if (M5.BtnA.wasPressed())
     {

@@ -65,7 +65,7 @@ public:
    }
 
    void deleteScreen() override {}
-   void scereenUpdate() override
+   void screenUpdate() override
    {
       /* Cボタンが押されたら、カーソル位置を一つ下に移動する。
       Bボタンが押されたら、画面を全て黒塗りにして、カーソルが指しているファイルの中身を表示する。

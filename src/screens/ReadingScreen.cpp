@@ -55,7 +55,7 @@ void ReadingScreen::deleteScreen()
     Llcd.fillScreen(BLACK);
 }
 
-void ReadingScreen::scereenUpdate()
+void ReadingScreen::screenUpdate()
 {
     if (M5.BtnC.wasPressed())
     {

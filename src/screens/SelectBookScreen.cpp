@@ -69,7 +69,7 @@ void SelectBookScreen::drawBookList()
     }
 }
 
-void SelectBookScreen::scereenUpdate()
+void SelectBookScreen::screenUpdate()
 {
     // ボタンAを押すと、カーソルの値が1つ増えて、本のリストを再表示する
     if (M5.BtnA.wasPressed())

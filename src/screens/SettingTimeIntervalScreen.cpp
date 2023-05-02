@@ -48,7 +48,7 @@ void SettingTimeIntervalScreen::deleteScreen()
    this->btn_minus5.set(0, 0, 0, 0);
 }
 
-void SettingTimeIntervalScreen::scereenUpdate()
+void SettingTimeIntervalScreen::screenUpdate()
 {
    // ボタンCが押されていたら、cursorposを変更する
    if (M5.BtnC.isPressed())

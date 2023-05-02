@@ -83,5 +83,5 @@ public:
    SettingTimeIntervalScreen();
    void initScreen() override;
    void deleteScreen() override;
-   void scereenUpdate() override;
+   void screenUpdate() override;
 };

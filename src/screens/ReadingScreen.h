@@ -53,7 +53,7 @@ public:
    // ページ数を取り出して、currentPageにセットする。
    void setCurrentBookData(BookData currentBookData);
    void deleteScreen() override;
-   void scereenUpdate() override;
+   void screenUpdate() override;
    void updatePageView();
    void updateTimeView();
 };
