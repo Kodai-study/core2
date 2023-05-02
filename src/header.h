@@ -13,13 +13,16 @@
 #define FIREBASE_HOST "modular-source-342310-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "yx1PO3FwKiYzo1wN5NedZAYqN2S26TH57kVmE4ZW"
 
-#define WIFI_SSID "aterm-b9044b-g"
-#define WIFI_PASSWORD "1ca1af621dff7"
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+
+// #define WIFI_SSID "aterm-b9044b-g"
+// #define WIFI_PASSWORD "1ca1af621dff7"
 
 // #define WIFI_SSID "Buffalo-G-458A"
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
-// #define DEBUG_WITHOUT_WIFI
+#define DEBUG_WITHOUT_WIFI
 #define DEBUG_SSID_WITHOUT_SETTINGFILE
 
 // #define WIFI_SSID "Pixel_8000"
@@ -30,6 +33,9 @@
 
 // #define WIFI_SSID "denshi24G"
 // #define WIFI_PASSWORD "TESTSAMPLE"
+
+#define WIFI_SSID "DESKTOP-OMAOMA"
+#define WIFI_PASSWORD "OMAOMA_DAYO"
 
 #define DATA_NULL "NULL"
 
