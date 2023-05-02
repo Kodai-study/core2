@@ -62,6 +62,7 @@ enum Screen
     Screen_SelectBook,
     Screen_DateTimeSetting,
     Screen_Debug,
+    Screen_SettingHome,
     Screen_NUM
 };
 
