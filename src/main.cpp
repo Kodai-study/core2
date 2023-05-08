@@ -58,6 +58,9 @@ void setup()
 
   bool isWifiConnectSuccess;
 
+  Llcd.setCursor(0, 0);
+  Llcd.setFont(&fonts::lgfxJapanGothic_16);
+
 #ifndef DEBUG_WITHOUT_WIFI
 #ifndef DEBUG_SSID_WITHOUT_SETTINGFILE
 

@@ -14,7 +14,10 @@ void SettingHomeScreen::initScreen()
 {
    ScreenBase::initScreen();
    setting.readIni();
-   Llcd.setFont(&fonts::lgfxJapanMinchoP_20);
+
+   Llcd.setFont(&fonts::lgfxJapanMinchoP_24);
+   Llcd.setCursor(40, 220);
+   Llcd.print("戻る                  決定        ");
 
    RTC_TimeTypeDef settingTime;
    RTC_DateTypeDef settingDate;
@@ -24,7 +27,10 @@ void SettingHomeScreen::initScreen()
    // 時刻と日付から文字列を作成
    String settingDateTimeStr = getDateTimeString(settingDate, settingTime);
    Llcd.setCursor(0, DATETIME_Y_POSITION);
-   Llcd.print("TIME : " + settingDateTimeStr);
+   // settingDateTimeStr の最後の3文字を省いた文字列
+   // 例: 2021/04/06 12:34:56 -> 2021/04/06 12:34
+   settingDateTimeStr = settingDateTimeStr.substring(0, settingDateTimeStr.length() - 3);
+   Llcd.print("TIME:" + settingDateTimeStr);
    this->moveDateTimeSettingButton = Button(250, DATETIME_Y_POSITION, this->btnSize.x, this->btnSize.y, true, "SET", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
 
    Llcd.setCursor(40, 50);
@@ -53,6 +59,8 @@ void SettingHomeScreen::initScreen()
    // ボタン4つに割り当てる文字列を配列で宣言
    const char *changePageButtonStr[4] = {"-10", "-1", "+1", "+10"};
 
+   Llcd.setCursor(110, 125);
+   Llcd.printf("Page:%03d", this->currentPage);
    // ボタンの配列の要素4つを、ボタンのサイズの配列からサイズを取ってきて初期化
    for (int i = 0; i < 4; i++)
    {
@@ -118,4 +126,41 @@ SettingHomeScreen::SettingHomeScreen()
                        Button(0, 0, 0, 0),
                        Button(0, 0, 0, 0)}
 {
+}
+/*    void updateDateTimeText();
+   void updateWifiInfoText();
+   void updatePageNumText(); */
+// 上の3つの関数を実装する。中身は、画面の1部を黒塗りして、カーソルをセット、変数の値を書き込む。
+// 塗りつぶしの座標は仮に 0,0 とする。  表示する文字列は、initScreen() を参考にする
+void SettingHomeScreen::updateDateTimeText()
+{
+   Llcd.fillRect(0, DATETIME_Y_POSITION, 320, 30, BLACK);
+   Llcd.setCursor(0, DATETIME_Y_POSITION);
+   Llcd.print("TIME:" + getDateTimeString(settingDate, settingTime));
+}
+
+void SettingHomeScreen::updateWifiInfoText()
+{
+   Llcd.fillRect(0, WIFI_INFO_Y_POSITION, 320, 30, BLACK);
+   Llcd.setCursor(40, WIFI_INFO_Y_POSITION);
+   Llcd.print("SSID:" + setting.getSSID());
+   Llcd.setCursor(30, WIFI_INFO_Y_POSITION);
+   if (this->isWifiConnected)
+   {
+      Llcd.setTextColor(GREEN);
+      Llcd.print("接続中");
+   }
+   else
+   {
+      Llcd.setTextColor(RED);
+      Llcd.print("未接続");
+   }
+   Llcd.setTextColor(WHITE);
+}
+
+void SettingHomeScreen::updatePageNumText()
+{
+   Llcd.fillRect(0, 125, 320, 30, BLACK);
+   Llcd.setCursor(110, 125);
+   Llcd.printf("Page:%03d", this->currentPage);
 }

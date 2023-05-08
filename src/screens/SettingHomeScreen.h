@@ -8,6 +8,7 @@
 
 #include "header.h"
 #include "ScreenBase.h"
+#include "../Setting.h"
 
 /**
  * @brief 集中モードのタイムインターバルの設定画面の制御を行うクラス
@@ -34,7 +35,7 @@ private:
    const Point btnPos[4] = {Point(5, 155), Point(85, 155), Point(170, 155), Point(250, 155)};
 
    // 共通のボタンサイズ
-   const Point btnSize = Point(70, 50);
+   const Point btnSize = Point(70, 35);
 
    const int DATETIME_Y_POSITION = 10;
 
@@ -45,4 +46,9 @@ public:
    void deleteScreen() override;
    void screenUpdate() override;
    SettingHomeScreen();
+
+   // 時刻、SSID、ページ数の表示それぞれを書き換える関数をそれぞれ定義する
+   void updateDateTimeText();
+   void updateWifiInfoText();
+   void updatePageNumText();
 };

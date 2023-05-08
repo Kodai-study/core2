@@ -127,7 +127,6 @@ tm *setRTC()
 bool connectingWifi(String wifiSSID, String wifiPassWord)
 {
     M5.update();
-    Llcd.setCursor(0, 0);
     int _cursorX = 0;
     WiFi.begin(wifiSSID.c_str(), wifiPassWord.c_str());
 
@@ -139,7 +138,6 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
     while (WiFi.status() != WL_CONNECTED)
     {
         M5.update();
-        Llcd.setCursor(0 + 5 * _cursorX, 30);
         Llcd.print(".");
         delay(300);
         _cursorX++;
@@ -153,7 +151,6 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
         }
     }
     Llcd.fillScreen(BLACK);
-    Llcd.setCursor(0, 0);
     Llcd.print("Connected with IP:");
     Llcd.print(WiFi.localIP());
     Llcd.println("\nConnected!!");
