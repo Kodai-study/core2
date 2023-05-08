@@ -195,8 +195,6 @@ void printDirectory(File dir, int numTabs)
 boolean connectWifi(int btn)
 {
     boolean connect = false;
-    Llcd.fillScreen(BLACK);
-    Llcd.setCursor(0, 0);
     Llcd.setTextSize(2);
     Llcd.setTextColor(WHITE);
     Llcd.println("接続中...");

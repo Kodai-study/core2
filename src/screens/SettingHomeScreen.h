@@ -16,7 +16,6 @@
 class SettingHomeScreen : public ScreenBase
 {
 private:
-   Button moveDateTimeSettingButton;
    // 接続するWifiのSSIDを選択するボタン
    Button selectWifiButton;
 
@@ -32,7 +31,7 @@ private:
    int currentPage = 0;
 
    // ボタンの位置の一覧
-   const Point btnPos[4] = {Point(5, 155), Point(85, 155), Point(170, 155), Point(250, 155)};
+   const Point btnPos[4] = {Point(5, 180), Point(85, 180), Point(170, 180), Point(250, 180)};
 
    // 共通のボタンサイズ
    const Point btnSize = Point(70, 35);
@@ -40,6 +39,18 @@ private:
    const int DATETIME_Y_POSITION = 10;
 
    const int WIFI_INFO_Y_POSITION = 80;
+
+   // 設定しているSSIDを表示する座標
+   const Point SSID_POSITION = Point(40, 50);
+
+   // ページ数を表示する座標
+   const Point PAGE_NUM_POSITION = Point(110, 135);
+
+   // 配列の中から、接続するWifiのSSIDを選択するインデックス
+   int selectedWifiIndex = 0;
+
+   RTC_TimeTypeDef settingTime;
+   RTC_DateTypeDef settingDate;
 
 public:
    void initScreen() override;

@@ -17,10 +17,8 @@ void SettingHomeScreen::initScreen()
 
    Llcd.setFont(&fonts::lgfxJapanMinchoP_24);
    Llcd.setCursor(40, 220);
-   Llcd.print("戻る                  決定        ");
+   Llcd.print("戻る        決定      時刻設定");
 
-   RTC_TimeTypeDef settingTime;
-   RTC_DateTypeDef settingDate;
    M5.Rtc.GetTime(&settingTime);
    M5.Rtc.GetDate(&settingDate);
 
@@ -31,9 +29,8 @@ void SettingHomeScreen::initScreen()
    // 例: 2021/04/06 12:34:56 -> 2021/04/06 12:34
    settingDateTimeStr = settingDateTimeStr.substring(0, settingDateTimeStr.length() - 3);
    Llcd.print("TIME:" + settingDateTimeStr);
-   this->moveDateTimeSettingButton = Button(250, DATETIME_Y_POSITION, this->btnSize.x, this->btnSize.y, true, "SET", this->defaultColor_ButtonOff, this->defaultColor_ButtonOn);
 
-   Llcd.setCursor(40, 50);
+   Llcd.setCursor(SSID_POSITION.x, SSID_POSITION.y);
    Llcd.print("SSID:" + setting.getSSID());
 
    Llcd.setCursor(30, WIFI_INFO_Y_POSITION);
@@ -59,7 +56,7 @@ void SettingHomeScreen::initScreen()
    // ボタン4つに割り当てる文字列を配列で宣言
    const char *changePageButtonStr[4] = {"-10", "-1", "+1", "+10"};
 
-   Llcd.setCursor(110, 125);
+   Llcd.setCursor(PAGE_NUM_POSITION.x, PAGE_NUM_POSITION.y);
    Llcd.printf("Page:%03d", this->currentPage);
    // ボタンの配列の要素4つを、ボタンのサイズの配列からサイズを取ってきて初期化
    for (int i = 0; i < 4; i++)
@@ -72,7 +69,6 @@ void SettingHomeScreen::initScreen()
 void SettingHomeScreen::deleteScreen()
 {
    // 全てのボタンを、 0,0,0,0  で初期化
-   this->moveDateTimeSettingButton = Button(0, 0, 0, 0);
    this->selectWifiButton = Button(0, 0, 0, 0);
    this->connectWifiButton = Button(0, 0, 0, 0);
    for (int i = 0; i < 4; i++)
@@ -84,6 +80,30 @@ void SettingHomeScreen::deleteScreen()
 
 void SettingHomeScreen::screenUpdate()
 {
+   // selectedWifiIndexを変更して、選択中のWifiのSSIDを変更する
+   if (this->selectWifiButton.wasPressed())
+   {
+      this->selectedWifiIndex++;
+      if (this->selectedWifiIndex >= setting.SSID_COLUM_SIZE)
+      {
+         this->selectedWifiIndex = 0;
+      }
+      this->updateWifiInfoText();
+   }
+   else if (this->connectWifiButton.wasPressed())
+   {
+      Llcd.setCursor(0, WIFI_INFO_Y_POSITION + 40);
+      // Wifiに接続する
+      if (connectingWifi(setting.SSID_COLUM[this->selectedWifiIndex], setting.WIFI_PASS_COLUM[this->selectedWifiIndex]))
+      {
+         this->isWifiConnected = true;
+         // settingに接続したWifiのSSIDとパスワードを保存する
+         setting.setSSID(setting.SSID_COLUM[this->selectedWifiIndex]);
+         setting.setWifiPass(setting.WIFI_PASS_COLUM[this->selectedWifiIndex]);
+      }
+      updatePageNumText();
+   }
+
    // 4つのボタンのうち、どれかが押されたら、currentPageを変更する
    for (int i = 0; i < 4; i++)
    {
@@ -112,14 +132,14 @@ void SettingHomeScreen::screenUpdate()
          {
             this->currentPage = 0;
          }
+         updatePageNumText();
       }
    }
 }
 
 // ボタンを0,0,0,0  で初期化するコンストラクタ
 SettingHomeScreen::SettingHomeScreen()
-    : moveDateTimeSettingButton(0, 0, 0, 0),
-      selectWifiButton(0, 0, 0, 0),
+    : selectWifiButton(0, 0, 0, 0),
       connectWifiButton(0, 0, 0, 0),
       changePageButton{Button(0, 0, 0, 0),
                        Button(0, 0, 0, 0),
@@ -127,9 +147,6 @@ SettingHomeScreen::SettingHomeScreen()
                        Button(0, 0, 0, 0)}
 {
 }
-/*    void updateDateTimeText();
-   void updateWifiInfoText();
-   void updatePageNumText(); */
 // 上の3つの関数を実装する。中身は、画面の1部を黒塗りして、カーソルをセット、変数の値を書き込む。
 // 塗りつぶしの座標は仮に 0,0 とする。  表示する文字列は、initScreen() を参考にする
 void SettingHomeScreen::updateDateTimeText()
@@ -141,9 +158,10 @@ void SettingHomeScreen::updateDateTimeText()
 
 void SettingHomeScreen::updateWifiInfoText()
 {
-   Llcd.fillRect(0, WIFI_INFO_Y_POSITION, 320, 30, BLACK);
-   Llcd.setCursor(40, WIFI_INFO_Y_POSITION);
-   Llcd.print("SSID:" + setting.getSSID());
+   Llcd.fillRect(0, SSID_POSITION.y, 320, 40, BLACK);
+   Llcd.setCursor(SSID_POSITION.x, SSID_POSITION.y);
+   Llcd.print("SSID:");
+   Llcd.print(setting.SSID_COLUM[this->selectedWifiIndex]);
    Llcd.setCursor(30, WIFI_INFO_Y_POSITION);
    if (this->isWifiConnected)
    {
@@ -160,7 +178,7 @@ void SettingHomeScreen::updateWifiInfoText()
 
 void SettingHomeScreen::updatePageNumText()
 {
-   Llcd.fillRect(0, 125, 320, 30, BLACK);
-   Llcd.setCursor(110, 125);
+   Llcd.fillRect(0, PAGE_NUM_POSITION.y, 320, 30, BLACK);
+   Llcd.setCursor(PAGE_NUM_POSITION.x, PAGE_NUM_POSITION.y);
    Llcd.printf("Page:%03d", this->currentPage);
 }

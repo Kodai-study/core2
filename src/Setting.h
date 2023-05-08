@@ -63,10 +63,15 @@ public:
      * 設定画面で、Wi-Fiの接続を行うときに、この配列の中から選択する
      */
     static const char *SSID_COLUM[];
+
+    static const int SSID_COLUM_SIZE = 4;
+
     /**
      * @brief 接続するWi-Fiのパスワードの一覧
      */
     static const char *WIFI_PASS_COLUM[];
+
+    static const int WIFI_PASS_COLUM_SIZE = 4;
 
     static constexpr const char *SETTING_FILE_NAME = "/setting.ini";
 
