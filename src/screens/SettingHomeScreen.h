@@ -47,7 +47,7 @@ private:
    const Point PAGE_NUM_POSITION = Point(110, 135);
 
    // 配列の中から、接続するWifiのSSIDを選択するインデックス
-   int selectedWifiIndex = 0;
+   int selectedWifiIndex = -1;
 
    RTC_TimeTypeDef settingTime;
    RTC_DateTypeDef settingDate;

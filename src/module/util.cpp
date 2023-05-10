@@ -150,10 +150,8 @@ bool connectingWifi(String wifiSSID, String wifiPassWord)
             return false;
         }
     }
-    Llcd.fillScreen(BLACK);
-    Llcd.print("Connected with IP:");
     Llcd.print(WiFi.localIP());
-    Llcd.println("\nConnected!!");
+    Llcd.println("  Connected!!");
     setting.setSSID(wifiSSID);
     setting.setWifiPass(wifiPassWord);
     delay(1000);

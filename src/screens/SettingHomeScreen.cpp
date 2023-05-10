@@ -15,6 +15,8 @@ void SettingHomeScreen::initScreen()
    ScreenBase::initScreen();
    setting.readIni();
 
+   selectedWifiIndex = -1;
+
    Llcd.setFont(&fonts::lgfxJapanMinchoP_24);
    Llcd.setCursor(40, 220);
    Llcd.print("戻る        決定      時刻設定");
@@ -94,12 +96,14 @@ void SettingHomeScreen::screenUpdate()
    {
       Llcd.setCursor(0, WIFI_INFO_Y_POSITION + 40);
       // Wifiに接続する
-      if (connectingWifi(setting.SSID_COLUM[this->selectedWifiIndex], setting.WIFI_PASS_COLUM[this->selectedWifiIndex]))
+      if (selectedWifiIndex == -1)
       {
-         this->isWifiConnected = true;
-         // settingに接続したWifiのSSIDとパスワードを保存する
-         setting.setSSID(setting.SSID_COLUM[this->selectedWifiIndex]);
-         setting.setWifiPass(setting.WIFI_PASS_COLUM[this->selectedWifiIndex]);
+         // settingの値をそのまま使用してWifiに接続すrう
+         this->isWifiConnected = connectingWifi(setting.getSSID(), setting.getWifiPass());
+      }
+      else
+      {
+         this->isWifiConnected = connectingWifi(setting.SSID_COLUM[this->selectedWifiIndex], setting.WIFI_PASS_COLUM[this->selectedWifiIndex]);
       }
       updatePageNumText();
    }
