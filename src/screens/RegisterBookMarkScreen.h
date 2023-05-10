@@ -22,8 +22,13 @@ private:
    BookMarkType lastSelectedBookMarkType;
    // ブックマーク登録のための情報を表示する関数
    void updateBookmarkType();
-   void drawBookmarkIcon(int32_t x, int32_t y, int color);
+   void drawBookmarkIcon(int color);
    BookData currentBookData;
+   // 色の配列を定義
+   static const int COLOR_LIST[];
+
+   // アイコンを表示させる座標定数を定義
+   const Point ICON_POSITION = Point(10, 30);
 
 public:
    void initScreen() override;

@@ -7,6 +7,10 @@
 
 #include "header.h"
 #include "RegisterBookMarkScreen.h"
+#include "../module/BookMarkData.h"
+
+// COLOR_LIST を初期化。  サイズはブックマークの種類だけ
+const int RegisterBookMarkScreen::COLOR_LIST[] = {RED, ORANGE, YELLOW, GREEN};
 
 void RegisterBookMarkScreen::initScreen()
 {
@@ -15,18 +19,16 @@ void RegisterBookMarkScreen::initScreen()
     Llcd.setFont(&fonts::lgfxJapanGothicP_24);
     Llcd.println("キャンセル    作成    モード切替");
 
-    Llcd.setCursor(20, 40);
+    Llcd.setCursor(100, 10);
     Llcd.printf("%dページ目", readingBook.getCurrentPage());
-
-    Llcd.fillTriangle(0, 0, 0, 20, 20, 0, WHITE);
-    Llcd.fillTriangle(0, 0, 20, 0, 0, 20, WHITE);
-    Llcd.fillRect(0, 20, 20, 20, WHITE);
 
     Llcd.setCursor(64, 96);
     Llcd.setFont(&fonts::lgfxJapanGothicP_32);
-    Llcd.println("これはサンプルの表示です");
 
-    drawBookmarkIcon(0, 50, WHITE);
+    // 現在選択されているブックマークの種類を表示する
+    updateBookmarkType();
+
+    drawBookmarkIcon(COLOR_LIST[(int)lastSelectedBookMarkType]);
 }
 
 void RegisterBookMarkScreen::deleteScreen()
@@ -85,13 +87,14 @@ void RegisterBookMarkScreen::screenUpdate()
     {
         this->lastSelectedBookMarkType = (BookMarkType)((this->lastSelectedBookMarkType + 1) % BOOKMARK_TYPE_NUM);
         updateBookmarkType();
+        drawBookmarkIcon(COLOR_LIST[(int)lastSelectedBookMarkType]);
     }
 }
 
 void RegisterBookMarkScreen::updateBookmarkType()
 {
-    Llcd.fillRect(0, 100, 240, 100, BLACK);
-    Llcd.setCursor(50, 100);
+    Llcd.fillRect(0, 100, 320, 100, BLACK);
+    Llcd.setCursor(20, 100);
 
     // ブックマークの種類によって、表示する文字列を変更する
     switch (this->lastSelectedBookMarkType)
@@ -111,7 +114,7 @@ void RegisterBookMarkScreen::updateBookmarkType()
     }
 }
 
-void RegisterBookMarkScreen::drawBookmarkIcon(int32_t x, int32_t y, int color)
+void RegisterBookMarkScreen::drawBookmarkIcon(int color)
 {
     // 適当に大きさと位置を決める
     const int32_t rectWidth = 40;
@@ -119,11 +122,14 @@ void RegisterBookMarkScreen::drawBookmarkIcon(int32_t x, int32_t y, int color)
     const int32_t triangleHeight = 20;
     const int32_t triangleWidth = rectHeight / 2;
 
+    // アイコンの描写する範囲を黒塗りにする。  大きさは上の定数を参照
+    Llcd.fillRect(ICON_POSITION.x, ICON_POSITION.y, rectWidth + triangleWidth, rectHeight + triangleHeight, BLACK);
+
     // 描画する四角形
-    Llcd.fillRect(x, y, rectWidth, rectHeight, color);
+    Llcd.fillRect(ICON_POSITION.x, ICON_POSITION.y, rectWidth, rectHeight, color);
     // 描画する三角形
-    Llcd.fillTriangle(x, y + rectHeight, x, y + rectHeight + triangleHeight,
-                      x + triangleWidth, y + rectHeight, color);
-    Llcd.fillTriangle(x + rectWidth, y + rectHeight, x + rectWidth, y + rectHeight + triangleHeight,
-                      x + triangleWidth, y + rectHeight, color);
+    Llcd.fillTriangle(ICON_POSITION.x, ICON_POSITION.y + rectHeight, ICON_POSITION.x, ICON_POSITION.y + rectHeight + triangleHeight,
+                      ICON_POSITION.x + triangleWidth, ICON_POSITION.y + rectHeight, color);
+    Llcd.fillTriangle(ICON_POSITION.x + rectWidth, ICON_POSITION.y + rectHeight, ICON_POSITION.x + rectWidth, ICON_POSITION.y + rectHeight + triangleHeight,
+                      ICON_POSITION.x + triangleWidth, ICON_POSITION.y + rectHeight, color);
 }
