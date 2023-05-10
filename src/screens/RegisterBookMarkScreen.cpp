@@ -25,6 +25,8 @@ void RegisterBookMarkScreen::initScreen()
     Llcd.setCursor(64, 96);
     Llcd.setFont(&fonts::lgfxJapanGothicP_32);
     Llcd.println("これはサンプルの表示です");
+
+    drawBookmarkIcon(0, 50, WHITE);
 }
 
 void RegisterBookMarkScreen::deleteScreen()
@@ -74,8 +76,8 @@ void RegisterBookMarkScreen::screenUpdate()
             csvManager.writeLine(bookMarkData.getCsvLine());
             Serial.println(bookMarkData.getCsvLine());
             csvManager.closeFile();
-            screenTransitionHandler(Screen::Screen_Reading);
         }
+        screenTransitionHandler(Screen::Screen_Reading);
     }
 
     // ボタンCが押されたら、ブックマークの種類を変更する
@@ -107,4 +109,21 @@ void RegisterBookMarkScreen::updateBookmarkType()
         Llcd.println("その他");
         break;
     }
+}
+
+void RegisterBookMarkScreen::drawBookmarkIcon(int32_t x, int32_t y, int color)
+{
+    // 適当に大きさと位置を決める
+    const int32_t rectWidth = 40;
+    const int32_t rectHeight = 40;
+    const int32_t triangleHeight = 20;
+    const int32_t triangleWidth = rectHeight / 2;
+
+    // 描画する四角形
+    Llcd.fillRect(x, y, rectWidth, rectHeight, color);
+    // 描画する三角形
+    Llcd.fillTriangle(x, y + rectHeight, x, y + rectHeight + triangleHeight,
+                      x + triangleWidth, y + rectHeight, color);
+    Llcd.fillTriangle(x + rectWidth, y + rectHeight, x + rectWidth, y + rectHeight + triangleHeight,
+                      x + triangleWidth, y + rectHeight, color);
 }

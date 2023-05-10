@@ -22,6 +22,7 @@ private:
    BookMarkType lastSelectedBookMarkType;
    // ブックマーク登録のための情報を表示する関数
    void updateBookmarkType();
+   void drawBookmarkIcon(int32_t x, int32_t y, int color);
    BookData currentBookData;
 
 public:

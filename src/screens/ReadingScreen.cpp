@@ -100,6 +100,11 @@ void ReadingScreen::screenUpdate()
         readingBook.setCurrentPage(this->currentPage);
         screenTransitionHandler(Screen::Screen_RegisterBookMark);
     }
+
+    if (btn_x.wasPressed())
+    {
+        screenTransitionHandler(Screen::Screen_SettingHome);
+    }
 }
 
 /**

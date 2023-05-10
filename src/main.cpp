@@ -20,10 +20,9 @@ LGFX_Sprite canvas(&Llcd);       // スプライトを使う場合はLGFX_Sprite
 Setting setting;                 // 設定を保持するクラスのインスタンスを作成
 bool isEnableWifiConnect = true; // Wi-Fiに接続されているかどうかのフラグ
 
-bool isWifiInitialized = false;// Wifiが接続されている時に行う、Firebaseなどの初期化処理が終わっているかどうかのフラグ
+bool isWifiInitialized = false; // Wifiが接続されている時に行う、Firebaseなどの初期化処理が終わっているかどうかのフラグ
 
-
-BookData readingBook;            // 現在読んでいる本の情報を保持するクラスのインスタンスを作成
+BookData readingBook; // 現在読んでいる本の情報を保持するクラスのインスタンスを作成
 
 static ReadingScreen readingScreen;
 static SettingTimeIntervalScreen settingTimeScreen;
@@ -35,7 +34,7 @@ static SettingHomeScreen settingHomeScreen;
 
 // 画面一覧をまとめた配列。 ScreenBaseの型で基本的な処理のみ実行可能
 static ScreenBase *screens[Screen_NUM];
-static Screen currentScreenNumber = Screen::Screen_SettingHome;
+static Screen currentScreenNumber = Screen::Screen_Reading;
 
 // ボタンを長押ししたときに1回だけ実行するためのフラグ
 static bool buttonB_longPress_flag = false;
@@ -47,55 +46,55 @@ static bool buttonC_longPress_flag = false;
  */
 void setup()
 {
-  M5.begin();
-  Serial.begin(9600);
-  M5.lcd.begin();
-  Llcd.init(); // LCD初期化
-  screens[Screen_Reading] = &readingScreen;
-  screens[Screen_SettingTimeInterval] = &settingTimeScreen;
-  screens[Screen_RegisterBookMark] = &registerBookMarkScreen;
-  screens[Screen_SelectBook] = &selectBookScreen;
-  screens[Screen_DateTimeSetting] = &timeSettingScreen;
-  screens[Screen_Debug] = &debugScreen;
-  screens[Screen_SettingHome] = &settingHomeScreen;
-  setting.readIni();
+    M5.begin();
+    Serial.begin(9600);
+    M5.lcd.begin();
+    Llcd.init(); // LCD初期化
+    screens[Screen_Reading] = &readingScreen;
+    screens[Screen_SettingTimeInterval] = &settingTimeScreen;
+    screens[Screen_RegisterBookMark] = &registerBookMarkScreen;
+    screens[Screen_SelectBook] = &selectBookScreen;
+    screens[Screen_DateTimeSetting] = &timeSettingScreen;
+    screens[Screen_Debug] = &debugScreen;
+    screens[Screen_SettingHome] = &settingHomeScreen;
+    setting.readIni();
 
-  bool isWifiConnectSuccess;
+    bool isWifiConnectSuccess;
 
-  Llcd.setCursor(0, 0);
-  Llcd.setFont(&fonts::lgfxJapanGothic_16);
+    Llcd.setCursor(0, 0);
+    Llcd.setFont(&fonts::lgfxJapanGothic_16);
 
 #ifndef DEBUG_WITHOUT_WIFI
 #ifndef DEBUG_SSID_WITHOUT_SETTINGFILE
 
-  if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
-  {
+    if (setting.getSSID().equals("NULL") || setting.getWifiPass().equals("NULL"))
+    {
+        isWifiConnectSuccess = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
+    }
+    else
+        isWifiConnectSuccess = connectingWifi(setting.getSSID(), setting.getWifiPass());
+#else
     isWifiConnectSuccess = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
-  }
-  else
-    isWifiConnectSuccess = connectingWifi(setting.getSSID(), setting.getWifiPass());
-#else
-  isWifiConnectSuccess = connectingWifi(String(WIFI_SSID), String(WIFI_PASSWORD));
 #endif
 #else
-  isWifiConnectSuccess = false;
-  isEnableWifiConnect = false;
+    isWifiConnectSuccess = false;
+    isEnableWifiConnect = false;
 #endif
-  if (isWifiConnectSuccess)
-  {
-    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-    Firebase.reconnectWiFi(true);
-    setRTC();
-  }
-  else
-  {
-    auto time = setting.getTime();
-    auto date = setting.getDate();
-    M5.Rtc.SetTime(&time);
-    M5.Rtc.SetDate(&date);
-  }
+    if (isWifiConnectSuccess)
+    {
+        Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+        Firebase.reconnectWiFi(true);
+        setRTC();
+    }
+    else
+    {
+        auto time = setting.getTime();
+        auto date = setting.getDate();
+        M5.Rtc.SetTime(&time);
+        M5.Rtc.SetDate(&date);
+    }
 
-  screens[(int)currentScreenNumber]->initScreen();
+    screens[(int)currentScreenNumber]->initScreen();
 }
 
 /**
@@ -104,38 +103,38 @@ void setup()
  */
 void loop()
 {
-  M5.update();
-  screens[(int)currentScreenNumber]->screenUpdate();
+    M5.update();
+    screens[(int)currentScreenNumber]->screenUpdate();
 
-  if (!buttonB_longPress_flag && M5.BtnB.pressedFor(3000))
-  {
-    togglePowerLcd();
-    buttonB_longPress_flag = true;
-  }
-  else if (buttonB_longPress_flag && !M5.BtnB.isPressed())
-  {
-    buttonB_longPress_flag = false;
-  }
+    if (!buttonB_longPress_flag && M5.BtnB.pressedFor(3000))
+    {
+        togglePowerLcd();
+        buttonB_longPress_flag = true;
+    }
+    else if (buttonB_longPress_flag && !M5.BtnB.isPressed())
+    {
+        buttonB_longPress_flag = false;
+    }
 
-  if (!buttonC_longPress_flag && M5.BtnC.pressedFor(3000))
-  {
-    screenTransitionHandler(Screen::Screen_Debug);
-  }
-  else if (buttonC_longPress_flag && !M5.BtnC.isPressed())
-  {
-    buttonC_longPress_flag = false;
-  }
+    if (!buttonC_longPress_flag && M5.BtnC.pressedFor(3000))
+    {
+        screenTransitionHandler(Screen::Screen_Debug);
+    }
+    else if (buttonC_longPress_flag && !M5.BtnC.isPressed())
+    {
+        buttonC_longPress_flag = false;
+    }
 
-  if (M5.BtnB.pressedFor(5000))
-  {
-    wakeupLcd();
-    Llcd.fillScreen(BLACK);
-    Llcd.setCursor(20, 100);
-    Llcd.setFont(&fonts::lgfxJapanGothic_40);
-    Llcd.print("ShutDown");
-    delay(4500);
-    M5.shutdown();
-  }
+    if (M5.BtnB.pressedFor(5000))
+    {
+        wakeupLcd();
+        Llcd.fillScreen(BLACK);
+        Llcd.setCursor(20, 100);
+        Llcd.setFont(&fonts::lgfxJapanGothic_40);
+        Llcd.print("ShutDown");
+        delay(4500);
+        M5.shutdown();
+    }
 }
 
 /**
@@ -144,22 +143,22 @@ void loop()
  */
 void test_screenTransition()
 {
-  if (M5.BtnA.wasPressed())
-  {
-    togglePowerLcd();
-  }
+    if (M5.BtnA.wasPressed())
+    {
+        togglePowerLcd();
+    }
 
-  if (M5.BtnB.wasPressed())
-  {
-    readingScreen.deleteScreen();
-    settingTimeScreen.initScreen();
-  }
+    if (M5.BtnB.wasPressed())
+    {
+        readingScreen.deleteScreen();
+        settingTimeScreen.initScreen();
+    }
 
-  if (M5.BtnC.wasPressed())
-  {
-    settingTimeScreen.deleteScreen();
-    readingScreen.initScreen();
-  }
+    if (M5.BtnC.wasPressed())
+    {
+        settingTimeScreen.deleteScreen();
+        readingScreen.initScreen();
+    }
 }
 
 /**
@@ -169,12 +168,12 @@ void test_screenTransition()
  */
 void screenTransitionHandler(Screen screenList)
 {
-  if (screenList == Screen::Screen_Reading)
-  {
-    readingScreen.setCurrentBookData(readingBook);
-  }
+    if (screenList == Screen::Screen_Reading)
+    {
+        readingScreen.setCurrentBookData(readingBook);
+    }
 
-  screens[(int)currentScreenNumber]->deleteScreen();
-  currentScreenNumber = screenList;
-  screens[(int)currentScreenNumber]->initScreen();
+    screens[(int)currentScreenNumber]->deleteScreen();
+    currentScreenNumber = screenList;
+    screens[(int)currentScreenNumber]->initScreen();
 }
