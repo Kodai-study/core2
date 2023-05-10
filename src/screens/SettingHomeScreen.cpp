@@ -106,6 +106,14 @@ void SettingHomeScreen::screenUpdate()
          this->isWifiConnected = connectingWifi(setting.SSID_COLUM[this->selectedWifiIndex], setting.WIFI_PASS_COLUM[this->selectedWifiIndex]);
       }
       updatePageNumText();
+      if (isWifiConnected)
+      {
+         setRTC();
+         settingTime = setting.getTime(); // 時刻表示を更新
+         settingDate = setting.getDate(); // 日付表示を更新
+         updateDateTimeText();
+         updateWifiInfoText();
+      }
    }
 
    // 4つのボタンのうち、どれかが押されたら、currentPageを変更する
@@ -139,6 +147,11 @@ void SettingHomeScreen::screenUpdate()
          updatePageNumText();
       }
    }
+
+   if (M5.BtnC.wasPressed())
+   {
+      screenTransitionHandler(Screen::Screen_DateTimeSetting);
+   }
 }
 
 // ボタンを0,0,0,0  で初期化するコンストラクタ
@@ -165,7 +178,14 @@ void SettingHomeScreen::updateWifiInfoText()
    Llcd.fillRect(0, SSID_POSITION.y, 320, 40, BLACK);
    Llcd.setCursor(SSID_POSITION.x, SSID_POSITION.y);
    Llcd.print("SSID:");
-   Llcd.print(setting.SSID_COLUM[this->selectedWifiIndex]);
+   if (this->selectedWifiIndex == -1)
+      Llcd.print(setting.getSSID());
+   else
+      Llcd.print(setting.SSID_COLUM[this->selectedWifiIndex]);
+
+   // "接続中" か "未接続" の表示を塗りつぶす
+   Llcd.fillRect(0, WIFI_INFO_Y_POSITION, 80, 40, BLACK);
+
    Llcd.setCursor(30, WIFI_INFO_Y_POSITION);
    if (this->isWifiConnected)
    {

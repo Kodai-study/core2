@@ -19,6 +19,10 @@ LGFX Llcd;                       // LGFXのインスタンスを作成（クラ�
 LGFX_Sprite canvas(&Llcd);       // スプライトを使う場合はLGFX_Spriteのインスタンスを作成
 Setting setting;                 // 設定を保持するクラスのインスタンスを作成
 bool isEnableWifiConnect = true; // Wi-Fiに接続されているかどうかのフラグ
+
+bool isWifiInitialized = false;// Wifiが接続されている時に行う、Firebaseなどの初期化処理が終わっているかどうかのフラグ
+
+
 BookData readingBook;            // 現在読んでいる本の情報を保持するクラスのインスタンスを作成
 
 static ReadingScreen readingScreen;

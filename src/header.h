@@ -22,8 +22,8 @@
 // #define WIFI_SSID "Buffalo-G-458A"
 // #define WIFI_PASSWORD "hi6bmsk85557v"
 
-#define DEBUG_WITHOUT_WIFI
-#define DEBUG_SSID_WITHOUT_SETTINGFILE
+// #define DEBUG_WITHOUT_WIFI
+// #define DEBUG_SSID_WITHOUT_SETTINGFILE
 
 // #define WIFI_SSID "Pixel_8000"
 // #define WIFI_PASSWORD "45451919"
@@ -50,6 +50,7 @@
 extern LGFX Llcd; // LGFXのインスタンスを作成（クラスLGFXを使ってlcdコマンドでいろいろできるようにする）
 extern Setting setting;
 extern bool isEnableWifiConnect;
+extern bool isWifiInitialized;
 extern BookData readingBook;
 
 // 画面の一覧を定義する列挙型を作成

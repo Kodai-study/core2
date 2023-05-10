@@ -93,6 +93,13 @@ void togglePowerLcd()
 
 tm *setRTC()
 {
+    if (!isWifiInitialized)
+    {
+        Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+        Firebase.reconnectWiFi(true);
+        isWifiInitialized = true;
+    }
+
     FirebaseData data;
     Firebase.setTimestamp(data, "lastUpdateTime");
     time_t unixTime = (int)(data.doubleData());
