@@ -14,7 +14,7 @@ void SettingHomeScreen::initScreen()
 {
    ScreenBase::initScreen();
    setting.readIni();
-
+   Llcd.fillScreen(BLACK);
    selectedWifiIndex = -1;
 
    Llcd.setFont(&fonts::lgfxJapanMinchoP_24);

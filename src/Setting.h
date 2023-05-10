@@ -64,14 +64,12 @@ public:
      */
     static const char *SSID_COLUM[];
 
-    static const int SSID_COLUM_SIZE = 4;
+    static const int SSID_COLUM_SIZE = 5;
 
     /**
      * @brief 接続するWi-Fiのパスワードの一覧
      */
     static const char *WIFI_PASS_COLUM[];
-
-    static const int WIFI_PASS_COLUM_SIZE = 4;
 
     static constexpr const char *SETTING_FILE_NAME = "/setting.ini";
 

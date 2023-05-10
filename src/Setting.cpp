@@ -147,5 +147,5 @@ void Setting::printAllSetting()
     Serial.println("DATE: " + getDateTime());
 }
 
-const char *Setting::SSID_COLUM[] = {"aterm-b9044b-g", "Buffalo-G-458A", "Pixel_8000", "IODATA-298088-2G"};
-const char *Setting::WIFI_PASS_COLUM[] = {"1ca1af621dff7", "hi6bmsk85557v", "45451919", "Fx8EM83998089"};
+const char *Setting::SSID_COLUM[] = {"aterm-b9044b-g", "Buffalo-G-458A", "Pixel_8000", "IODATA-298088-2G", "Buffalo-G-9AD0"};
+const char *Setting::WIFI_PASS_COLUM[] = {"1ca1af621dff7", "hi6bmsk85557v", "45451919", "Fx8EM83998089", "icbdi657e6syp"};
